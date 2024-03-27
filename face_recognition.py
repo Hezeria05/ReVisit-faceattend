@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import os
 
+#algorithm integration in face recognition
+
 def load_face_data(dirpath):
     face_data = []
     labels = []
