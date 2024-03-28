@@ -4,8 +4,8 @@ from face_recognition import load_face_data, KNN
 
 # Initialize the video capture
 cap = cv2.VideoCapture(0)
-cas_path = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\data\haarcascade_frontalface_default.xml" #copy the path on your local computer
-dirpath = "C:\\Users\\grace\\Desktop\\AttendanceSystem\\data" #copy the path on your local computer
+cas_path = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data\\haarcascade_frontalface_default.xml" #copy the path on your local computer
+dirpath = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data" #copy the path on your local computer
 
 # Load face data
 face_dataset, face_labels, name = load_face_data(dirpath)
