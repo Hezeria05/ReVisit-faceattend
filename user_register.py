@@ -36,18 +36,18 @@ load_images()
 
 # Labels and Entry Fields
 # Full Name Label and Entry
-canvas.create_text(399.0, 125.0, anchor="nw", text="Full Name:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
-fullname_1 = ctk.CTkEntry(master=window, width=269, height=32, corner_radius=10, placeholder_text="Full Name")
+canvas.create_text(406.0, 130.0, anchor="nw", text="Full Name:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+fullname_1 = ctk.CTkEntry(master=window, width=275, height=42, corner_radius=10, placeholder_text="Full Name")
 fullname_1.place(x=406.0, y=152.0)
 
 # Username Label and Entry
-canvas.create_text(399.0, 197.0, anchor="nw", text="Username:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
-username_2 = ctk.CTkEntry(master=window, width=269.0, height=32.0, placeholder_text="Username", corner_radius=10)
+canvas.create_text(406.0, 202.0, anchor="nw", text="Username:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+username_2 = ctk.CTkEntry(master=window, width=275.0, height=42.0, placeholder_text="Username", corner_radius=10)
 username_2.place(x=406.0, y=224.0)
 
 # Password Label and Entry
-canvas.create_text(399.0, 269.0, anchor="nw", text="Password:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
-password_3 = ctk.CTkEntry(master=window, width=269.0, height=32.0, placeholder_text="Password", corner_radius=10, show="*")
+canvas.create_text(406.0, 274.0, anchor="nw", text="Password:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+password_3 = ctk.CTkEntry(master=window, width=275.0, height=42.0, placeholder_text="Password", corner_radius=10, show="*")
 password_3.place(x=406.0, y=296.0)
 
 # Buttons and Actions
@@ -85,8 +85,8 @@ backbtn.place(x=482.0, y=420.0)
 
 openeye = PhotoImage(file=relative_to_assets("eye_icon.png"))
 closeeye = PhotoImage(file=relative_to_assets("eye_closed.png"))
-eyeButton = Button(window, image=closeeye, bg="white", bd=0, command=hide)
-eyeButton.place(x=644.0, y=299.0)
+eyeButton = Button(window, image=closeeye, bg="#F9F9FA", bd=0, command=hide, activebackground="#F9F9FA", relief='flat', highlightthickness=0)
+eyeButton.place(x=644.0, y=305.0)
 
 button_mode = False
 
