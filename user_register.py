@@ -1,0 +1,96 @@
+# Imports and Setup
+import customtkinter as ctk
+from pathlib import Path
+import subprocess
+from db_con import register_security_admin
+from tkinter import messagebox, Tk, Canvas, Text, Button, PhotoImage
+
+# Path Configuration
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/assets/frame1")
+
+def relative_to_assets(path: str) -> Path:
+    return ASSETS_PATH / Path(path)
+
+# Window Configuration
+window = ctk.CTk()
+window.geometry("745x550")
+window.configure(bg="#FFFFFF")
+window.resizable(False, False)
+
+# Canvas and Images
+canvas = Canvas(window, bg="#FFFFFF", height=550, width=745, bd=0, highlightthickness=0, relief="ridge")
+canvas.place(x=0, y=0)
+canvas.create_rectangle(373.0, 65.0, 708.0, 491.0, fill="#E6E6E6", outline="")
+
+def load_images():
+    global image_image_1, image_image_2  # Make images global or attach to an object that persists
+    image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
+    image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
+
+    # Now, use these images wherever needed
+    canvas.create_image(185.0, 175.0, image=image_image_1)
+    canvas.create_image(185.0, 278.0, image=image_image_2)
+
+load_images()
+
+# Labels and Entry Fields
+# Full Name Label and Entry
+canvas.create_text(399.0, 125.0, anchor="nw", text="Full Name:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+fullname_1 = ctk.CTkEntry(master=window, width=269, height=32, corner_radius=10, placeholder_text="Full Name")
+fullname_1.place(x=406.0, y=152.0)
+
+# Username Label and Entry
+canvas.create_text(399.0, 197.0, anchor="nw", text="Username:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+username_2 = ctk.CTkEntry(master=window, width=269.0, height=32.0, placeholder_text="Username", corner_radius=10)
+username_2.place(x=406.0, y=224.0)
+
+# Password Label and Entry
+canvas.create_text(399.0, 269.0, anchor="nw", text="Password:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+password_3 = ctk.CTkEntry(master=window, width=269.0, height=32.0, placeholder_text="Password", corner_radius=10, show="*")
+password_3.place(x=406.0, y=296.0)
+
+# Buttons and Actions
+def submit_action():
+    name = fullname_1.get()
+    username = username_2.get()
+    password = password_3.get()
+    success = register_security_admin(name, username, password)
+    if success:
+        messagebox.showinfo("Registration Successful", "Registered Successfully")
+        subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/user_page.py"])
+    else:
+        messagebox.showerror("Registration Failed", "Could not register. Please try again.")
+
+def open_user_page():
+    window.destroy()
+    subprocess.run(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/user_page.py"])
+
+def hide():
+    global button_mode
+    if button_mode:
+        eyeButton.configure(image=closeeye)
+        password_3.configure(show="*")
+        button_mode = False
+    else:
+        eyeButton.configure(image=openeye)
+        password_3.configure(show="")
+        button_mode = True
+
+button_1 = ctk.CTkButton(master=window, text="Submit", command=submit_action, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
+button_1.place(x=482.0, y=375.0)
+
+backbtn = ctk.CTkButton(master=window, text="Back", command=open_user_page, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
+backbtn.place(x=482.0, y=420.0)
+
+openeye = PhotoImage(file=relative_to_assets("eye_icon.png"))
+closeeye = PhotoImage(file=relative_to_assets("eye_closed.png"))
+eyeButton = Button(window, image=closeeye, bg="white", bd=0, command=hide)
+eyeButton.place(x=644.0, y=299.0)
+
+button_mode = False
+
+# Utility Functions
+# Already defined relative_to_assets function at the beginning.
+
+window.mainloop()
