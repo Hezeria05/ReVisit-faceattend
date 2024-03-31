@@ -72,3 +72,18 @@ def register_security_admin(name, username, password):
         cursor.close()
         conn.close()
     return success
+
+def validate_login_credentials(username, password):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # This query should be adjusted to match the schema of your user or admin table
+    query = "SELECT COUNT(*) FROM security_admin WHERE username = %s AND password = %s"
+    cursor.execute(query, (username, password))
+
+    result = cursor.fetchone()[0] > 0  # True if a matching record was found
+    cursor.close()
+    conn.close()
+    return result
+
+# Now you can use this function in your login interface

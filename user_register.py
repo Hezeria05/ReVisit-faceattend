@@ -17,6 +17,7 @@ window = ctk.CTk()
 window.geometry("745x550")
 window.configure(bg="#FFFFFF")
 window.resizable(False, False)
+window.title("Create Account")
 
 # Canvas and Images
 canvas = Canvas(window, bg="#FFFFFF", height=550, width=745, bd=0, highlightthickness=0, relief="ridge")
