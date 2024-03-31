@@ -23,6 +23,14 @@ canvas = Canvas(window, bg="#FFFFFF", height=550, width=745, bd=0, highlightthic
 canvas.place(x=0, y=0)
 canvas.create_rectangle(373.0, 65.0, 708.0, 491.0, fill="#E6E6E6", outline="")
 
+canvas.create_text(
+    446.0, 95.0,  # Adjust the positioning as needed
+    anchor="nw",
+    text="Create Account",
+    fill="#5B757A",
+    font=("Inter SemiBold", 20, "bold")  # Adjust the font size and style as needed
+)
+
 def load_images():
     global image_image_1, image_image_2  # Make images global or attach to an object that persists
     image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
@@ -36,19 +44,19 @@ load_images()
 
 # Labels and Entry Fields
 # Full Name Label and Entry
-canvas.create_text(406.0, 130.0, anchor="nw", text="Full Name:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+canvas.create_text(406.0, 145.0, anchor="nw", text="Full Name:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
 fullname_1 = ctk.CTkEntry(master=window, width=275, height=42, corner_radius=10, placeholder_text="Full Name")
-fullname_1.place(x=406.0, y=152.0)
+fullname_1.place(x=406.0, y=167.0)
 
 # Username Label and Entry
-canvas.create_text(406.0, 202.0, anchor="nw", text="Username:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+canvas.create_text(406.0, 217.0, anchor="nw", text="Username:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
 username_2 = ctk.CTkEntry(master=window, width=275.0, height=42.0, placeholder_text="Username", corner_radius=10)
-username_2.place(x=406.0, y=224.0)
+username_2.place(x=406.0, y=239.0)
 
 # Password Label and Entry
-canvas.create_text(406.0, 274.0, anchor="nw", text="Password:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+canvas.create_text(406.0, 289.0, anchor="nw", text="Password:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
 password_3 = ctk.CTkEntry(master=window, width=275.0, height=42.0, placeholder_text="Password", corner_radius=10, show="*")
-password_3.place(x=406.0, y=296.0)
+password_3.place(x=406.0, y=311.0)
 
 # Buttons and Actions
 def submit_action():
@@ -80,15 +88,15 @@ def hide():
         button_mode = True
 
 button_1 = ctk.CTkButton(master=window, text="Submit", command=submit_action, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
-button_1.place(x=482.0, y=375.0)
+button_1.place(x=482.0, y=386.0)
 
 backbtn = ctk.CTkButton(master=window, text="Back", command=open_user_page, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
-backbtn.place(x=482.0, y=420.0)
+backbtn.place(x=482.0, y=431.0)
 
 openeye = PhotoImage(file=relative_to_assets("eye_icon.png"))
 closeeye = PhotoImage(file=relative_to_assets("eye_closed.png"))
 eyeButton = Button(window, image=closeeye, bg="#F9F9FA", bd=0, command=hide, activebackground="#F9F9FA", relief='flat', highlightthickness=0)
-eyeButton.place(x=644.0, y=305.0)
+eyeButton.place(x=644.0, y=319.0)
 
 button_mode = False
 
