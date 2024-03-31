@@ -55,3 +55,20 @@ def login_attendance(name, logout=False):
         conn.close()
 
     return success
+
+def register_security_admin(name, username, password):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        query_insert = "INSERT INTO security_admin (name, username, password) VALUES (%s, %s, %s)"
+        cursor.execute(query_insert, (name, username, password))
+        conn.commit()
+        print(f"Successfully registered {name}.")
+        success = True
+    except mysql.connector.Error as err:
+        print(f"Failed to insert into security_admin: {err}")
+        success = False
+    finally:
+        cursor.close()
+        conn.close()
+    return success

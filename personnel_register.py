@@ -4,6 +4,12 @@
 
 import customtkinter as ctk
 from pathlib import Path
+import subprocess
+from db_con import register_security_admin
+from tkinter import messagebox
+
+
+
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -51,21 +57,67 @@ image_1 = canvas.create_image(
     image=image_image_1
 )
 
+def submit_action():
+    # Get the values from the entry fields
+    name = fullname_1.get()
+    username = username_2.get()
+    password = password_3.get()
+    
+    # Call the function to insert these values into the database
+    success = register_security_admin(name, username, password)
+    if success:
+        # Close the current window
+        window.destroy()
+        # Show a message box indicating successful registration
+        messagebox.showinfo("Registration Successful", "Registered Successfully")
+        # Open user_page.py
+        subprocess.Popen(["python", r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\user_page.py"])
+    else:
+        messagebox.showerror("Registration Failed", "Could not register. Please try again.")
+
+
+# Update the submit button command
+
+
 button_1 = ctk.CTkButton(
     master=window,
     text="Submit",  # Added spaces for horizontal 'padding'
     command=lambda: print("Submit button clicked"),
-    width=120,  # Adjusted width
-    height=42,   # Adjusted height
+    width=110,  # Adjusted width
+    height=32,   # Adjusted height
     corner_radius=10,  # Optional: adjust the corner radius for rounded corners
     fg_color="#5B757A",
     hover_color="#719298",
-    font=("Inter", 18, "bold")
+    font=("Inter", 15,)
 )
+button_1.configure(command=submit_action)
 
 button_1.place(
-    x=479.0,
-    y=400.0,
+    x=482.0,
+    y=375.0,
+)
+
+def open_user_page():
+    window.destroy()  # This will close the current window
+    subprocess.run(["python", r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\user_page.py"])  # Adjust the path as needed
+
+
+backbtn = ctk.CTkButton(
+    master=window,
+    text="Back", 
+    font=("Inter", 15),
+    width=110,
+    height=32,
+    corner_radius=10,
+    fg_color="#5B757A",
+    hover_color="#719298",
+    command=open_user_page  # Use the function here
+)
+
+
+backbtn.place(
+    x=482.0,
+    y=420.0,
 )
 
 image_image_2 = PhotoImage(
@@ -103,65 +155,89 @@ canvas.create_text(
     font=("Inter SemiBold", 15 * -1)
 )
 
-entry_image_1 = PhotoImage(
+fullname_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
-entry_bg_1 = canvas.create_image(
+fullname_bg_1 = canvas.create_image(
     540.5,
     169.0,
-    image=entry_image_1
+    image=fullname_image_1
 )
-entry_1 = Entry(
+fullname_1 = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0
 )
-entry_1.place(
+fullname_1.place(
     x=406.0,
     y=152.0,
     width=269.0,
     height=32.0
 )
 
-entry_image_2 = PhotoImage(
+username_image_2 = PhotoImage(
     file=relative_to_assets("entry_2.png"))
-entry_bg_2 = canvas.create_image(
+username_bg_2 = canvas.create_image(
     540.5,
     241.0,
-    image=entry_image_2
+    image=username_image_2
 )
-entry_2 = Entry(
+username_2 = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0
 )
-entry_2.place(
+username_2.place(
     x=406.0,
     y=224.0,
     width=269.0,
     height=32.0
 )
 
-entry_image_3 = PhotoImage(
+password_image_3 = PhotoImage(
     file=relative_to_assets("entry_3.png"))
-entry_bg_3 = canvas.create_image(
+password_bg_3 = canvas.create_image(
     540.5,
     313.0,
-    image=entry_image_3
+    image=password_image_3
 )
-entry_3 = Entry(
+password_3 = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     show="*"  # This makes the password hidden
 )
-entry_3.place(
+
+
+password_3.place(
     x=406.0,
     y=296.0,
     width=269.0,
     height=32.0
 )
+
+button_mode=False
+
+def hide():
+    global button_mode
+    if not button_mode:
+        eyeButton.configure(image=openeye, activebackground="white")
+        password_3.configure(show="")
+        button_mode = True
+    else:
+        eyeButton.configure(image=closeeye, activebackground="white")
+        password_3.configure(show="*")
+        button_mode = False
+
+
+
+openeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\eye_icon.png")
+closeeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\eye_closed.png")
+
+eyeButton = Button(window, image=closeeye, bg="white", bd=0, command=hide)
+eyeButton.place(x=644.0,y=299.0)
+
 window.resizable(False, False)
 window.mainloop()
