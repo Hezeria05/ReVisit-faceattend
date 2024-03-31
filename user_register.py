@@ -57,9 +57,11 @@ def submit_action():
     password = password_3.get()
     success = register_security_admin(name, username, password)
     if success:
+        window.destroy()
         messagebox.showinfo("Registration Successful", "Registered Successfully")
         subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/user_page.py"])
     else:
+        window.destroy()
         messagebox.showerror("Registration Failed", "Could not register. Please try again.")
 
 def open_user_page():
