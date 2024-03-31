@@ -222,19 +222,18 @@ button_mode=False
 
 def hide():
     global button_mode
-    if not button_mode:
-        eyeButton.configure(image=openeye, activebackground="white")
-        password_3.configure(show="")
-        button_mode = True
-    else:
+    if button_mode:
         eyeButton.configure(image=closeeye, activebackground="white")
         password_3.configure(show="*")
-        button_mode = False
+        button_mode=False
+    else:
+        eyeButton.configure(image=openeye, activebackground="white")
+        password_3.configure(show="")
+        button_mode=True
 
 
-
-openeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\eye_icon.png")
-closeeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\eye_closed.png")
+openeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\frame1\eye_icon.png")
+closeeye=PhotoImage(file=r"C:\Users\grace\Desktop\GitReVisit\ReVisit-faceattend\assets\frame1\eye_closed.png")
 
 eyeButton = Button(window, image=closeeye, bg="white", bd=0, command=hide)
 eyeButton.place(x=644.0,y=299.0)
