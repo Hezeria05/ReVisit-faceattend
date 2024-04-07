@@ -66,12 +66,12 @@ def login_attendance(name, logout=False):
     return success
 
 
-def register_security_admin(name, username, password):
+def register_security_admin(name, username, password, shift):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        query_insert = "INSERT INTO security_admin (name, username, password) VALUES (%s, %s, %s)"
-        cursor.execute(query_insert, (name, username, password))
+        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password, shift_id) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query_insert, (name, username, password, shift))
         conn.commit()
         print(f"Successfully registered {name}.")
         success = True
@@ -82,6 +82,7 @@ def register_security_admin(name, username, password):
         cursor.close()
         conn.close()
     return success
+
 
 def validate_login_credentials(username, password):
     conn = connect_to_database()

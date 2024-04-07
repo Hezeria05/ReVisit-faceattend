@@ -1,5 +1,6 @@
 # Imports and Setup
 import customtkinter as ctk
+from customtkinter import BooleanVar
 from pathlib import Path
 import subprocess
 from db_con import register_security_admin
@@ -59,19 +60,55 @@ canvas.create_text(406.0, 289.0, anchor="nw", text="Password:", fill="#5B757A", 
 password_3 = ctk.CTkEntry(master=window, width=275.0, height=42.0, placeholder_text="Password", corner_radius=10, show="*")
 password_3.place(x=406.0, y=311.0)
 
+canvas.create_text(406.0, 363.0, anchor="nw", text="Shift:", fill="#5B757A", font=("Inter SemiBold", 15 * -1))
+
+# AM Checkbox
+am_var = BooleanVar()
+am_var.set(True)  # Set the value of AM checkbox to True (1)
+am_checkbox = ctk.CTkCheckBox(master=window, text="AM", text_color="#5B757A", variable=am_var, corner_radius=5, fg_color="#5B757A", border_color="#5B757A", hover_color="gray", border_width=2, command=lambda: toggle_checkbox(am_checkbox))
+am_checkbox.place(x=456.0, y=373.0)  # Adjust the y-coordinate as needed
+
+# PM Checkbox
+pm_var = BooleanVar()
+pm_var.set(False)  # Set the value of PM checkbox to False (0)
+pm_checkbox = ctk.CTkCheckBox(master=window, text="PM", text_color="#5B757A", variable=pm_var, corner_radius=5, fg_color="#5B757A", border_color="#5B757A", hover_color="gray", border_width=2, command=lambda: toggle_checkbox(pm_checkbox))
+pm_checkbox.place(x=526.0, y=373.0)  # Adjust the y-coordinate as needed
+
+# Function to ensure only one checkbox is selected
+def toggle_checkbox(checkbox):
+    if checkbox == am_checkbox and am_var.get():
+        pm_var.set(False)  # Uncheck PM checkbox if AM checkbox is checked
+    elif checkbox == pm_checkbox and pm_var.get():
+        am_var.set(False)  # Uncheck AM checkbox if PM checkbox is checked
+
+# Function to get the selected value
+def get_shift_value():
+    if am_var.get():
+        return 1  # Return 1 if AM checkbox is selected
+    elif pm_var.get():
+        return 2  # Return 2 if PM checkbox is selected
+    else:
+        return None  # Return None if neither checkbox is selected
+
+
 # Buttons and Actions
 def submit_action():
     name = fullname_1.get()
     username = username_2.get()
     password = password_3.get()
-    success = register_security_admin(name, username, password)
-    if success:
-        window.destroy()
-        messagebox.showinfo("Registration Successful", "Registered Successfully")
-        subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/user_page.py"])
+    shift = get_shift_value()  # Get the shift value
+    if shift is not None:  # Check if a shift value is selected
+        success = register_security_admin(name, username, password, shift)
+        if success:
+            window.destroy()
+            messagebox.showinfo("Registration Successful", "Registered Successfully")
+            subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/user_page.py"])
+        else:
+            window.destroy()
+            messagebox.showerror("Registration Failed", "Could not register. Please try again.")
     else:
-        window.destroy()
-        messagebox.showerror("Registration Failed", "Could not register. Please try again.")
+        messagebox.showerror("Shift Not Selected", "Please select a shift (AM/PM).")
+
 
 def open_user_page():
     window.destroy()
@@ -89,10 +126,10 @@ def hide():
         button_mode = True
 
 button_1 = ctk.CTkButton(master=window, text="Submit", command=submit_action, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
-button_1.place(x=482.0, y=386.0)
+button_1.place(x=556.0, y=432.0)
 
 backbtn = ctk.CTkButton(master=window, text="Back", command=open_user_page, width=110, height=32, corner_radius=10, fg_color="#5B757A", hover_color="#719298")
-backbtn.place(x=482.0, y=431.0)
+backbtn.place(x=406.0, y=432.0)
 
 openeye = PhotoImage(file=relative_to_assets("eye_icon.png"))
 closeeye = PhotoImage(file=relative_to_assets("eye_closed.png"))
