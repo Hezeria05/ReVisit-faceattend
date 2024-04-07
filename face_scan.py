@@ -1,7 +1,10 @@
 import cv2
-
 from face_recognition import load_face_data, KNN
+import sys
+from db_con import login_visitor, logout_visitor
 
+# Receive sec_id from command line arguments
+sec_id = int(sys.argv[1])
 # Initialize the video capture
 cap = cv2.VideoCapture(0)
 cas_path = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data\\haarcascade_frontalface_default.xml" #copy the path on your local computer
@@ -33,10 +36,14 @@ while True:
         cv2.imshow("camera", frame)
 
     key_pressed = cv2.waitKey(1) & 0xFF
-    if key_pressed == ord('x'):
-        cv2.destroyAllWindows()  # Close the window
-        cap.release()  # Release the camera
-        break  # Break out of the loop to end the program
+    if key_pressed == ord('i'):
+        login_visitor(pred_name, sec_id)
+    elif key_pressed == ord('o'):
+        logout_visitor(pred_name)
+    elif key_pressed == ord('x'):
+            cv2.destroyAllWindows()  # Close the window
+            cap.release()  # Release the camera
+            break  # Break out of the loop to end the program
 
 cv2.destroyAllWindows()
 cap.release()

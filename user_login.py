@@ -59,12 +59,11 @@ password_3.place(x=406.0, y=239.0)
 def login_action():
     username = username_2.get()
     password = password_3.get()
-    if validate_login_credentials(username, password):
+    result, sec_id = validate_login_credentials(username, password)
+    if result:
         messagebox.showinfo("Login Successful", "You have successfully logged in.")
-        # You can add any action you want here after a successful login
-        # For example, open another window or close the current window
         window.destroy()
-        subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/next_page.py"])  # Adjust the script path as needed
+        subprocess.Popen(["python", r"C:/Users/grace/Desktop/GitReVisit/ReVisit-faceattend/face_scan.py", str(sec_id)])
     else:
         messagebox.showerror("Login Failed", "Invalid username or password. Please try again.")
 
