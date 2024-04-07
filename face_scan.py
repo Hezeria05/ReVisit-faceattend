@@ -1,5 +1,5 @@
 import cv2
-from db_con import login_attendance
+
 from face_recognition import load_face_data, KNN
 
 # Initialize the video capture
@@ -33,21 +33,7 @@ while True:
         cv2.imshow("camera", frame)
 
     key_pressed = cv2.waitKey(1) & 0xFF
-    if key_pressed == ord('i'):
-        if login_attendance(pred_name):
-            print("Attendance recorded for", pred_name)
-            cv2.destroyAllWindows() # Close the window
-            cap.release() # Release the camera
-            break # Break out of the loop to end the program
-        else:
-            print("Failed to record attendance.")
-    elif key_pressed == ord('o'):
-        if login_attendance(pred_name, logout=True):
-            print("Logout recorded for", pred_name)
-        else:
-            print("Failed to record logout.")
-
-    elif key_pressed == ord('x'):
+    if key_pressed == ord('x'):
         cv2.destroyAllWindows()  # Close the window
         cap.release()  # Release the camera
         break  # Break out of the loop to end the program
