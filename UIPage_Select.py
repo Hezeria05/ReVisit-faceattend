@@ -6,7 +6,7 @@ app.geometry("1200x800+400+100")
 
 #widgets
 mainframe = CTkFrame(master=app, fg_color="#C1C1C1", corner_radius= 20)
-logoframe = CTkFrame(master=mainframe, fg_color="#ADCBCF", corner_radius= 20)
+logoframe = CTkFrame(master=mainframe, fg_color="blue", corner_radius= 20)
 buttonframe = CTkFrame(master=mainframe, fg_color="transparent", corner_radius= 20)
 btnregister = CTkButton(
     buttonframe,
