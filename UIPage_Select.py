@@ -21,7 +21,7 @@ buttonframe = CTkFrame(master=mainframe, fg_color="transparent", corner_radius=2
 btnregister = CTkButton(
     buttonframe,
     text="REGISTER",
-    width=150, height=42,
+    width=302, height=69,
     corner_radius=10,
     fg_color="#92ACAF",
     hover_color="#ADCBCF",
@@ -30,8 +30,7 @@ btnregister = CTkButton(
 btnlogin = CTkButton(
     buttonframe,
     text="SIGN IN",
-    width=150,
-    height=42,
+    width=302, height=69,
     corner_radius=10,
     fg_color="#92ACAF",
     hover_color="#ADCBCF",
@@ -43,16 +42,19 @@ clabel = CTkLabel(logoframe,
     font=("Inter", 18, "bold"),
     text_color="#333333")
 
-# App and frame configuration
+# App frame 
 app.columnconfigure((0,2), weight=2, uniform='a')
 app.columnconfigure(1, weight=10, uniform='a')
 app.rowconfigure((0,2), weight=2, uniform='a')
 app.rowconfigure(1, weight=10, uniform='a')
+# Main frame 
 mainframe.columnconfigure((0,1,2,3), weight=1, uniform='a')
 mainframe.rowconfigure((0,1,2,3,4), weight=1, uniform='a')
+# Button frame 
 buttonframe.columnconfigure((0,1,2,3), weight=1, uniform='a')
 buttonframe.rowconfigure((0,3), weight=1, uniform='a')
-buttonframe.rowconfigure((1,2), weight=4, uniform='a')
+buttonframe.rowconfigure((1,2), weight=2, uniform='a')
+# Logo frame 
 logoframe.grid_columnconfigure((0,1,2), weight=2)
 logoframe.grid_rowconfigure((1,2), weight=2)
 logoframe.grid_rowconfigure((0), weight=1)
@@ -64,7 +66,7 @@ logoframe.grid(row=0, rowspan=3, column=1, columnspan=2, sticky='nsew', padx=10)
 imagelogo.grid(row=2, column=1, sticky='nsew')
 clabel.grid(row=1, column=1, sticky='nsew')
 buttonframe.grid(row=3, rowspan=4, column=1, columnspan=2, sticky='nsew', padx=80)
-btnregister.grid(row=2, column=1, columnspan=2, sticky='nsew', padx=50, pady=13)
-btnlogin.grid(row=1, column=1, columnspan=2, sticky='nsew',  padx=50, pady=13)
+btnregister.grid(row=2, column=1, columnspan=2)
+btnlogin.grid(row=1, column=1, columnspan=2)
 
 app.mainloop()
