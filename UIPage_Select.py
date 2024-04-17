@@ -29,12 +29,12 @@ class MainFrame(CTkFrame):
     def __init__(self, parent):
         super().__init__(parent, fg_color="#E4E4E4", corner_radius=20)
         self.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
-        self.rowconfigure((0, 1, 2, 3, 4), weight=1, uniform='a')
-
+        self.rowconfigure((0, 1, 3, 4), weight=1, uniform='a')
+        self.rowconfigure(2, weight=2, uniform='a')
         self.setup_logo = LogoFrame(self)
         self.setup_logo.grid(row=0, rowspan=3, column=1, columnspan=2, sticky='nsew', padx=10)
         self.setup_button = ButtonFrame(self, parent)  # Pass the parent to ButtonFrame for register_page
-        self.setup_button.grid(row=3, rowspan=2, column=1, columnspan=2, sticky='nsew', padx=80)
+        self.setup_button.grid(row=3, column=1, columnspan=2, padx=80)
 
 class LogoFrame(CTkFrame):
     def __init__(self, parent):
@@ -51,11 +51,11 @@ class LogoFrame(CTkFrame):
 
         imagelogo = CTkLabel(master=self, image=image_tk, text='')
         imagelogo.image = image_tk  # Keep a reference
-        imagelogo.grid(row=1, column=1, sticky='nsew')
+        imagelogo.grid(row=2, column=1, sticky='nsew', pady=20)
 
         clabel = CTkLabel(self, text='CARLTON RESIDENCES, BRGY. DITA, STA. ROSA CITY',
-                          fg_color="transparent", font=("Inter", 18, "bold"), text_color="#333333")
-        clabel.grid(row=0, column=1, sticky='nsew')
+                          fg_color="transparent", font=("Inter", 20, "bold"), text_color="#333333")
+        clabel.grid(row=1, column=1, sticky='nsew')
 
 class ButtonFrame(CTkFrame):
     def __init__(self, parent, root_window):
@@ -67,14 +67,14 @@ class ButtonFrame(CTkFrame):
         self.button_widgets()
 
     def button_widgets(self):
-        btnregister = CTkButton(self, text="REGISTER", width=302, height=69, corner_radius=10, fg_color="#92ACAF",
-                                hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333",
-                                command=lambda: RegisterPage(self.root_window))  # Uses self.root_window
-        btnregister.grid(row=2, column=1, columnspan=2)
+        btnlogin = CTkButton(self, text="SIGN IN", width=285, height=60, corner_radius=10, fg_color="#92ACAF",
+            hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333")
+        btnlogin.pack(side = 'top', padx = 10)
+        btnregister = CTkButton(self, text="REGISTER", width=285, height=60, corner_radius=10, fg_color="#92ACAF",
+            hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333",
+            command=lambda: RegisterPage(self.root_window))  # Uses self.root_window
+        btnregister.pack(side = 'top', padx = 10, pady = 10)
 
-        btnlogin = CTkButton(self, text="SIGN IN", width=302, height=69, corner_radius=10, fg_color="#92ACAF",
-                             hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333")
-        btnlogin.grid(row=1, column=1, columnspan=2)
 
 if __name__ == "__main__":
     app = CTk()
