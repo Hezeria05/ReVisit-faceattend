@@ -69,11 +69,10 @@ class ButtonFrame(CTkFrame):
     def button_widgets(self):
         btnlogin = CTkButton(self, text="SIGN IN", width=285, height=60, corner_radius=10, fg_color="#92ACAF",
             hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333")
-        btnlogin.pack(side = 'top', padx = 10)
+        btnlogin.pack(side='top', padx=10)
         btnregister = CTkButton(self, text="REGISTER", width=285, height=60, corner_radius=10, fg_color="#92ACAF",
-            hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333",
-            command=lambda: RegisterPage(self.root_window))  # Uses self.root_window
-        btnregister.pack(side = 'top', padx = 10, pady = 10)
+            hover_color="#AECED1", font=("Inter", 18, "bold"), text_color="#333333")
+        btnregister.pack(side='top', padx=10, pady=10)
 
 
 if __name__ == "__main__":
