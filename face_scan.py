@@ -4,11 +4,10 @@ import sys
 from db_con import login_visitor, logout_visitor
 
 # Receive sec_id from command line arguments
-sec_id = int(sys.argv[1])
 # Initialize the video capture
 cap = cv2.VideoCapture(0)
-cas_path = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data\\haarcascade_frontalface_default.xml" #copy the path on your local computer
-dirpath = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data" #copy the path on your local computer
+cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml" #copy the path on your local computer
+dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data" #copy the path on your local computer
 
 # Load face data
 face_dataset, face_labels, name = load_face_data(dirpath)
@@ -37,7 +36,7 @@ while True:
 
     key_pressed = cv2.waitKey(1) & 0xFF
     if key_pressed == ord('i'):
-        login_visitor(pred_name, sec_id)
+        login_visitor(pred_name)
     elif key_pressed == ord('o'):
         logout_visitor(pred_name)
     elif key_pressed == ord('x'):

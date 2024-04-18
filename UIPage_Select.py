@@ -1,6 +1,6 @@
 from customtkinter import *
 from PIL import Image, ImageTk
-from UIPage_Register import RegisterPage  # Assuming this is a function you've defined
+
 
 class MainApplication:
     def __init__(self, root):
@@ -75,7 +75,10 @@ class ButtonFrame(CTkFrame):
         btnregister.pack(side='top', padx=10, pady=10)
 
 
+
+
 if __name__ == "__main__":
     app = CTk()
     main_app = MainApplication(app)
+
     app.mainloop()
