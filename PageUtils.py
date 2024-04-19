@@ -58,16 +58,16 @@ def create_asterisk(entry_widget, parent_frame, relx, y, anchor):
     entry_widget.bind("<KeyRelease>", lambda event: manage_asterisk(entry_widget, asterisk_label, relx, y, anchor))
 
 def set_background_image(window, image_path, size=(1200, 800)):
-    """Sets the background image for a given window."""
+    # """Sets the background image for a given window."""
     bg_image_orig = Image.open(image_path)
     resized_bgimage = bg_image_orig.resize(size)
     bg_image_tk = ImageTk.PhotoImage(resized_bgimage)
-    bg_image_label = CTkLabel(window, image=bg_image_tk)
+    bg_image_label = CTkLabel(window, image=bg_image_tk, text='')
     bg_image_label.place(relwidth=1, relheight=1)
-    bg_image_label.image = bg_image_tk
+    # bg_image_label.image = bg_image_tk
 
 def check_entries_complete(entries, match_label, createbtn):
-    """Check if all entry fields are completed."""
+    # """Check if all entry fields are completed."""
     for entry in entries:
         if not entry.get():
             disable_submit_button(createbtn)
@@ -76,7 +76,7 @@ def check_entries_complete(entries, match_label, createbtn):
     return True
 
 def check_sign_complete(entries, signbtn):
-    """Check if all entry fields are completed."""
+    # """Check if all entry fields are completed."""
     for entry in entries:
         if not entry.get():
             disable_submit_button(signbtn)
