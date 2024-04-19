@@ -1,7 +1,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH, check_sign_complete
 from db_con import validate_login_credentials
 from tkinter import messagebox
 from  HomePage import open_homepage
@@ -51,8 +51,15 @@ def open_signin_window(select_window):
             messagebox.showerror("Error", "Invalid username or password")
 
     # Sign-in button
-    createbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=validate_and_open_homepage)
-    createbtn.place(relx=0.6, rely=0.75)
+    signbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
+    signbtn.place(relx=0.6, rely=0.75)
+    
+     # Bind the validation function to entry events
+    entries = [Eusername, Epassword]
+    for entry in entries:
+        entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, signbtn))
+    
+    signbtn.configure(command=validate_and_open_homepage)
 
     # Back button that closes this window and shows the main window
     back_button = CTkButton(SignFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=signin_window.destroy)

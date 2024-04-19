@@ -75,6 +75,15 @@ def check_entries_complete(entries, match_label, createbtn):
     enable_submit_button(createbtn)
     return True
 
+def check_sign_complete(entries, signbtn):
+    """Check if all entry fields are completed."""
+    for entry in entries:
+        if not entry.get():
+            disable_submit_button(signbtn)
+            return False
+    enable_submit_button(signbtn)
+    return True
+
 def check_password_match(Epassword, Ecpassword, match_label, createbtn):
     password = Epassword.get()
     confirm_password = Ecpassword.get()
