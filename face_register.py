@@ -12,7 +12,7 @@ root.withdraw()
 # Show an input box and ask the user to enter their name
 name = simpledialog.askstring("Input", "Enter your name:", parent=root)
 
-if name:  
+if name:
     cap = cv2.VideoCapture(0)
     cas_path = "C:\\Users\\grace\\Desktop\\GitReVisit\\ReVisit-faceattend\\data\\haarcascade_frontalface_default.xml"
     face_cascade = cv2.CascadeClassifier(cas_path)
@@ -42,17 +42,17 @@ if name:
                 face_section = cv2.resize(face_section, (100, 100))
                 cv2.putText(frame, name, (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 1)
-            
+
             # Calculate remaining time
             remaining_time = int(10 - (time.time() - start_time))
             cv2.putText(frame, "Time left: " + str(remaining_time), (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
             cv2.imshow("Camera", frame)
-            
+
             if skip % 10 == 0:
                 face_data.append(face_section)
             skip += 1
-            
+
             key_pressed = cv2.waitKey(1) & 0xFF
             if key_pressed == ord('x') or remaining_time <= 0:
                 break

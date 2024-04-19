@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from PageSignin import open_signin_window
 from PageRegister import open_register_window
-from PageUtils import ASSETS_PATH
+from PageUtils import ASSETS_PATH, set_background_image
 
 select_window = CTk()
 select_window.geometry('1200x800+400+100')
@@ -12,12 +12,8 @@ select_window.minsize(800, 400)
 select_window.maxsize(1200, 800)
 select_window.title('Select Page')
 
-# Load background image
-bgImage_orig = Image.open(ASSETS_PATH / 'USER SELECT PAGE.png')
-resized_bgimage = bgImage_orig.resize((1200, 800))
-bgImage_tk = ImageTk.PhotoImage(resized_bgimage)
-bgImageL = CTkLabel(select_window, image=bgImage_tk, text='')
-bgImageL.place(relwidth=1, relheight=1)
+# Background for the new window
+set_background_image(select_window, ASSETS_PATH / 'USER SELECT PAGE.png',size=(1200, 800))
 
 # Create the button frame
 ButtonFrame = CTkFrame(select_window, width=400, height=200, fg_color="#FEFEFE")

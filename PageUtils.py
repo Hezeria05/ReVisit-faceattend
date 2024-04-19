@@ -4,10 +4,22 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from tkinter import messagebox
 from db_con import register_security_admin
+from datetime import datetime
 
 # Constants
 ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
 
+#General
+def set_background_image(window, image_path, size):
+    # """Sets the background image for a given window."""
+    bg_image_orig = Image.open(image_path)
+    resized_bgimage = bg_image_orig.resize(size)
+    bg_image_tk = ImageTk.PhotoImage(resized_bgimage)
+    bg_image_label = CTkLabel(window, image=bg_image_tk, text='')
+    bg_image_label.place(relwidth=1, relheight=1)
+    # bg_image_label.image = bg_image_tk
+
+#Register and Sign In
 # Globals to hold the eye images (to avoid loading them multiple times)
 open_eye_tk = None
 close_eye_tk = None
@@ -57,24 +69,7 @@ def create_asterisk(entry_widget, parent_frame, relx, y, anchor):
     manage_asterisk(entry_widget, asterisk_label, relx, y, anchor)
     entry_widget.bind("<KeyRelease>", lambda event: manage_asterisk(entry_widget, asterisk_label, relx, y, anchor))
 
-def set_background_image(window, image_path, size=(1200, 800)):
-    # """Sets the background image for a given window."""
-    bg_image_orig = Image.open(image_path)
-    resized_bgimage = bg_image_orig.resize(size)
-    bg_image_tk = ImageTk.PhotoImage(resized_bgimage)
-    bg_image_label = CTkLabel(window, image=bg_image_tk, text='')
-    bg_image_label.place(relwidth=1, relheight=1)
-    # bg_image_label.image = bg_image_tk
-
-def check_entries_complete(entries, match_label, createbtn):
-    # """Check if all entry fields are completed."""
-    for entry in entries:
-        if not entry.get():
-            disable_submit_button(createbtn)
-            return False
-    enable_submit_button(createbtn)
-    return True
-
+#Sign In Page
 def check_sign_complete(entries, signbtn):
     # """Check if all entry fields are completed."""
     for entry in entries:
@@ -82,6 +77,17 @@ def check_sign_complete(entries, signbtn):
             disable_submit_button(signbtn)
             return False
     enable_submit_button(signbtn)
+    return True
+
+
+#Registration of Account Page
+def check_entries_complete(entries, match_label, createbtn):
+    # """Check if all entry fields are completed."""
+    for entry in entries:
+        if not entry.get():
+            disable_submit_button(createbtn)
+            return False
+    enable_submit_button(createbtn)
     return True
 
 def check_password_match(Epassword, Ecpassword, match_label, createbtn):
@@ -119,3 +125,30 @@ def register_user(efullname, eusername, epassword, ecpassword, register_window):
             messagebox.showerror("Error", "Failed to register user")
     else:
         messagebox.showerror("Error", "Password and confirm password do not match")
+
+#Main Page
+def set_icon_image(frame, image_path, relx, rely, anchor, size):
+    icon_image_orig = Image.open(image_path)
+    resized_iconimage = icon_image_orig.resize(size)
+    icon_image_tk = ImageTk.PhotoImage(resized_iconimage)
+    icon_image_label = CTkLabel(frame, image=icon_image_tk, text='')
+    icon_image_label.place(relx=relx, rely=rely, anchor=anchor)
+
+def logout(window):
+    window.destroy()
+
+#Home Page
+
+def update_datetime(date_label, time_label):
+    # Get the current date and time
+    now = datetime.now()
+
+    # Format date as "Month Day, Year"
+    formatted_date = now.strftime("%B %d, %Y")
+
+    # Format time as "Hour:Minute:Second AM/PM"
+    formatted_time = now.strftime("%I:%M %p")
+
+    # Update the text of the labels with the current date and time
+    date_label.configure(text=formatted_date)
+    time_label.configure(text=formatted_time)

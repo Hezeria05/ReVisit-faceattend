@@ -13,7 +13,7 @@ def open_signin_window(select_window):
     signin_window.grab_set()
 
     # Background for the new window
-    set_background_image(signin_window, ASSETS_PATH / 'USER ENTRY.png')
+    set_background_image(signin_window, ASSETS_PATH / 'USER ENTRY.png',size=(1200, 800))
 
     # Create the sign-in frame
     SignFrame = CTkFrame(signin_window, width=530, height=600, fg_color="#F0F6F9")
