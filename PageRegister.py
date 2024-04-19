@@ -2,7 +2,8 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image,create_password_toggle_button,ASSETS_PATH
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button,  check_password_match, ASSETS_PATH
+
 
 def open_register_window(main_window):
     register_window = CTkToplevel(main_window)
@@ -18,13 +19,13 @@ def open_register_window(main_window):
     # Add components to Register frame
     heading = CTkLabel(RegFrame, text='Create Account', fg_color="#F0F6F9", font=("Inter", 35, "bold"), text_color="#333333")
     heading.place(relx=0.5, y=38, anchor='n')
+
     #FULL NAME
     Efullname = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Full Name", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Efullname.place(relx=0.5, y=140, anchor='n')
     Lfullname = CTkLabel(RegFrame, text='Full Name', fg_color="#F0F6F9", font=("Inter", 15, "bold"), text_color="#333333")
     Lfullname.place(relx=0.17, y=110, anchor='n')
     create_asterisk(Efullname, RegFrame, relx=0.250, y=108, anchor='n')
-
     #USERNAME
     Eusername = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Username", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Eusername.place(relx=0.5, y=230, anchor='n')
@@ -37,13 +38,27 @@ def open_register_window(main_window):
     Lpassword = CTkLabel(RegFrame, text='Password', fg_color="#F0F6F9", font=("Inter", 15, "bold"), text_color="#333333")
     Lpassword.place(relx=0.17, y=290, anchor='n')
     create_asterisk(Epassword, RegFrame, relx=0.250, y=288, anchor='n')
-
     #Eye Toggle
     create_password_toggle_button(Epassword, RegFrame, relx=0.82, y=330, anchor='n')
+    #CONFIRM PASSWORD
+    Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password", corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
+    Ecpassword.place(relx=0.5, y=410, anchor='n')
+    Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9", font=("Inter", 15, "bold"), text_color="#333333")
+    Lcpassword.place(relx=0.23, y=380, anchor='n')
+    create_asterisk(Ecpassword, RegFrame, relx=0.369, y=378, anchor='n')
+    #Eye Toggle
+    create_password_toggle_button(Ecpassword, RegFrame, relx=0.82, y=420, anchor='n')
 
+    # Add a label to show password match status
+    match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
+    match_label.place(relx=0.22, y=456, anchor='n')
+
+    # Bind the validation function to password entry events
+    Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label))
+    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label))
     # Reg-in button
     createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333")
-    createbtn.place(relx=0.6, rely=0.75)
+    createbtn.place(relx=0.6, rely=0.8)
     # Back button that closes this window and shows the main window
     back_button = CTkButton(RegFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=register_window.destroy)
-    back_button.place(relx=0.6, rely=0.85)
+    back_button.place(relx=0.6, rely=0.9)

@@ -2,14 +2,12 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image,create_password_toggle_button,ASSETS_PATH
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH
 
 def open_signin_window(main_window):
     signin_window = CTkToplevel(main_window)
     signin_window.geometry('1200x800+400+100')
     signin_window.title('Sign In')
-
-    # Make the sign-in window modal
     signin_window.grab_set()
 
     # Background for the new window

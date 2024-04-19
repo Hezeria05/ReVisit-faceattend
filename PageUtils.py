@@ -34,17 +34,10 @@ def create_password_toggle_button(password_entry, parent_frame, relx, y, anchor=
     # Initialize eye icons if not already done
     if open_eye_tk is None or close_eye_tk is None:
         initialize_eye_icons()
-
-    # Initially, password is hidden, show the 'closed eye' icon
     eye_button = CTkButton(parent_frame, image=close_eye_tk, text='', width=30, fg_color='#F9F9FA', hover_color="#F9F9FA", cursor='hand2')
     eye_button.place(relx=relx, y=y, anchor=anchor)
-
-    # Maintain a state variable to track the visibility of the password
     eye_button.is_hidden = True
-
-    # Set the command for the button
     eye_button.configure(command=lambda: setattr(eye_button, 'is_hidden', toggle_password_visibility(password_entry, eye_button, eye_button.is_hidden)))
-
     return eye_button
 
 def manage_asterisk(entry_widget, asterisk_label, relx, y, anchor):
@@ -70,3 +63,16 @@ def set_background_image(window, image_path, size=(1200, 800)):
     bg_image_label = CTkLabel(window, image=bg_image_tk)
     bg_image_label.place(relwidth=1, relheight=1)
     bg_image_label.image = bg_image_tk
+
+# Add this function to perform password matching validation
+def check_password_match(Epassword, Ecpassword, match_label):
+    password = Epassword.get()
+    confirm_password = Ecpassword.get()
+
+    if password and confirm_password:
+        if password == confirm_password:
+            match_label.configure(text="Password matched", text_color="green")
+        else:
+            match_label.configure(text="Password not matched", text_color="red")
+    else:
+        match_label.configure(text="")
