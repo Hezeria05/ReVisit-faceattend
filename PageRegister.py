@@ -51,7 +51,7 @@ def open_register_window(main_window):
 
     # Add a label to show password match status
     match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
-    match_label.place(relx=0.22, y=456, anchor='n')
+    match_label.place(relx=0.11, y=456, anchor='nw')
 
     # Bind the validation function to password entry events
     Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label))
