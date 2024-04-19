@@ -3,6 +3,7 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
 from PageSignin import open_signin_window
+from PageRegister import open_register_window
 
 
 # Configure path to assets directory
@@ -29,6 +30,6 @@ ButtonFrame.place(relx=0.5, y=450, anchor='n')
 #  Select button
 signinbtn = CTkButton(ButtonFrame, text="SIGN IN", width=250, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333", command=lambda: open_signin_window(select_window))
 signinbtn.place(relx=0.5, rely=0.25, anchor='n')
-registerbtn = CTkButton(ButtonFrame, text="REGISTER", width=250, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333")
+registerbtn = CTkButton(ButtonFrame, text="REGISTER", width=250, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333", command=lambda: open_register_window(select_window))
 registerbtn.place(relx=0.5, rely=0.6, anchor='n')
 select_window.mainloop()
