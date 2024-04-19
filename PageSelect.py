@@ -4,9 +4,7 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from PageSignin import open_signin_window
 from PageRegister import open_register_window
-
-# Configure path to assets directory
-ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
+from PageUtils import ASSETS_PATH
 
 select_window = CTk()
 select_window.geometry('1200x800+400+100')

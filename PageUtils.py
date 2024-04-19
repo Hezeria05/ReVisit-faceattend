@@ -2,6 +2,8 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
+from tkinter import messagebox
+from db_con import register_security_admin
 
 # Constants
 ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
@@ -92,3 +94,19 @@ def enable_submit_button(button):
 
 def disable_submit_button(button):
     button.configure(state="disabled")
+
+def register_user(efullname, eusername, epassword, ecpassword, register_window):
+    full_name = efullname.get()
+    username = eusername.get()
+    password = epassword.get()
+    confirm_password = ecpassword.get()
+
+    if password == confirm_password:
+        success = register_security_admin(full_name, username, password)
+        register_window.destroy()  # Destroy the window first
+        if success:
+            messagebox.showinfo("Success", "User registered successfully")
+        else:
+            messagebox.showerror("Error", "Failed to register user")
+    else:
+        messagebox.showerror("Error", "Password and confirm password do not match")

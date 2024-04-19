@@ -108,16 +108,24 @@ def validate_login_credentials(username, password):
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    # Adjust your SQL query to also select sec_id
-    query = "SELECT sec_id, COUNT(*) FROM security_admin WHERE sec_username = %s AND sec_password = %s"
+    query = "SELECT COUNT(*) FROM security_admin WHERE sec_username = %s AND sec_password = %s"
     cursor.execute(query, (username, password))
 
-    # Fetch sec_id along with the result
-    result, sec_id = cursor.fetchone()
+    # Fetch the result of the query
+    result = cursor.fetchone()
 
+    # Close cursor and connection
     cursor.close()
     conn.close()
-    return result > 0, sec_id
+
+    # Check if result is None or not
+    if result is not None:
+        # Extract the count from the result tuple
+        count = result[0]
+        return count > 0, None  # Return a boolean indicating success and None for sec_id
+    else:
+        # Handle the case when the query returns None (no result found)
+        return False, None  # Return False and None for sec_id
 
 
 # Now you can use this function in your login interface

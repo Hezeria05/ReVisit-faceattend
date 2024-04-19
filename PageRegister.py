@@ -2,7 +2,8 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button,  check_entries_complete, check_password_match, ASSETS_PATH, enable_submit_button, disable_submit_button
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, enable_submit_button, disable_submit_button, register_user
+from db_con import register_security_admin
 
 def open_register_window(main_window):
     register_window = CTkToplevel(main_window)
@@ -65,3 +66,7 @@ def open_register_window(main_window):
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_entries_complete(entries, match_label, createbtn))
     Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
     Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
+    
+     # Function to register the user when the 'Register' button is clicked
+     # Bind the register function to the 'Register' button click event
+    createbtn.configure(command=lambda: register_user(Efullname, Eusername, Epassword, Ecpassword, register_window))

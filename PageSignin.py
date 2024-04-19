@@ -1,11 +1,13 @@
-#Page Sign in
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
 from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH
+from db_con import validate_login_credentials
+from tkinter import messagebox
+from  HomePage import open_homepage
 
-def open_signin_window(main_window):
-    signin_window = CTkToplevel(main_window)
+def open_signin_window(select_window):
+    signin_window = CTkToplevel(select_window)
     signin_window.geometry('1200x800+400+100')
     signin_window.title('Sign In')
     signin_window.grab_set()
@@ -33,14 +35,25 @@ def open_signin_window(main_window):
     Lpassword.place(relx=0.17, y=290, anchor='n')
     create_asterisk(Epassword, SignFrame, relx=0.250, y=288, anchor='n')
 
-     #Eye Toggle
+    # Eye Toggle
     create_password_toggle_button(Epassword, SignFrame, relx=0.82, y=330, anchor='n')
 
+    def validate_and_open_homepage():
+        username = Eusername.get()
+        password = Epassword.get()
+        success, sec_id = validate_login_credentials(username, password)
+        if success:
+            select_window.destroy()  # Destroy the select window
+            open_homepage(sec_id)  # Pass sec_id as an argument
+            signin_window.after(100, signin_window.destroy)
+        else:
+            # Display error message without destroying the sign-in window
+            messagebox.showerror("Error", "Invalid username or password")
+
     # Sign-in button
-    createbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333")
+    createbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=validate_and_open_homepage)
     createbtn.place(relx=0.6, rely=0.75)
+
     # Back button that closes this window and shows the main window
     back_button = CTkButton(SignFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=signin_window.destroy)
     back_button.place(relx=0.6, rely=0.85)
-
-
