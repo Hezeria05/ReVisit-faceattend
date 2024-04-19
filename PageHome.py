@@ -27,16 +27,17 @@ Sidebar = CTkFrame(homepage_window, fg_color="#FEFEFE", width=316.8, height=648)
 Sidebar.place(relx=0, rely=0.19)
 
 # Add sidebar button
-Home_btn = CTkButton(Sidebar, text="Home", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
-Home_btn.place(relx=0.086, rely=0.12, anchor='nw')
-
+Home_btn = CTkButton(Sidebar, text="Home", width=20, height=20, fg_color="lightpink", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
+Home_btn.place(relx=0.2, rely=0.12, anchor='nw')
 set_icon_image(Sidebar, ASSETS_PATH / 'home_icon.png', relx=0.15, rely=0.12, anchor='n')
 
-Visitor_btn = CTkButton(Sidebar, text="Visitor Data", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
-Visitor_btn.place(relx=0.17, rely=0.22, anchor='nw')
+Visitor_btn = CTkButton(Sidebar, text="Visitor Data",  width=20, height=20, fg_color="lightpink", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
+Visitor_btn.place(relx=0.2, rely=0.22, anchor='nw')
+set_icon_image(Sidebar, ASSETS_PATH / 'visitor_icon.png', relx=0.15, rely=0.22, anchor='n')
 
-Resident_btn = CTkButton(Sidebar, text="Residents List", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
+Resident_btn = CTkButton(Sidebar, text="Residents List", width=20, height=20,fg_color="lightpink", hover_color="#FEFEFE", font=("Inter", 20, "bold"), text_color="#333333")
 Resident_btn.place(relx=0.2, rely=0.32, anchor='nw')
+set_icon_image(Sidebar, ASSETS_PATH / 'list_icon.png', relx=0.15, rely=0.32, anchor='n')
 
 
 
