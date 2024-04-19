@@ -64,8 +64,16 @@ def set_background_image(window, image_path, size=(1200, 800)):
     bg_image_label.place(relwidth=1, relheight=1)
     bg_image_label.image = bg_image_tk
 
-# Add this function to perform password matching validation
-def check_password_match(Epassword, Ecpassword, match_label):
+def check_entries_complete(entries, match_label, createbtn):
+    """Check if all entry fields are completed."""
+    for entry in entries:
+        if not entry.get():
+            disable_submit_button(createbtn)
+            return False
+    enable_submit_button(createbtn)
+    return True
+
+def check_password_match(Epassword, Ecpassword, match_label, createbtn):
     password = Epassword.get()
     confirm_password = Ecpassword.get()
 
@@ -74,5 +82,13 @@ def check_password_match(Epassword, Ecpassword, match_label):
             match_label.configure(text="Password matched", text_color="green")
         else:
             match_label.configure(text="Password not matched", text_color="red")
+            disable_submit_button(createbtn)
     else:
         match_label.configure(text="")
+        disable_submit_button(createbtn)
+
+def enable_submit_button(button):
+    button.configure(state="normal")
+
+def disable_submit_button(button):
+    button.configure(state="disabled")

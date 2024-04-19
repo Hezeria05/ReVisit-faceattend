@@ -2,8 +2,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button,  check_password_match, ASSETS_PATH
-
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button,  check_entries_complete, check_password_match, ASSETS_PATH, enable_submit_button, disable_submit_button
 
 def open_register_window(main_window):
     register_window = CTkToplevel(main_window)
@@ -53,12 +52,16 @@ def open_register_window(main_window):
     match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
     match_label.place(relx=0.11, y=456, anchor='nw')
 
-    # Bind the validation function to password entry events
-    Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label))
-    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label))
     # Reg-in button
-    createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333")
+    createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
     createbtn.place(relx=0.6, rely=0.8)
     # Back button that closes this window and shows the main window
     back_button = CTkButton(RegFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=register_window.destroy)
     back_button.place(relx=0.6, rely=0.9)
+
+    # Bind the validation function to entry events
+    entries = [Efullname, Eusername, Epassword, Ecpassword]
+    for entry in entries:
+        entry.bind("<KeyRelease>", lambda event, entries=entries: check_entries_complete(entries, match_label, createbtn))
+    Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
+    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))

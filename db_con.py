@@ -86,12 +86,12 @@ def logout_visitor(pred_name):
 
 
 
-def register_security_admin(name, username, password, shift):
+def register_security_admin(name, username, password):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password, shift_id) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query_insert, (name, username, password, shift))
+        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (%s, %s, %s)"
+        cursor.execute(query_insert, (name, username, password))
         conn.commit()
         print(f"Successfully registered {name}.")
         success = True
