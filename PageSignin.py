@@ -1,23 +1,25 @@
-# PageLogin.py
+#Page Sign in
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
 button_mode = False
-def open_login_window(main_window, bgImageL, SignFrame):
-    # Hide previous elements or destroy other frames
-    bgImageL.place_forget()
-    SignFrame.place_forget()
 
-    # Continue setup for login page
+def open_signin_window(main_window):
+    signin_window = CTkToplevel(main_window)
+    signin_window.geometry('1200x800+400+100')
+    signin_window.title('Sign In')
+    
+    # Make the sign-in window modal
+    signin_window.grab_set()
 
-    # Example: Change background or add login components
+    # Background for the new window
     ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
     bgImage_orig = Image.open(ASSETS_PATH / 'SIGN IN PAGE.png')
     resized_bgimage = bgImage_orig.resize((1200, 800))
     bgImage_tk = ImageTk.PhotoImage(resized_bgimage)
-    bgImage_tk = ImageTk.PhotoImage(resized_bgimage)
-    bgImageL = CTkLabel(main_window, image=bgImage_tk, text='')
+    bgImageL = CTkLabel(signin_window, image=bgImage_tk, text='')
     bgImageL.place(relwidth=1, relheight=1)
+    bgImageL.image = bgImage_tk 
 
     def manage_asterisk(entry_widget, asterisk_label, relx, y, anchor):
         if entry_widget.get():
@@ -47,7 +49,7 @@ def open_login_window(main_window, bgImageL, SignFrame):
             button_mode = True
 
     # Create the sign-in frame
-    SignFrame = CTkFrame(main_window, width=530, height=600, fg_color="#F0F6F9")
+    SignFrame = CTkFrame(signin_window, width=530, height=600, fg_color="#F0F6F9")
     SignFrame.place(x=555, y=100)
 
     # Add components to sign-in frame
@@ -74,9 +76,14 @@ def open_login_window(main_window, bgImageL, SignFrame):
     eyeButton = CTkButton(SignFrame, image=close_eye_tk, text='', width=10, fg_color='#F9F9FA', hover_color="#F9F9FA", cursor='hand2', command=hide)
     eyeButton.place(relx=0.82, y=326, anchor='n')
     hide()
+
+   # Back button that closes this window and shows the main window
+    back_button = CTkButton(signin_window, text="Back", width=100, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=signin_window.destroy)
+    back_button.place(relx=0.1, rely=0.9)
+
     # Sign-in button
     createbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333")
     createbtn.place(relx=0.6, rely=0.75)
 
     # Start the main loop
-    main_window.mainloop()
+    # main_window.mainloop()
