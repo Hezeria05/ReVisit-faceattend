@@ -40,9 +40,9 @@ def on_register_click(homepage_window):
     entries = [Vname]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
-    submitbtn.configure(command=lambda: try_opencamera(Vname.get(), RegVframe, Entryframe, Existinglabel))
+    submitbtn.configure(command=lambda: face_register(Vname.get(), RegVframe, Entryframe, Existinglabel))
 
-def try_opencamera(visitor_name, RegVframe, Entryframe, Existinglabel):
+def face_register(visitor_name, RegVframe, Entryframe, Existinglabel):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
 
     # Check if a file with the same name already exists

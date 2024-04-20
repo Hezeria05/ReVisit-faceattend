@@ -4,9 +4,7 @@ from pathlib import Path
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime
 from VisitorFaceReg import on_register_click
 from datetime import datetime
-
-def on_login_click():
-    print("Login button clicked!")
+from VisitorLogIn import on_login_click
 
 def on_logout_click():
     print("Logout button clicked!")
@@ -56,7 +54,7 @@ def Home_page(homepage_window):
     # Create register, login, logout sections
     Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER", 
                                      lambda: on_register_click(homepage_window), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
-    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", on_login_click,
+    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window),
                                       0.363, 0.36, has_status=True)
     Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", on_logout_click,
                                        0.683, 0.36, has_status=True)
