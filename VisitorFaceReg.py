@@ -32,18 +32,28 @@ def on_register_click(homepage_window):
 
     submitbtn = CTkButton(Entryframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
     submitbtn.place(relx=0.5, rely=0.7, anchor='n')
+    
+    Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
+    Existinglabel.place(relx=0.1, rely=0.57, anchor='nw')
 
     # Validation and submission
     entries = [Vname]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
-    submitbtn.configure(command=lambda: try_opencamera(Vname.get(), RegVframe, Entryframe))
+    submitbtn.configure(command=lambda: try_opencamera(Vname.get(), RegVframe, Entryframe, Existinglabel))
 
-def try_opencamera(visitor_name, RegVframe, Entryframe):
+def try_opencamera(visitor_name, RegVframe, Entryframe, Existinglabel):
+    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+
+    # Check if a file with the same name already exists
+    if os.path.isfile(os.path.join(dirpath, visitor_name + '.npy')):
+        Existinglabel.configure(text='Already Existing!')
+        Existinglabel.after(3000, Existinglabel.place_forget)
+        return  # Exit the function if name exists
     Entryframe.destroy()  # Remove the entry frame after name is submitted
 
     # Prepare the label for the camera feed inside RegVframe
-    camera_label = CTkLabel(RegVframe)
+    camera_label = CTkLabel(RegVframe, text="")
     camera_label.place(relx=0.5, rely=0.5, anchor='center')
 
     cap = cv2.VideoCapture(0)
@@ -51,13 +61,6 @@ def try_opencamera(visitor_name, RegVframe, Entryframe):
     face_cascade = cv2.CascadeClassifier(cas_path)
     face_data = []
     skip = 0
-    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
-
-    # Check if a file with the same name already exists
-    if os.path.isfile(os.path.join(dirpath, visitor_name + '.npy')):
-        print("Warning: The name already exists in the dataset.")
-        print("Please enter a different name.")
-        return  # Exit the function if name exists
 
     start_time = time.time()
 
