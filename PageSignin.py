@@ -4,7 +4,7 @@ from pathlib import Path
 from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH, check_sign_complete
 from db_con import validate_login_credentials
 from tkinter import messagebox
-from  HomePage import open_homepage
+from  MainPage import open_homepage
 
 def open_signin_window(select_window):
     signin_window = CTkToplevel(select_window)

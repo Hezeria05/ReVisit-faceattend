@@ -5,12 +5,12 @@ from PageUtils import set_background_image, ASSETS_PATH, set_icon_image, logout
 from PageHome import Home_page
 from PageVisitor import Visitor_page
 from PageResident import Resident_page
+# def open_homepage(sec_id):
 homepage_window = CTk()
-homepage_window.title('Homepage')
+homepage_window.title('Home')
 homepage_window.geometry('1440x900+300+70')
 homepage_window.minsize(1440, 900)
 homepage_window.maxsize(1440, 900)
-
 
 def indicate (bar, page):
     hide_indicators()
@@ -65,4 +65,11 @@ logout_btn.place(relx=0.5, rely=0.85, anchor='n')
 Home_page(homepage_window)
 
 
+# Add a label to display the sec_id
+# sec_id_label = CTkLabel(homepage_window, text=f"Sec ID: {sec_id}", font=("Inter", 20))
+# sec_id_label.pack(pady=20)
+
+# Add a logout button
+# logout_button = CTkButton(homepage_window, text="Logout", command=logout)
+# logout_button.pack(pady=10)
 homepage_window.mainloop()
