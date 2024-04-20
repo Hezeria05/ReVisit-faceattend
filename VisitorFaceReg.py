@@ -34,7 +34,7 @@ def on_register_click(homepage_window):
     submitbtn.place(relx=0.5, rely=0.7, anchor='n')
     
     Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-    Existinglabel.place(relx=0.1, rely=0.57, anchor='nw')
+    Existinglabel.place(relx=0.105, rely=0.58, anchor='nw')
 
     # Validation and submission
     entries = [Vname]
@@ -48,13 +48,16 @@ def try_opencamera(visitor_name, RegVframe, Entryframe, Existinglabel):
     # Check if a file with the same name already exists
     if os.path.isfile(os.path.join(dirpath, visitor_name + '.npy')):
         Existinglabel.configure(text='Already Existing!')
-        Existinglabel.after(3000, Existinglabel.place_forget)
+        # Existinglabel.after(3000, Existinglabel.place_forget)
         return  # Exit the function if name exists
     Entryframe.destroy()  # Remove the entry frame after name is submitted
 
     # Prepare the label for the camera feed inside RegVframe
     camera_label = CTkLabel(RegVframe, text="")
     camera_label.place(relx=0.5, rely=0.5, anchor='center')
+     # Add a label for "Scanning..."
+    scanning_label = CTkLabel(RegVframe, text="Scanning...", font=("Inter", 30, "bold"), fg_color="transparent", text_color="#333333")
+    scanning_label.place(relx=0.5, rely=0.9, anchor='center')  # Adjust the 'rely' as needed to position below the camera feed
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
