@@ -2,8 +2,8 @@ import tkinter as tk
 from customtkinter import *
 from tkinter import simpledialog, Canvas
 import cv2
-import numpy as np
-import os
+from face_recognition import load_face_data, KNN
+import sys
 import time
 from PIL import Image, ImageTk
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime, create_asterisk, check_sign_complete
@@ -14,9 +14,17 @@ def on_login_click(homepage_window):
     LogInVframe.place(relx=0.266, rely=0.118)
 
     # Heading
-    LogInVHeading = CTkLabel(LogInVframe, text="Face Registration", font=("Inter", 35, "bold"), text_color="#333333")
+    LogInVHeading = CTkLabel(LogInVframe, text="Log In Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogInVHeading.place(relx=0.043, rely=0.06)
+
+    CameraFrame = CTkFrame(LogInVframe, fg_color="white", width=450, height=350, border_color="#B9BDBD", border_width=2)
+    CameraFrame.place(relx=0.043, rely=0.15)
+    BscanFrame = CTkFrame(LogInVframe, fg_color="transparent", width=450, height=50)
+    BscanFrame.place(relx=0.043, rely=0.68)
+    scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333")
+    scanbtn.place(relx=0.5, rely=0.5, anchor='center')
     
+
     # Entry frame for name input
     LogInEframe = CTkFrame(LogInVframe, fg_color="#E9F3F2", width=420, height=550, corner_radius=10,
                              border_color="#B9BDBD", border_width=2)
@@ -29,7 +37,7 @@ def on_login_click(homepage_window):
     LogVname.place(relx=0.5, rely=0.26, anchor='n')
     LbVname = CTkLabel(LogInEframe, text='Visitor Name', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbVname.place(relx=0.185, rely=0.2, anchor='n')
-    create_asterisk(LogVname, LogInEframe, relx=0.314, y=105, anchor='n')
+    # create_asterisk(LogVname, LogInEframe, relx=0.314, y=105, anchor='n')
     
     Residname = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident Name to be Visited", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Residname.place(relx=0.5, rely=0.43, anchor='n')
@@ -54,82 +62,54 @@ def on_login_click(homepage_window):
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
     # submitbtn.configure(command=lambda: try_opencamera(Vname.get(), RegVframe, Entryframe, Existinglabel))
+    
+    cap = cv2.VideoCapture(0)
+    cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
+    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+    face_dataset, face_labels, name = load_face_data(dirpath)
+    face_cascade = cv2.CascadeClassifier(cas_path)
 
-# def try_opencamera(visitor_name, RegVframe, Entryframe, Existinglabel):
-#     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+    # Define the `start_camera` function.
+    def start_camera(CameraFrame, scanbtn, LogVname):
+        # Disable the scan button immediately when the camera starts
+        scanbtn.configure(state="disabled")
+        camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
+        camera_label.place(relx=0, rely=0)
 
-#     # Check if a file with the same name already exists
-#     if os.path.isfile(os.path.join(dirpath, visitor_name + '.npy')):
-#         Existinglabel.configure(text='Already Existing!')
-#         # Existinglabel.after(3000, Existinglabel.place_forget)
-#         return  # Exit the function if name exists
-#     Entryframe.destroy()  # Remove the entry frame after name is submitted
+        def update_frame():
+            ret, frame = cap.read()
+            if not ret:
+                camera_label.after(10, update_frame)
+                return
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray_frame, 1.3, 5)
+            faces = sorted(faces, key=lambda f: f[2]*f[3], reverse=True)
 
-#     # Prepare the label for the camera feed inside RegVframe
-#     camera_label = CTkLabel(RegVframe, text="")
-#     camera_label.place(relx=0.5, rely=0.5, anchor='center')
-#      # Add a label for "Scanning..."
-#     scanning_label = CTkLabel(RegVframe, text="Scanning...", font=("Inter", 30, "bold"), fg_color="transparent", text_color="#333333")
-#     scanning_label.place(relx=0.5, rely=0.9, anchor='center')  # Adjust the 'rely' as needed to position below the camera feed
+            for face in faces[-1:]:
+                x, y, w, h = face
+                face_section = gray_frame[y:y+h, x:x+w]
+                face_section = cv2.resize(face_section, (100, 100))
+                pred = KNN(face_dataset, face_labels, face_section)
+                pred_name = name[int(pred)]
+                cv2.putText(frame, pred_name, (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+                # cv2.imshow("camera", frame)
+                LogVname.delete(0, tk.END)
+                LogVname.insert(0, pred_name)
 
-#     cap = cv2.VideoCapture(0)
-#     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
-#     face_cascade = cv2.CascadeClassifier(cas_path)
-#     face_data = []
-#     skip = 0
+            # Convert the image to PIL format and then to ImageTk format.
+            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+            img = Image.fromarray(cv2image)
+            imgtk = ImageTk.PhotoImage(image=img)
+            camera_label.imgtk = imgtk
+            camera_label.configure(image=imgtk)
 
-#     start_time = time.time()
+            # Repeat after an interval to get the next frame.
+            camera_label.after(10, update_frame)
 
-#     def show_frame():
-#         nonlocal skip
-#         remaining_time = 10 - int(time.time() - start_time)  # Calculate remaining time
-
-#         if remaining_time <= 0:
-#             # Stop the session after 10 seconds
-#             save_and_exit()
-#             return
-
-#         ret, frame = cap.read()
-#         if not ret:
-#             return  # If frame read is not successful, do nothing
-
-#         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#         faces = face_cascade.detectMultiScale(gray_frame, 1.3, 5)
-#         faces = sorted(faces, key=lambda f: f[2] * f[3])
-
-#         for face in faces[-1:]:
-#             x, y, w, h = face
-#             face_section = gray_frame[y:y + h, x:x + w]
-#             face_section = cv2.resize(face_section, (100, 100))
-#             cv2.putText(frame, visitor_name, (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-#             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 1)
-
-#         cv2.putText(frame, "Time left: " + str(remaining_time), (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-#         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-#         img = Image.fromarray(cv2image)
-#         imgtk = ImageTk.PhotoImage(image=img)
-#         camera_label.imgtk = imgtk
-#         camera_label.configure(image=imgtk)
-
-#         if skip % 10 == 0:
-#             face_data.append(face_section)
-#         skip += 1
-
-#         camera_label.after(10, show_frame)
-
-#     def save_and_exit():
-#         if face_data:
-#             face_data_np = np.asarray(face_data)
-#             face_data_np = face_data_np.reshape((face_data_np.shape[0], -1))
-#             np.save(os.path.join(dirpath, visitor_name + '.npy'), face_data_np)
-#         cap.release()
-#         cv2.destroyAllWindows()
-#         RegVframe.destroy()
-
-#     show_frame()
-
-
+        update_frame()  # Start the loop
+    # Bind the `start_camera` function to the "Scan" button.
+    scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname))
 
 if __name__ == "__main__":
     app = tk.Tk()
