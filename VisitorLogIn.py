@@ -74,7 +74,8 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
         if success:
             # Close the camera
             cap.release()
-            view_history(LogInVframe, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            logsucess="Login Successfully!"
+            view_history(LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
         else:
             print("Failed to submit data")
     # Link the new function to the submit button

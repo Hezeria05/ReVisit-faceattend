@@ -62,7 +62,4 @@ Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
 # sec_id_label = CTkLabel(homepage_window, text=f"Sec ID: {sec_id}", font=("Inter", 20))
 # sec_id_label.pack(pady=20)
 
-# Add a logout button
-# logout_button = CTkButton(homepage_window, text="Logout", command=logout)
-# logout_button.pack(pady=10)
 homepage_window.mainloop()

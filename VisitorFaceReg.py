@@ -3,7 +3,7 @@ from customtkinter import *
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime, create_asterisk, check_sign_complete
 from face_registration import face_register
 
-def on_register_click(homepage_window):
+def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
     RegVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     RegVframe.place(relx=0.266, rely=0.118)
@@ -37,7 +37,7 @@ def on_register_click(homepage_window):
     entries = [Vname]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
-    submitbtn.configure(command=lambda: face_register(Vname.get(), RegVframe, RCameraFrame, Entryframe, Existinglabel))
+    submitbtn.configure(command=lambda: face_register(Vname.get(), RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
 
 if __name__ == "__main__":
     app = tk.Tk()

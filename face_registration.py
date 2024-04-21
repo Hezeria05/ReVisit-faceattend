@@ -5,8 +5,9 @@ import numpy as np
 import os
 import time
 from PIL import Image, ImageTk
+from VisitorLogIn import on_login_click
 
-def face_register(visitor_name, RegVframe, RCameraFrame, Entryframe, Existinglabel):
+def face_register(visitor_name, RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
 
     # Check if a file with the same name already exists
@@ -76,6 +77,7 @@ def face_register(visitor_name, RegVframe, RCameraFrame, Entryframe, Existinglab
             np.save(os.path.join(dirpath, visitor_name + '.npy'), face_data_np)
         cap.release()
         cv2.destroyAllWindows()
+        on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
         RegVframe.destroy()
 
     show_frame()

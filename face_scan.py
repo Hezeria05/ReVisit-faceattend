@@ -14,7 +14,7 @@ def load_cascade_classifier(cas_path):
     face_cascade = cv2.CascadeClassifier(cas_path)
     return face_cascade
 
-def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap):
+def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, callback=None):
     # Disable the scan button immediately when the camera starts
     scanbtn.configure(state="disabled")
     camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
@@ -53,4 +53,6 @@ def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name
         camera_label.after(10, update_frame)
 
     update_frame()  # Start the loop
-
+    # Call the callback if provided after initializing the camera
+    if callback:
+        callback()

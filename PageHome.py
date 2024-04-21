@@ -2,9 +2,7 @@ from customtkinter import *
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime
 from VisitorFaceReg import on_register_click
 from VisitorLogIn import on_login_click
-
-def on_logout_click():
-    print("Logout button clicked!")
+from VisitorLogOut import on_logout_click
 
 # Function to create a frame for the register, login, and logout sections
 def create_section_frame(parent, title, icon_path, button_text, button_command,relx, rely,
@@ -50,10 +48,10 @@ def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct
 
     # Create register, login, logout sections
     Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER",
-                                     lambda: on_register_click(homepage_window), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
+                                     lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
     Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct),
                                       0.363, 0.36, has_status=True)
-    Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", lambda:on_logout_click(homepage_window),
+    Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct),
                                        0.683, 0.36, has_status=True)
 
     # Create frames for additional information

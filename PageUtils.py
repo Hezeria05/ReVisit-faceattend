@@ -165,12 +165,12 @@ def update_datetime(date_label, time_label):
     time_label.configure(text=formatted_time)
 
     #Log in Visitor Page
-def view_history(LogInVframe, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
-    LogSucessfr = CTkFrame(LogInVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+def view_history(LogVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
+    LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
     set_icon_image(LogSucessfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
     
-    LbSuccess = CTkLabel(LogSucessfr, text='Login Sucessfully!', fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess = CTkLabel(LogSucessfr, text=logsucess, fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbSuccess.place(relx=0.5, rely=0.48, anchor='n')
     
     viewbtn = CTkButton(LogSucessfr, text="View History", width=230, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
@@ -180,4 +180,4 @@ def view_history(LogInVframe, ASSETS_PATH, set_icon_image, indicate, Visitor_pag
     donebtn.place(relx=0.7, rely=0.8, anchor='center')
     
     viewbtn.configure(command=lambda: indicate(Visitor_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct), Home_indct, Visitor_indct, Resident_indct))
-    donebtn.configure(command=lambda: LogInVframe.destroy())
+    donebtn.configure(command=lambda: LogVframe.destroy())
