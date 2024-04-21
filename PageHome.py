@@ -41,7 +41,7 @@ def create_info_frame(parent, text, width, height, relx, rely):
     
     return info_frame
 
-def Home_page(homepage_window, sec_id):
+def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     Homeframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     Homeframe.place(relx=0.266, rely=0.118)
 
@@ -51,7 +51,7 @@ def Home_page(homepage_window, sec_id):
     # Create register, login, logout sections
     Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER",
                                      lambda: on_register_click(homepage_window), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
-    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window, sec_id),
+    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct),
                                       0.363, 0.36, has_status=True)
     Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", lambda:on_logout_click(homepage_window),
                                        0.683, 0.36, has_status=True)

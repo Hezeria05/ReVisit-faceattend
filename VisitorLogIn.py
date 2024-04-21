@@ -2,10 +2,12 @@ import tkinter as tk
 from customtkinter import *
 import cv2
 from face_recognition import load_face_data
-from PageUtils import ASSETS_PATH, set_icon_image, update_datetime, create_asterisk, check_sign_complete
+from PageUtils import ASSETS_PATH, set_icon_image, create_asterisk, check_sign_complete, indicate, view_history
 from face_scan import start_camera
+from db_con import insert_visitor_data
+from PageVisitor import Visitor_page
 
-def on_login_click(homepage_window, sec_id):
+def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
     LogInVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     LogInVframe.place(relx=0.266, rely=0.118)
@@ -21,7 +23,6 @@ def on_login_click(homepage_window, sec_id):
     scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333")
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')
 
-
     # Entry frame for name input
     LogInEframe = CTkFrame(LogInVframe, fg_color="#E9F3F2", width=420, height=550, corner_radius=10,
                              border_color="#B9BDBD", border_width=2)
@@ -36,11 +37,11 @@ def on_login_click(homepage_window, sec_id):
     LbVname.place(relx=0.185, rely=0.2, anchor='n')
     # create_asterisk(LogVname, LogInEframe, relx=0.314, y=105, anchor='n')
 
-    Residname = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident Name to be Visited", corner_radius=8, border_width=1, border_color='#DEE6EA')
-    Residname.place(relx=0.5, rely=0.43, anchor='n')
-    LRname = CTkLabel(LogInEframe, text='Resident Name', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
-    LRname.place(relx=0.21, rely=0.37, anchor='n')
-    create_asterisk(Residname, LogInEframe, relx=0.361, y=200, anchor='n')
+    ResidID = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident ID", corner_radius=8, border_width=1, border_color='#DEE6EA')
+    ResidID.place(relx=0.5, rely=0.43, anchor='n')
+    LRname = CTkLabel(LogInEframe, text='Resident ID', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
+    LRname.place(relx=0.185, rely=0.37, anchor='n')
+    create_asterisk(ResidID, LogInEframe, relx=0.305, y=200, anchor='n')
 
     LogPurpose= CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="State Purpose", corner_radius=8, border_width=1, border_color='#DEE6EA')
     LogPurpose.place(relx=0.5, rely=0.6, anchor='n')
@@ -53,10 +54,26 @@ def on_login_click(homepage_window, sec_id):
 
 
     # Validation and submission
-    entries = [LogVname, Residname, LogPurpose]
+    entries = [LogVname, ResidID, LogPurpose]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
-    # submitbtn.configure(command=lambda: try_opencamera(Vname.get(), RegVframe, Entryframe, Existinglabel))
+
+    def handle_submit():
+        # Retrieve data from entries
+        visitor_name = LogVname.get()
+        resident_id = ResidID.get()
+        purpose = LogPurpose.get()
+
+        # Assuming sec_id is globally available or passed to this function
+        success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
+        if success:
+            # Close the camera
+            cap.release()
+            view_history(LogInVframe, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+        else:
+            print("Failed to submit data")
+    # Link the new function to the submit button
+    submitbtn.configure(command=handle_submit)
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
@@ -70,6 +87,7 @@ def on_login_click(homepage_window, sec_id):
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap))
 
+    
 if __name__ == "__main__":
     app = tk.Tk()
     on_login_click(app)

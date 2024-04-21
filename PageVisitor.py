@@ -4,7 +4,7 @@ from pathlib import Path
 from PageUtils import set_background_image, ASSETS_PATH, set_icon_image, logout
 
 
-def Visitor_page(homepage_window):
+def Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct):
     Visitorframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     Visitorframe.place(relx=0.266, rely=0.118)
 

@@ -39,10 +39,6 @@ def on_register_click(homepage_window):
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
     submitbtn.configure(command=lambda: face_register(Vname.get(), RegVframe, RCameraFrame, Entryframe, Existinglabel))
 
-
-
-
-
 if __name__ == "__main__":
     app = tk.Tk()
     on_register_click(app)

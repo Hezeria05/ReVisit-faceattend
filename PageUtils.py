@@ -6,6 +6,7 @@ from tkinter import messagebox
 from db_con import register_security_admin
 from datetime import datetime
 
+
 # Constants
 ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
 
@@ -134,11 +135,21 @@ def set_icon_image(frame, image_path, relx, rely, anchor, size):
     icon_image_label = CTkLabel(frame, image=icon_image_tk, text='')
     icon_image_label.place(relx=relx, rely=rely, anchor=anchor)
 
+def hide_indicators(Home_indct, Visitor_indct, Resident_indct):
+    Home_indct.configure(fg_color="#FEFEFE")
+    Visitor_indct.configure(fg_color="#FEFEFE")
+    Resident_indct.configure(fg_color="#FEFEFE")
+
+def indicate(selected_indicator, new_page, Home_indct, Visitor_indct, Resident_indct):
+    # Pass all indicator labels to hide_indicators
+    hide_indicators(Home_indct, Visitor_indct, Resident_indct)
+    selected_indicator.configure(fg_color="#00507E")  # Update the active indicator color
+    new_page()
+
 def logout(window):
     window.destroy()
 
 #Home Page
-
 def update_datetime(date_label, time_label):
     # Get the current date and time
     now = datetime.now()
@@ -152,3 +163,21 @@ def update_datetime(date_label, time_label):
     # Update the text of the labels with the current date and time
     date_label.configure(text=formatted_date)
     time_label.configure(text=formatted_time)
+
+    #Log in Visitor Page
+def view_history(LogInVframe, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
+    LogSucessfr = CTkFrame(LogInVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(LogSucessfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
+    
+    LbSuccess = CTkLabel(LogSucessfr, text='Login Sucessfully!', fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.48, anchor='n')
+    
+    viewbtn = CTkButton(LogSucessfr, text="View History", width=230, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
+    viewbtn.place(relx=0.3, rely=0.8, anchor='center')
+    
+    donebtn = CTkButton(LogSucessfr, text="Done", width=230, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
+    donebtn.place(relx=0.7, rely=0.8, anchor='center')
+    
+    viewbtn.configure(command=lambda: indicate(Visitor_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct), Home_indct, Visitor_indct, Resident_indct))
+    donebtn.configure(command=lambda: LogInVframe.destroy())
