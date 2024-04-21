@@ -1,48 +1,54 @@
+import tkinter as tk
+from customtkinter import *
 import cv2
-from face_recognition import load_face_data, KNN
-import sys
-from db_con import login_visitor, logout_visitor
+from face_recognition import KNN
 
-# Receive sec_id from command line arguments
-# Initialize the video capture
-cap = cv2.VideoCapture(0)
-cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml" #copy the path on your local computer
-dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data" #copy the path on your local computer
+from PIL import Image, ImageTk
 
-# Load face data
-face_dataset, face_labels, name = load_face_data(dirpath)
 
-# Initialize face cascade
-face_cascade = cv2.CascadeClassifier(cas_path)
+def initialize_camera():
+    cap = cv2.VideoCapture(0)
+    return cap
 
-# Main loop to read frames and make predictions
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        continue
-    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray_frame, 1.3, 5)
-    faces = sorted(faces, key=lambda f: f[2]*f[3], reverse=True)
+def load_cascade_classifier(cas_path):
+    face_cascade = cv2.CascadeClassifier(cas_path)
+    return face_cascade
 
-    for face in faces[-1:]:
-        x, y, w, h = face
-        face_section = gray_frame[y:y+h, x:x+w]
-        face_section = cv2.resize(face_section, (100, 100))
-        pred = KNN(face_dataset, face_labels, face_section)
-        pred_name = name[int(pred)]
-        cv2.putText(frame, pred_name, (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        cv2.imshow("camera", frame)
+def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap):
+    # Disable the scan button immediately when the camera starts
+    scanbtn.configure(state="disabled")
+    camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
+    camera_label.place(relx=0, rely=0)
 
-    key_pressed = cv2.waitKey(1) & 0xFF
-    if key_pressed == ord('i'):
-        login_visitor(pred_name)
-    elif key_pressed == ord('o'):
-        logout_visitor(pred_name)
-    elif key_pressed == ord('x'):
-            cv2.destroyAllWindows()  # Close the window
-            cap.release()  # Release the camera
-            break  # Break out of the loop to end the program
+    def update_frame():
+        ret, frame = cap.read()
+        if not ret:
+            camera_label.after(10, update_frame)
+            return
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray_frame, 1.3, 5)
+        faces = sorted(faces, key=lambda f: f[2]*f[3], reverse=True)
 
-cv2.destroyAllWindows()
-cap.release()
+        for face in faces[-1:]:
+            x, y, w, h = face
+            face_section = gray_frame[y:y+h, x:x+w]
+            face_section = cv2.resize(face_section, (100, 100))
+            pred = KNN(face_dataset, face_labels, face_section)
+            pred_name = name[int(pred)]
+            cv2.putText(frame, pred_name, (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            LogVname.delete(0, tk.END)
+            LogVname.insert(0, pred_name)
+
+        # Convert the image to PIL format and then to ImageTk format.
+        cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+        img = Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        camera_label.imgtk = imgtk
+        camera_label.configure(image=imgtk)
+
+        # Repeat after an interval to get the next frame.
+        camera_label.after(10, update_frame)
+
+    update_frame()  # Start the loop
+

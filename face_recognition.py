@@ -16,8 +16,11 @@ def load_face_data(dirpath):
             name[class_id] = file[:-4]
             face_data.append(data_item)
             target = class_id * np.ones((data_item.shape[0],))
-            class_id += 1
             labels.append(target)
+            class_id += 1
+
+    if not face_data:  # Check if face_data list is empty
+        return None, None, None  # Return None if no data available
 
     face_dataset = np.concatenate(face_data, axis=0)
     face_dataset = np.array([i.flatten() for i in face_dataset])

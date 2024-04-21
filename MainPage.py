@@ -1,6 +1,4 @@
 from customtkinter import *
-from PIL import Image, ImageTk
-from pathlib import Path
 from PageUtils import set_background_image, ASSETS_PATH, set_icon_image, logout
 from PageHome import Home_page
 from PageVisitor import Visitor_page
@@ -12,6 +10,7 @@ homepage_window.geometry('1440x900+300+70')
 homepage_window.minsize(1440, 900)
 homepage_window.maxsize(1440, 900)
 
+sec_id = 7
 def indicate (bar, page):
     hide_indicators()
     bar.configure(fg_color="#00507E")
@@ -32,7 +31,7 @@ Sidebar.place(relx=0, rely=0.19)
 #Home Button
 Home_btn = CTkButton(Sidebar, text="Home", width=20, height=20, fg_color="#FEFEFE",
                 hover_color="#FEFEFE", font=("Inter", 25, "bold"), text_color="#333333"
-                , command=lambda: indicate(Home_indct, Home_page(homepage_window)))
+                , command=lambda: indicate(Home_indct, Home_page(homepage_window, sec_id)))
 Home_btn.place(relx=0.2, rely=0.1, anchor='nw')
 set_icon_image(Sidebar, ASSETS_PATH / 'home_icon.png', relx=0.15, rely=0.105, anchor='n', size=(27, 27))
 Home_indct = CTkLabel(Sidebar, text=' ', font=("Arial", 30),fg_color="#00507E")
@@ -62,7 +61,7 @@ logout_btn = CTkButton(Sidebar, text="LOG OUT", fg_color="#FEFEFE", hover_color=
 logout_btn.place(relx=0.5, rely=0.85, anchor='n')
 
 # Call Home_page() to display the home page by default
-Home_page(homepage_window)
+Home_page(homepage_window, sec_id)
 
 
 # Add a label to display the sec_id

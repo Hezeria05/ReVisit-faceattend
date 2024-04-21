@@ -1,9 +1,6 @@
 from customtkinter import *
-from PIL import Image, ImageTk
-from pathlib import Path
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime
 from VisitorFaceReg import on_register_click
-from datetime import datetime
 from VisitorLogIn import on_login_click
 
 def on_logout_click():
@@ -44,7 +41,7 @@ def create_info_frame(parent, text, width, height, relx, rely):
     
     return info_frame
 
-def Home_page(homepage_window):
+def Home_page(homepage_window, sec_id):
     Homeframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     Homeframe.place(relx=0.266, rely=0.118)
 
@@ -52,11 +49,11 @@ def Home_page(homepage_window):
     HomeHeading.place(relx=0.043, rely=0.06)
 
     # Create register, login, logout sections
-    Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER", 
+    Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER",
                                      lambda: on_register_click(homepage_window), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
-    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window),
+    Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window, sec_id),
                                       0.363, 0.36, has_status=True)
-    Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", on_logout_click,
+    Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", lambda:on_logout_click(homepage_window),
                                        0.683, 0.36, has_status=True)
 
     # Create frames for additional information
