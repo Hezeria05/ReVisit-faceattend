@@ -10,18 +10,18 @@ def create_section_frame(parent, title, icon_path, button_text, button_command,r
     section_frame = CTkFrame(parent, fg_color="#E9F3F2", width=280, height=410 if has_status else 340, corner_radius=10,
                              border_color="#B9BDBD", border_width=2)
     section_frame.place(relx=relx, rely=rely)
-    
+
     label = CTkLabel(section_frame, fg_color="transparent", text=title, font=("Arial", 20, "bold"), text_color="#333333")
     label.place(relx=0.5, rely=lby, anchor="n")
 
     icon_bg = CTkFrame(section_frame, fg_color="white", width=180, height=160, corner_radius=10)
     icon_bg.place(relx=0.5, rely=bgy, anchor='n')
     set_icon_image(icon_bg, icon_path, relx=0.5, rely=0.5, anchor='center', size=(135, 135))
-    
+
     button = CTkButton(section_frame, text=button_text, font=("Inter", 20, "bold"), hover_color="#93ACAF", text_color="#333333", 
                        width=220, height=40, fg_color="#ADCBCF", corner_radius=5,  command=button_command)
     button.place(relx=0.5, rely=btny, anchor='n')
-    
+
     if has_status:
         status_bg = CTkFrame(section_frame, fg_color="white", width=220, height=68, corner_radius=10)
         status_bg.place(relx=0.5, rely=0.8, anchor='n')
@@ -33,10 +33,10 @@ def create_info_frame(parent, text, width, height, relx, rely):
     info_frame = CTkFrame(parent, fg_color="#E9F3F2", width=width, height=height, corner_radius=10,
                           border_color="#B9BDBD", border_width=2)
     info_frame.place(relx=relx, rely=rely)
-    
+
     label = CTkLabel(info_frame, fg_color="transparent", text=text, font=("Arial", 15, "bold"), text_color="#333333")
     label.place(relx=0.5, rely=0.125, anchor="n")
-    
+
     return info_frame
 
 def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):

@@ -19,8 +19,14 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
                              border_color="#B9BDBD", border_width=2)
     Entryframe.place(relx=0.5, rely=0.35, anchor='n')
 
-    Vname = CTkEntry(Entryframe, width=485.0, height=50, placeholder_text="Enter Visitor Name", corner_radius=8, border_width=1, border_color='#DEE6EA')
+    global Vname
+
+    vname_text = tk.StringVar()
+    Vname = CTkEntry(Entryframe, textvariable=vname_text, width=485.0, height=50, placeholder_text="Enter Visitor Name", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Vname.place(relx=0.5, rely=0.35, anchor='n')
+
+    # Convert text to uppercase on KeyRelease event
+    Vname.bind("<KeyRelease>", lambda event: vname_text.set(Vname.get().upper()))
 
     LVname = CTkLabel(Entryframe, text='Visitor Name', fg_color="transparent", font=("Inter", 20, "bold"), text_color="#333333")
     LVname.place(relx=0.2, rely=0.18, anchor='n')

@@ -20,7 +20,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     CameraFrame.place(relx=0.043, rely=0.15)
     BscanFrame = CTkFrame(LogInVframe, fg_color="transparent", width=450, height=50)
     BscanFrame.place(relx=0.043, rely=0.68)
-    scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", 
+    scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=40, corner_radius=10, fg_color="#ADCBCF",
                         hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333")
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')
 
@@ -32,28 +32,28 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogInHeading =CTkLabel(LogInEframe, text='Login', fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LogInHeading.place(relx=0.5, rely=0.08, anchor='n')
 
-    LogVname = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Visitor Name", 
+    LogVname = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Visitor Name",
                     corner_radius=8, border_width=1, border_color='#DEE6EA', state='disabled')
     LogVname.place(relx=0.5, rely=0.26, anchor='n')
     LbVname = CTkLabel(LogInEframe, text='Visitor Name', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbVname.place(relx=0.185, rely=0.2, anchor='n')
     # create_asterisk(LogVname, LogInEframe, relx=0.314, y=105, anchor='n')
 
-    ResidID = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident ID", 
+    ResidID = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident ID",
                     corner_radius=8, border_width=1, border_color='#DEE6EA')
     ResidID.place(relx=0.5, rely=0.43, anchor='n')
     LRname = CTkLabel(LogInEframe, text='Resident ID', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LRname.place(relx=0.185, rely=0.37, anchor='n')
     create_asterisk(ResidID, LogInEframe, relx=0.305, y=200, anchor='n')
 
-    LogPurpose= CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="State Purpose", 
+    LogPurpose= CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="State Purpose",
                     corner_radius=8, border_width=1, border_color='#DEE6EA')
     LogPurpose.place(relx=0.5, rely=0.6, anchor='n')
     LbPurpose = CTkLabel(LogInEframe, text='Purpose of Visit', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.place(relx=0.22, rely=0.54, anchor='n')
     create_asterisk(LogPurpose, LogInEframe, relx=0.375, y=293, anchor='n')
 
-    submitbtn = CTkButton(LogInEframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", 
+    submitbtn = CTkButton(LogInEframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF",
                           hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
     submitbtn.place(relx=0.5, rely=0.8, anchor='n')
 
