@@ -10,14 +10,13 @@ def connect_to_database():
         database="visitor_attendance"
     )
 
-def register_security_admin(name, username, password):
+def register_security_admin(name, username, password, register_window):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
         query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (%s, %s, %s)"
         cursor.execute(query_insert, (name, username, password))
         conn.commit()
-        print(f"Successfully registered {name}.")
         success = True
     except mysql.connector.Error as err:
         print(f"Failed to insert into security_admin: {err}")

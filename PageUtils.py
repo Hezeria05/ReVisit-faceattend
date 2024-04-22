@@ -80,6 +80,17 @@ def check_sign_complete(entries, signbtn):
     enable_submit_button(signbtn)
     return True
 
+def signin_failed(signin_window):
+    LogFailfr = CTkFrame(signin_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogFailfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(LogFailfr, ASSETS_PATH / 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+
+    LbSuccess = CTkLabel(LogFailfr, text="Invalid Username or Password", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+
+    # Destroy the frame after 3 seconds
+    signin_window.after(2000, LogFailfr.destroy)
+
 
 #Registration of Account Page
 def check_entries_complete(entries, match_label, createbtn):
@@ -111,21 +122,6 @@ def enable_submit_button(button):
 def disable_submit_button(button):
     button.configure(state="disabled")
 
-def register_user(efullname, eusername, epassword, ecpassword, register_window):
-    full_name = efullname.get()
-    username = eusername.get()
-    password = epassword.get()
-    confirm_password = ecpassword.get()
-
-    if password == confirm_password:
-        success = register_security_admin(full_name, username, password)
-        register_window.destroy()  # Destroy the window first
-        if success:
-            messagebox.showinfo("Success", "User registered successfully")
-        else:
-            messagebox.showerror("Error", "Failed to register user")
-    else:
-        messagebox.showerror("Error", "Password and confirm password do not match")
 
 #Main Page
 def set_icon_image(frame, image_path, relx, rely, anchor, size):

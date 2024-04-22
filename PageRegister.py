@@ -2,7 +2,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, enable_submit_button, disable_submit_button, register_user
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, set_icon_image
 from db_con import register_security_admin
 
 def open_register_window(main_window):
@@ -17,33 +17,33 @@ def open_register_window(main_window):
     RegFrame.place(x=555, y=100)
 
     # Add components to Register frame
-    heading = CTkLabel(RegFrame, text='Create Account', fg_color="#F0F6F9", 
+    heading = CTkLabel(RegFrame, text='Create Account', fg_color="#F0F6F9",
                        font=("Inter", 35, "bold"), text_color="#333333")
     heading.place(relx=0.5, y=38, anchor='n')
 
     #FULL NAME
-    Efullname = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Full Name", 
+    Efullname = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Full Name",
                          corner_radius=8, border_width=1, border_color='#DEE6EA')
     Efullname.place(relx=0.5, y=140, anchor='n')
-    Lfullname = CTkLabel(RegFrame, text='Full Name', fg_color="#F0F6F9", 
+    Lfullname = CTkLabel(RegFrame, text='Full Name', fg_color="#F0F6F9",
                          font=("Inter", 15, "bold"), text_color="#333333")
     Lfullname.place(relx=0.17, y=110, anchor='n')
     create_asterisk(Efullname, RegFrame, relx=0.250, y=108, anchor='n')
 
     #USERNAME
-    Eusername = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Username", 
+    Eusername = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Username",
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     Eusername.place(relx=0.5, y=230, anchor='n')
-    Lusername = CTkLabel(RegFrame, text='Username', fg_color="#F0F6F9", 
+    Lusername = CTkLabel(RegFrame, text='Username', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lusername.place(relx=0.17, y=200, anchor='n')
     create_asterisk(Eusername, RegFrame, relx=0.250, y=198, anchor='n')
 
     #PASSWORD
-    Epassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password", 
+    Epassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
     Epassword.place(relx=0.5, y=320, anchor='n')
-    Lpassword = CTkLabel(RegFrame, text='Password', fg_color="#F0F6F9", 
+    Lpassword = CTkLabel(RegFrame, text='Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lpassword.place(relx=0.17, y=290, anchor='n')
     create_asterisk(Epassword, RegFrame, relx=0.250, y=288, anchor='n')
@@ -51,10 +51,10 @@ def open_register_window(main_window):
     create_password_toggle_button(Epassword, RegFrame, relx=0.82, y=330, anchor='n')
 
     #CONFIRM PASSWORD
-    Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password", 
+    Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
     Ecpassword.place(relx=0.5, y=410, anchor='n')
-    Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9", 
+    Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lcpassword.place(relx=0.23, y=380, anchor='n')
     create_asterisk(Ecpassword, RegFrame, relx=0.369, y=378, anchor='n')
@@ -64,15 +64,14 @@ def open_register_window(main_window):
     # Add a label to show password match status
     match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
     match_label.place(relx=0.11, y=456, anchor='nw')
-
     # Reg-in button
-    createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10, 
-                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), 
+    createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10,
+                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
                         text_color="#333333", state="disabled")
     createbtn.place(relx=0.6, rely=0.8)
     # Back button that closes this window and shows the main window
-    back_button = CTkButton(RegFrame, text="Back", width=140, height=40, corner_radius=10, 
-                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), 
+    back_button = CTkButton(RegFrame, text="Back", width=140, height=40, corner_radius=10,
+                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
                         text_color="#333333", command=register_window.destroy)
     back_button.place(relx=0.6, rely=0.9)
 
@@ -83,6 +82,23 @@ def open_register_window(main_window):
     Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
     Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
 
-     # Function to register the user when the 'Register' button is clicked
-     # Bind the register function to the 'Register' button click event
-    createbtn.configure(command=lambda: register_user(Efullname, Eusername, Epassword, Ecpassword, register_window))
+        # Function to register the user when the 'Register' button is clicked
+    def handle_registration():
+        # Get the values from the entry fields
+        full_name = Efullname.get()
+        username = Eusername.get()
+        password = Ecpassword.get()  # Assuming you want the confirmed password
+        # Call the function with actual string values
+        success = register_security_admin(full_name, username, password, register_window)
+        if success:
+            # Display success message
+            RegisScssfr = CTkFrame(register_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
+            RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
+            set_icon_image(RegisScssfr, ASSETS_PATH / 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+
+            LbSuccess = CTkLabel(RegisScssfr, text="Successfully Registered", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+            LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+            # Destroy the register window after 3 seconds
+            register_window.after(2000, register_window.destroy)
+
+    createbtn.configure(command=handle_registration)
