@@ -7,6 +7,7 @@ from face_scan import start_camera
 from db_con import logout_visitor
 from PageVisitor import Visitor_page
 
+
 def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
     LogOutVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
@@ -38,7 +39,7 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
         if success:
             cap.release()
             logsucess = "Logout successfully!"
-            view_history(LogOutVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            view_history(sec_id, LogOutVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
 
     # Now update the logout button command to use handle_logout
     logoutbtn.configure(command=handle_logout)

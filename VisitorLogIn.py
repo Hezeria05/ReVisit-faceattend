@@ -78,13 +78,21 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
             # Close the camera
             cap.release()
             logsucess="Login Successfully!"
-            view_history(LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            view_history(sec_id, LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
         else:
-            submitbtn.configure(text="Logout", command=lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
+            submitbtn.configure(
+                text="Logout",
+                command=lambda: logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe)
+)
             Existinglabel.configure(text="Visitor already Logged in.")
             cap.release()
     # Link the new function to the submit button
     submitbtn.configure(command=handle_submit)
+
+    def logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe):
+        LogInVframe.destroy()
+        on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"

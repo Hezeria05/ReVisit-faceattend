@@ -165,7 +165,7 @@ def update_datetime(date_label, time_label):
     time_label.configure(text=formatted_time)
 
     #Log in Visitor Page
-def view_history(LogVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
+def view_history(sec_id, LogVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
     LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
     set_icon_image(LogSucessfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
