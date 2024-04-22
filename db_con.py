@@ -61,28 +61,39 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
         log_day = current_datetime.date()
         login_time = current_datetime.strftime('%H:%M:%S')
 
-        # Prepare SQL query to insert data
-        query_insert = """
-        INSERT INTO visitor_data (
-            visit_name,
-            res_id,
-            log_purpose,
-            log_day,
-            login_time,
-            log_stat,
-            sec_id
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+        # Check if the visitor with the same name is already logged in
+        query_check_existing = """
+        SELECT * FROM visitor_data 
+        WHERE visit_name = %s AND log_stat = TRUE AND logout_time IS NULL
         """
-        # Values to be inserted
-        data_tuple = (visit_name, res_id, log_purpose, log_day, login_time, True, sec_id)
+        cursor.execute(query_check_existing, (visit_name,))
+        existing_visitor = cursor.fetchone()
 
-        # Execute the query
-        cursor.execute(query_insert, data_tuple)
+        if existing_visitor:
+            # Visitor is already logged in
+            success = False
+        else:
+            # Prepare SQL query to insert data
+            query_insert = """
+            INSERT INTO visitor_data (
+                visit_name,
+                res_id,
+                log_purpose,
+                log_day,
+                login_time,
+                log_stat,
+                sec_id
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """
+            # Values to be inserted
+            data_tuple = (visit_name, res_id, log_purpose, log_day, login_time, True, sec_id)
 
-        # Commit changes
-        conn.commit()
-        print("Visitor data successfully inserted.")
-        success = True
+            # Execute the query
+            cursor.execute(query_insert, data_tuple)
+
+            # Commit changes
+            conn.commit()
+            success = True
     except mysql.connector.Error as err:
         print(f"Failed to insert visitor data: {err}")
         success = False

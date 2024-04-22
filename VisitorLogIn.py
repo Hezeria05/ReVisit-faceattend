@@ -6,6 +6,7 @@ from PageUtils import ASSETS_PATH, set_icon_image, create_asterisk, check_sign_c
 from face_scan import start_camera
 from db_con import insert_visitor_data
 from PageVisitor import Visitor_page
+from VisitorLogOut import on_logout_click
 
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
@@ -37,7 +38,6 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogVname.place(relx=0.5, rely=0.26, anchor='n')
     LbVname = CTkLabel(LogInEframe, text='Visitor Name', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbVname.place(relx=0.185, rely=0.2, anchor='n')
-    # create_asterisk(LogVname, LogInEframe, relx=0.314, y=105, anchor='n')
 
     ResidID = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident ID",
                     corner_radius=8, border_width=1, border_color='#DEE6EA')
@@ -52,6 +52,9 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LbPurpose = CTkLabel(LogInEframe, text='Purpose of Visit', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.place(relx=0.22, rely=0.54, anchor='n')
     create_asterisk(LogPurpose, LogInEframe, relx=0.375, y=293, anchor='n')
+
+    Existinglabel = CTkLabel(LogInEframe, text='', height=10, fg_color="transparent", font=("Inter", 11), text_color="red")
+    Existinglabel.place(relx=0.085, rely=0.693, anchor='nw')
 
     submitbtn = CTkButton(LogInEframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF",
                           hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
@@ -77,7 +80,9 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
             logsucess="Login Successfully!"
             view_history(LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
         else:
-            print("Failed to submit data")
+            submitbtn.configure(text="Logout", command=lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
+            Existinglabel.configure(text="Visitor already Logged in.")
+            cap.release()
     # Link the new function to the submit button
     submitbtn.configure(command=handle_submit)
 

@@ -36,6 +36,7 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
         visitor_name = LogVname.get()
         success = logout_visitor(visitor_name, sec_id, Existinglabel)
         if success:
+            cap.release()
             logsucess = "Logout successfully!"
             view_history(LogOutVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
 
