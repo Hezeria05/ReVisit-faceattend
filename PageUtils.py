@@ -122,6 +122,13 @@ def enable_submit_button(button):
 def disable_submit_button(button):
     button.configure(state="disabled")
 
+def display_success_and_close(register_window):
+    RegisScssfr = CTkFrame(register_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(RegisScssfr, ASSETS_PATH / 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+    LbSuccess = CTkLabel(RegisScssfr, text="Successfully Registered", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+    register_window.after(2000, register_window.destroy)
 
 #Main Page
 def set_icon_image(frame, image_path, relx, rely, anchor, size):

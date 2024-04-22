@@ -2,7 +2,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, set_icon_image
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, set_icon_image, display_success_and_close
 from db_con import register_security_admin
 
 def open_register_window(main_window):
@@ -27,8 +27,10 @@ def open_register_window(main_window):
     Efullname.place(relx=0.5, y=140, anchor='n')
     Lfullname = CTkLabel(RegFrame, text='Full Name', fg_color="#F0F6F9",
                          font=("Inter", 15, "bold"), text_color="#333333")
-    Lfullname.place(relx=0.17, y=110, anchor='n')
-    create_asterisk(Efullname, RegFrame, relx=0.250, y=108, anchor='n')
+    Lfullname.place(relx=0.11, y=110, anchor='nw')
+    create_asterisk(Efullname, RegFrame, relx=0.255, y=106, anchor='n')
+    FnExistlabel = CTkLabel(RegFrame, text='', height=10, fg_color="transparent", font=("Inter", 12), text_color="red")
+    FnExistlabel.place(relx=0.11, rely=0.310, anchor='nw')
 
     #USERNAME
     Eusername = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Username",
@@ -36,34 +38,36 @@ def open_register_window(main_window):
     Eusername.place(relx=0.5, y=230, anchor='n')
     Lusername = CTkLabel(RegFrame, text='Username', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
-    Lusername.place(relx=0.17, y=200, anchor='n')
-    create_asterisk(Eusername, RegFrame, relx=0.250, y=198, anchor='n')
+    Lusername.place(relx=0.11, y=200, anchor='nw')
+    create_asterisk(Eusername, RegFrame, relx=0.26, y=198, anchor='n')
+    UnExistlabel = CTkLabel(RegFrame, text='', height=10, fg_color="transparent", font=("Inter", 12), text_color="red")
+    UnExistlabel.place(relx=0.11, rely=0.465, anchor='nw')
 
     #PASSWORD
     Epassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
-    Epassword.place(relx=0.5, y=320, anchor='n')
+    Epassword.place(relx=0.5, y=328, anchor='n')
     Lpassword = CTkLabel(RegFrame, text='Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
-    Lpassword.place(relx=0.17, y=290, anchor='n')
-    create_asterisk(Epassword, RegFrame, relx=0.250, y=288, anchor='n')
+    Lpassword.place(relx=0.11, y=298, anchor='nw')
+    create_asterisk(Epassword, RegFrame, relx=0.255, y=290, anchor='n')
     #Eye Toggle
-    create_password_toggle_button(Epassword, RegFrame, relx=0.82, y=330, anchor='n')
+    create_password_toggle_button(Epassword, RegFrame, relx=0.82, y=335, anchor='n')
 
     #CONFIRM PASSWORD
     Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
-    Ecpassword.place(relx=0.5, y=410, anchor='n')
+    Ecpassword.place(relx=0.5, y=420, anchor='n')
     Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
-    Lcpassword.place(relx=0.23, y=380, anchor='n')
-    create_asterisk(Ecpassword, RegFrame, relx=0.369, y=378, anchor='n')
+    Lcpassword.place(relx=0.11, y=390, anchor='nw')
+    create_asterisk(Ecpassword, RegFrame, relx=0.369, y=388, anchor='n')
     #Eye Toggle
-    create_password_toggle_button(Ecpassword, RegFrame, relx=0.82, y=420, anchor='n')
+    create_password_toggle_button(Ecpassword, RegFrame, relx=0.82, y=428, anchor='n')
 
     # Add a label to show password match status
     match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
-    match_label.place(relx=0.11, y=456, anchor='nw')
+    match_label.place(relx=0.11, y=465, anchor='nw')
     # Reg-in button
     createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10,
                         fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
@@ -82,23 +86,37 @@ def open_register_window(main_window):
     Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
     Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
 
-        # Function to register the user when the 'Register' button is clicked
+
     def handle_registration():
-        # Get the values from the entry fields
+        # Disable the register button to prevent multiple submissions
+        createbtn.configure(state="disabled")
+
         full_name = Efullname.get()
         username = Eusername.get()
-        password = Ecpassword.get()  # Assuming you want the confirmed password
-        # Call the function with actual string values
-        success = register_security_admin(full_name, username, password, register_window)
-        if success:
-            # Display success message
-            RegisScssfr = CTkFrame(register_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
-            RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
-            set_icon_image(RegisScssfr, ASSETS_PATH / 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+        password = Ecpassword.get()
 
-            LbSuccess = CTkLabel(RegisScssfr, text="Successfully Registered", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
-            LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
-            # Destroy the register window after 3 seconds
-            register_window.after(2000, register_window.destroy)
+        try:
+            success = register_security_admin(full_name, username, password, register_window, FnExistlabel, UnExistlabel)
+            if success:
+                # Display success message and close window after a delay
+                display_success_and_close(register_window)
+            else:
+                # Clear error messages after 3 seconds (3000 milliseconds)
+                register_window.after(3000, clear_error_labels)
+                # Re-enable the button if registration failed
+                createbtn.configure(state="normal")
+        except Exception as e:
+            # Log the exception or show it in a way appropriate for your application's logging strategy
+            print(f"Error during registration: {e}")
+            # Provide feedback to the user that an error occurred
+            match_label.configure(text="An unexpected error occurred. Please try again.", text_color="red")
+            # Re-enable the button to allow the user to try again
+            createbtn.configure(state="normal")
+            # Clear error messages after 3 seconds (3000 milliseconds)
+            register_window.after(3000, clear_error_labels)
+
+    def clear_error_labels():
+        FnExistlabel.configure(text='')
+        UnExistlabel.configure(text='')
 
     createbtn.configure(command=handle_registration)
