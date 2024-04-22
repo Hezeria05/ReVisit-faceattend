@@ -113,6 +113,20 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
         conn.close()
     return success
 
+def fetch_residents():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT res_id, res_address FROM resident_data")
+        residents = cursor.fetchall()  # Fetch all rows
+        return residents
+    except mysql.connector.Error as err:
+        print(f"Failed to fetch resident data: {err}")
+        return []
+    finally:
+        cursor.close()
+        conn.close()
+
 
 def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
