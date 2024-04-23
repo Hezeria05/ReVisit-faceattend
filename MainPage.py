@@ -12,7 +12,6 @@ def open_homepage(sec_id):
 
     # Background for the new window
     set_background_image(homepage_window, ASSETS_PATH / 'HOME PAGE.png', size=(1440,900))
-    sec_id = 7
     #_______________________________________________________________________SIDEBAR
     Sidebar = CTkFrame(homepage_window, fg_color="#FEFEFE", width=380, height=728)
     Sidebar.place(relx=0, rely=0.19)
