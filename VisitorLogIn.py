@@ -1,12 +1,14 @@
+from tkinter import *
 import tkinter as tk
 from customtkinter import *
 import cv2
 from face_recognition import load_face_data
 from PageUtils import ASSETS_PATH, set_icon_image, create_asterisk, check_sign_complete, indicate, view_history
 from face_scan import start_camera
-from db_con import insert_visitor_data
+from db_con import insert_visitor_data, fetch_residents
 from PageVisitor import Visitor_page
 from VisitorLogOut import on_logout_click
+import ttkbootstrap as tb
 
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
@@ -39,8 +41,9 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LbVname = CTkLabel(LogInEframe, text='Visitor Name', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbVname.place(relx=0.185, rely=0.2, anchor='n')
 
-    ResidID = CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="Enter Resident ID",
-                    corner_radius=8, border_width=1, border_color='#DEE6EA')
+    ResidID = CTkComboBox(LogInEframe, width=360.0, height=45, values=[resident[1] for resident in fetch_residents()], button_color="#DEE6EA",
+                          button_hover_color="#ADCBCF", corner_radius=8, border_width=1, border_color='#DEE6EA',
+                          dropdown_hover_color="#ADCBCF", fg_color="#DEE6EA")
     ResidID.place(relx=0.5, rely=0.43, anchor='n')
     LRname = CTkLabel(LogInEframe, text='Resident ID', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LRname.place(relx=0.185, rely=0.37, anchor='n')
@@ -69,23 +72,36 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     def handle_submit():
         # Retrieve data from entries
         visitor_name = LogVname.get()
-        resident_id = ResidID.get()
+        # Get the selected address from the ComboBox
+        selected_address = ResidID.get()
+        # Find the corresponding resident ID for the selected address
+        resident_id = None
+        for resident_tuple in fetch_residents():
+            if resident_tuple[1] == selected_address:
+                resident_id = resident_tuple[0]
+                break
+        
         purpose = LogPurpose.get()
 
-        # Assuming sec_id is globally available or passed to this function
-        success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
-        if success:
-            # Close the camera
-            cap.release()
-            logsucess="Login Successfully!"
-            view_history(sec_id, LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+        if resident_id is not None:  # Check if resident ID is found
+            # Assuming sec_id is globally available or passed to this function
+            success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
+            if success:
+                # Close the camera
+                cap.release()
+                logsucess="Login Successfully!"
+                view_history(sec_id, LogInVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            else:
+                submitbtn.configure(
+                    text="Logout",
+                    command=lambda: logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe)
+                )
+                Existinglabel.configure(text="Visitor already Logged in.")
+                cap.release()
         else:
-            submitbtn.configure(
-                text="Logout",
-                command=lambda: logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe)
-)
-            Existinglabel.configure(text="Visitor already Logged in.")
-            cap.release()
+            # Handle the case where resident ID is not found for the selected address
+            print("Resident ID not found for the selected address.")
+
     # Link the new function to the submit button
     submitbtn.configure(command=handle_submit)
 
