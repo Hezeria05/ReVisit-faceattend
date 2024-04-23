@@ -63,6 +63,51 @@ def validate_login_credentials(username, password):
         # Handle the case when the query returns None (no result found)
         return False, None
 
+def count_logged_in():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        today = datetime.now().date()
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 1 AND log_day = %s", (today,))
+        count = cursor.fetchone()[0]
+        return count
+    except mysql.connector.Error as err:
+        print(f"Failed to count logged in visitors: {err}")
+        return 0
+    finally:
+        cursor.close()
+        conn.close()
+
+def count_logged_out():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        today = datetime.now().date()
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 0 AND log_day = %s", (today,))
+        count = cursor.fetchone()[0]
+        return count
+    except mysql.connector.Error as err:
+        print(f"Failed to count logged out visitors: {err}")
+        return 0
+    finally:
+        cursor.close()
+        conn.close()
+
+def count_total_today():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        today = datetime.now().date()
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_day = %s", (today,))
+        count = cursor.fetchone()[0]
+        return count
+    except mysql.connector.Error as err:
+        print(f"Failed to count total visitors today: {err}")
+        return 0
+    finally:
+        cursor.close()
+        conn.close()
+
 def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -126,6 +171,7 @@ def fetch_residents():
     finally:
         cursor.close()
         conn.close()
+
 
 
 def logout_visitor(visit_name, sec_id, Existinglabel):
