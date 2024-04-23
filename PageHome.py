@@ -3,10 +3,11 @@ from PageUtils import ASSETS_PATH, set_icon_image, update_datetime
 from VisitorFaceReg import on_register_click
 from VisitorLogIn import on_login_click
 from VisitorLogOut import on_logout_click
+from db_con import count_logged_in, count_logged_out, count_total_today
 
 # Function to create a frame for the register, login, and logout sections
-def create_section_frame(parent, title, icon_path, button_text, button_command,relx, rely,
-                         has_status=False, bgy=0.165, btny=0.66, lby=0.065):
+def create_section_frame(parent, title, icon_path, button_text, button_command, relx, rely,
+                         status_value=None, has_status=False, heading="", bgy=0.165, btny=0.66, lby=0.065):
     section_frame = CTkFrame(parent, fg_color="#E9F3F2", width=280, height=410 if has_status else 340, corner_radius=10,
                              border_color="#B9BDBD", border_width=2)
     section_frame.place(relx=relx, rely=rely)
@@ -25,6 +26,16 @@ def create_section_frame(parent, title, icon_path, button_text, button_command,r
     if has_status:
         status_bg = CTkFrame(section_frame, fg_color="white", width=220, height=68, corner_radius=10)
         status_bg.place(relx=0.5, rely=0.8, anchor='n')
+        status_heading = CTkLabel(status_bg, fg_color="transparent", text=heading, font=("Arial", 12, "bold"), text_color="#333333")
+        status_heading.place(relx=0.05, rely=0.02, anchor="nw")
+        status_equal = CTkLabel(status_bg, fg_color="transparent", text="0", font=("Arial", 22, "bold"), text_color="#00507E")
+        status_equal.place(relx=0.5, rely=0.6, anchor="center")
+
+        if status_value is not None:
+            status_equal = CTkLabel(status_bg, fg_color="transparent", text=status_value, font=("Arial", 22, "bold"), text_color="#00507E")
+            status_equal.place(relx=0.5, rely=0.6, anchor="center")
+            status_heading = CTkLabel(status_bg, fg_color="transparent", text=heading, font=("Arial", 12, "bold"), text_color="#333333")
+            status_heading.place(relx=0.05, rely=0.02, anchor="nw")
 
     return section_frame
 
@@ -40,6 +51,11 @@ def create_info_frame(parent, text, width, height, relx, rely):
     return info_frame
 
 def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+    # Now you can use these functions to update the labels in your GUI:
+    logged_in_count = count_logged_in()
+    logged_out_count = count_logged_out()
+    total_count = count_total_today()
+
     Homeframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     Homeframe.place(relx=0.266, rely=0.118)
 
@@ -50,12 +66,14 @@ def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct
     Registerframe = create_section_frame(Homeframe, "REGISTER", ASSETS_PATH / 'register_icon.png', "REGISTER",
                                      lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct), 0.043, 0.36, bgy=0.2, btny=0.8, lby=0.08)
     Loginframe = create_section_frame(Homeframe, "LOG IN", ASSETS_PATH / 'login_icon.png', "LOG IN", lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct),
-                                      0.363, 0.36, has_status=True)
+                                      0.363, 0.36, status_value=f"{logged_in_count}", has_status=True, heading = "Active Visitors")
     Logoutframe = create_section_frame(Homeframe, "LOG OUT", ASSETS_PATH / 'logout_icon.png', "LOG OUT", lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct),
-                                       0.683, 0.36, has_status=True)
+                                       0.683, 0.36, status_value=f"{logged_out_count}", has_status=True, heading = "Logged Out Visitors")
 
     # Create frames for additional information
     Totalframe = create_info_frame(Homeframe, "Total Number of Visitors Today", 280, 92, 0.043, 0.18)
+    TotalV = CTkLabel (Totalframe, text=str(total_count), font=("Arial", 20, "bold"), text_color="#00507E")
+    TotalV.place(relx=0.5, rely=0.5, anchor="n")
     DateTimeframe = create_info_frame(Homeframe, "", 280, 102, 0.683, 0.05)
 
     # Configure date and time display
