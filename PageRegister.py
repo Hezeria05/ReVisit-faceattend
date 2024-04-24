@@ -84,7 +84,7 @@ def open_register_window(main_window):
     match_label.place(relx=0.11, y=465, anchor='nw')
 
     # Reg-in button
-    createbtn = CTkButton(RegFrame, text="Register", width=140, height=40, corner_radius=10,
+    createbtn = CTkButton(RegFrame, text="Create Account", width=140, height=40, corner_radius=10,
                         fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
                         text_color="#333333", state="disabled")
     createbtn.place(relx=0.5, rely=0.85, anchor="center")

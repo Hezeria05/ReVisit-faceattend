@@ -9,7 +9,7 @@ def open_homepage(sec_id):
     homepage_window.geometry('1440x900+300+70')
     homepage_window.minsize(1440, 900)
     homepage_window.maxsize(1440, 900)
-
+    sec_id = 13
     # Background for the new window
     set_background_image(homepage_window, ASSETS_PATH / 'HOME PAGE.png', size=(1440,900))
     #_______________________________________________________________________SIDEBAR

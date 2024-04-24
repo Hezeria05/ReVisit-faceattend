@@ -45,8 +45,8 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                           button_hover_color="#ADCBCF", corner_radius=8, border_width=1, border_color='#DEE6EA',
                           dropdown_hover_color="#ADCBCF", fg_color="#DEE6EA")
     ResidID.place(relx=0.5, rely=0.43, anchor='n')
-    LRname = CTkLabel(LogInEframe, text='Resident ID', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
-    LRname.place(relx=0.185, rely=0.37, anchor='n')
+    LRname = CTkLabel(LogInEframe, text='Resident Address', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
+    LRname.place(relx=0.225, rely=0.37, anchor='n')
     create_asterisk(ResidID, LogInEframe, relx=0.305, y=200, anchor='n')
 
     LogPurpose= CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="State Purpose",
