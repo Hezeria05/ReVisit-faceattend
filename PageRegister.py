@@ -9,7 +9,7 @@ def open_register_window(main_window):
 
     def validate_full_name(event):
         # Check if the character typed is a letter
-        if event.char.isalpha():
+        if event.char.isalpha() or event.char == " ":
             return True
         # Allow space and control characters like backspace
         elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):

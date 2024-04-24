@@ -4,6 +4,16 @@ from PageUtils import ASSETS_PATH, set_icon_image, update_datetime, create_aster
 from face_registration import face_register
 
 def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+    def validate_full_name(event):
+        # Check if the character typed is a letter
+        if event.char.isalpha() or event.char == " ":
+            return True
+        # Allow space and control characters like backspace
+        elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+            return True
+        else:
+            # Reject the character by returning "break" to stop the event from propagating
+            return "break"
     # Main registration frame
     RegVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     RegVframe.place(relx=0.266, rely=0.118)
@@ -24,6 +34,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
     vname_text = tk.StringVar()
     Vname = CTkEntry(Entryframe, textvariable=vname_text, width=485.0, height=50, placeholder_text="Enter Visitor Name", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Vname.place(relx=0.5, rely=0.35, anchor='n')
+    Vname.bind("<KeyPress>", validate_full_name)
 
     # Convert text to uppercase on KeyRelease event
     Vname.bind("<KeyRelease>", lambda event: vname_text.set(Vname.get().upper()))
