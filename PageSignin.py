@@ -10,6 +10,8 @@ def open_signin_window(select_window):
     signin_window.geometry('1200x800+400+100')
     signin_window.title('Sign In')
     signin_window.grab_set()
+    signin_window.minsize(800, 400)
+    signin_window.maxsize(1200, 800)
 
     # Background for the new window
     set_background_image(signin_window, ASSETS_PATH / 'USER ENTRY.png',size=(1200, 800))
@@ -50,7 +52,7 @@ def open_signin_window(select_window):
 
     # Sign-in button
     signbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
-    signbtn.place(relx=0.6, rely=0.75)
+    signbtn.place(relx=0.5, rely=0.75, anchor="center")
 
      # Bind the validation function to entry events
     entries = [Eusername, Epassword]
@@ -61,4 +63,4 @@ def open_signin_window(select_window):
 
     # Back button that closes this window and shows the main window
     back_button = CTkButton(SignFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=signin_window.destroy)
-    back_button.place(relx=0.6, rely=0.85)
+    back_button.place(relx=0.5, rely=0.83, anchor="center")

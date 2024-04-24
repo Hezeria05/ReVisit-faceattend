@@ -108,9 +108,9 @@ def check_password_match(Epassword, Ecpassword, match_label, createbtn):
 
     if password and confirm_password:
         if password == confirm_password:
-            match_label.configure(text="Password matched", text_color="green")
+            match_label.configure(text="Passwords match", text_color="green")
         else:
-            match_label.configure(text="Password not matched", text_color="red")
+            match_label.configure(text="Passwords do not match", text_color="red")
             disable_submit_button(createbtn)
     else:
         match_label.configure(text="")
