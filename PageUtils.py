@@ -93,28 +93,32 @@ def signin_failed(signin_window):
 
 
 #Registration of Account Page
-def check_entries_complete(entries, match_label, createbtn):
-    # """Check if all entry fields are completed."""
+def check_entries_complete(entries, match_label, createbtn, Epassword, Ecpassword):
+    all_complete = True
     for entry in entries:
-        if not entry.get():
-            disable_submit_button(createbtn)
-            return False
-    enable_submit_button(createbtn)
-    return True
+        if not entry.get().strip():  # Check if any field is empty
+            all_complete = False
+            break
+
+    if all_complete:
+        check_password_match(Epassword, Ecpassword, match_label, createbtn)  # Call password match check when all fields are complete
+    else:
+        disable_submit_button(createbtn)  # Disable button if any field is empty
 
 def check_password_match(Epassword, Ecpassword, match_label, createbtn):
-    password = Epassword.get()
-    confirm_password = Ecpassword.get()
+    password = Epassword.get().strip()
+    confirm_password = Ecpassword.get().strip()
 
-    if password and confirm_password:
+    if password and confirm_password:  # Check only if both fields are not empty
         if password == confirm_password:
             match_label.configure(text="Passwords match", text_color="green")
+            enable_submit_button(createbtn)  # Enable button if passwords match
         else:
             match_label.configure(text="Passwords do not match", text_color="red")
-            disable_submit_button(createbtn)
+            disable_submit_button(createbtn)  # Disable button if passwords do not match
     else:
-        match_label.configure(text="")
-        disable_submit_button(createbtn)
+        match_label.configure(text="")  # Clear any previous messages
+        disable_submit_button(createbtn)  # Keep button disabled if either password field is empty
 
 def enable_submit_button(button):
     button.configure(state="normal")
@@ -172,15 +176,15 @@ def view_history(sec_id, LogVframe, logsucess, ASSETS_PATH, set_icon_image, indi
     LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
     set_icon_image(LogSucessfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
-    
+
     LbSuccess = CTkLabel(LogSucessfr, text=logsucess, fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbSuccess.place(relx=0.5, rely=0.48, anchor='n')
-    
+
     viewbtn = CTkButton(LogSucessfr, text="View History", width=230, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
     viewbtn.place(relx=0.3, rely=0.8, anchor='center')
-    
+
     donebtn = CTkButton(LogSucessfr, text="Done", width=230, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
     donebtn.place(relx=0.7, rely=0.8, anchor='center')
-    
+
     viewbtn.configure(command=lambda: indicate(Visitor_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct), Home_indct, Visitor_indct, Resident_indct))
     donebtn.configure(command=lambda: LogVframe.destroy())

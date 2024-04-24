@@ -1,6 +1,4 @@
 from customtkinter import *
-from PIL import Image, ImageTk
-from pathlib import Path
 from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH, check_sign_complete, signin_failed
 from db_con import validate_login_credentials
 from  MainPage import open_homepage

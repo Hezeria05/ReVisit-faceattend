@@ -1,7 +1,5 @@
 #Page Select
 from customtkinter import *
-from PIL import Image, ImageTk
-from pathlib import Path
 from PageSignin import open_signin_window
 from PageRegister import open_register_window
 from PageUtils import ASSETS_PATH, set_background_image

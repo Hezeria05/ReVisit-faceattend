@@ -80,9 +80,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
             if resident_tuple[1] == selected_address:
                 resident_id = resident_tuple[0]
                 break
-        
         purpose = LogPurpose.get()
-
         if resident_id is not None:  # Check if resident ID is found
             # Assuming sec_id is globally available or passed to this function
             success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
@@ -122,7 +120,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap))
 
-    
+
 if __name__ == "__main__":
     app = tk.Tk()
     on_login_click(app)

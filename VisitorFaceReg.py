@@ -1,6 +1,6 @@
 import tkinter as tk
 from customtkinter import *
-from PageUtils import ASSETS_PATH, set_icon_image, update_datetime, create_asterisk, check_sign_complete
+from PageUtils import create_asterisk, check_sign_complete
 from face_registration import face_register
 
 def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):

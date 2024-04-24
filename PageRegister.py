@@ -97,11 +97,9 @@ def open_register_window(main_window):
     # Bind the validation function to entry events
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event, entries=entries: check_entries_complete(entries, match_label, createbtn))
+        entry.bind("<KeyRelease>", lambda event, entries=entries, match_label=match_label, createbtn=createbtn, Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, match_label, createbtn, Epassword, Ecpassword))
     Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
     Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
-
-
     def handle_registration():
         # Disable the register button to prevent multiple submissions
         createbtn.configure(state="disabled")
