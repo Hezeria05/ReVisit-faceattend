@@ -14,17 +14,17 @@ def create_info_frame(parent, text, width, height, relx, rely):
 
     return info_frame
 
-def create_table(frame, rows, cols):
-    headers = ["ID", "Name", "Date", "Time", "Purpose", "Duration", "Remarks"]  # Define the column headers
+def create_table(row_frame, col_frame, rows, cols):
+    headers = ["Name", "Date", "Log In Time", "Log Out Time", "Resident", "Purpose", "Security"]  # Define the column headers
     # Create headers
     for c in range(cols):
-        header = CTkLabel(frame, text=headers[c], font=("Arial", 12, "bold"), fg_color="white", text_color="#333333")
+        header = CTkLabel(col_frame, width=120,text=headers[c], font=("Arial", 15, "bold"), fg_color="#93ACAF", text_color="white")
         header.grid(row=0, column=c, padx=10, pady=5, sticky="ew")
 
     # Create the table cells
     for r in range(1, rows + 1):
         for c in range(cols):
-            cell = CTkEntry(frame, state='readonly', fg_color="white", text_color="#333333", border_width=1, corner_radius=1)
+            cell = CTkEntry(row_frame, state='readonly', height=40, fg_color="white", text_color="#333333", border_width=1, corner_radius=1)
             cell.grid(row=r, column=c,padx=0, pady=0, sticky="ew")
             cell.insert(0, "Sample Data")
 
@@ -48,9 +48,13 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
     update_datetime(date_label, time_label)
     visitorpage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
-    VTable = CTkFrame (Visitorframe, width=960, height=500, fg_color="white", corner_radius=10,
-                          border_color="#B9BDBD", border_width=2)
-    VTable.place(relx=0.5, rely=0.6, anchor="center")
-    create_table(VTable, 10, 7)
+    VTCols = CTkFrame (Visitorframe, width=960, height=50, fg_color="#93ACAF", corner_radius=0,
+                          border_color="#B9BDBD", border_width=1)
+    VTCols.place(relx=0.5, rely=0.364, anchor="center")
+
+    VTRows = CTkFrame (Visitorframe, width=960, height=400, fg_color="white",
+                          border_color="#B9BDBD", border_width=1)
+    VTRows.place(relx=0.5, rely=0.67, anchor="center")
+    create_table(VTRows, VTCols, 10, 7)
 
 
