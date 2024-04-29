@@ -15,7 +15,7 @@ def create_info_frame(parent, text, width, height, relx, rely):
     return info_frame
 
 def create_visitor_table(visitorframe, visitor_data):
-    for i in range(15):  # Assuming 10 is the maximum number of rows you want
+    for i in range(15):  # Assuming 15 is the maximum number of rows you want
         y_offset = 0.36 + (i * 0.0375)  # Adjust the y offset for each row
 
         entries = []
@@ -26,8 +26,14 @@ def create_visitor_table(visitorframe, visitor_data):
 
         if i < len(visitor_data):
             for entry, value in zip(entries, visitor_data[i]):
-                entry.insert(0, value if value is not None else "")
-            for entry in entries:  # Disable entry widgets after inserting data
+                entry.insert(0, value if value is not None else "")  # Insert data or empty string if data is None
+            for entry in entries:
+                if not entry.get():  # Check if entry is empty
+                    entry.configure(state='disabled')  # Disable if empty
+                else:
+                    entry.configure(state='disabled')  # Disable after inserting data as well
+        else:
+            for entry in entries:  # Disable all entries in rows without data
                 entry.configure(state='disabled')
 
 def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
