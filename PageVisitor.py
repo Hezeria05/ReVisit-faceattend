@@ -27,6 +27,8 @@ def create_visitor_table(visitorframe, visitor_data):
         if i < len(visitor_data):
             for entry, value in zip(entries, visitor_data[i]):
                 entry.insert(0, value if value is not None else "")
+            for entry in entries:  # Disable entry widgets after inserting data
+                entry.configure(state='disabled')
 
 def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
     Visitorframe = CTkFrame(visitorpage_window, fg_color="#F6FCFC", width=1057, height=715)
