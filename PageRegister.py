@@ -88,11 +88,17 @@ def open_register_window(main_window):
                         fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
                         text_color="#333333", state="disabled")
     createbtn.place(relx=0.5, rely=0.85, anchor="center")
+
+    back_icon_path = ASSETS_PATH / 'Back_icon.png'
+    back_icon = Image.open(back_icon_path)
+    resized_back_icon = back_icon.resize((85, 35))  # Adjust size as needed
+    back_icon_tk = ImageTk.PhotoImage(resized_back_icon)
+
     # Back button that closes this window and shows the main window
-    back_button = CTkButton(RegFrame, text="Back", width=140, height=40, corner_radius=10,
-                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
-                        text_color="#333333", command=register_window.destroy)
-    back_button.place(relx=0.5, rely=0.93, anchor="center")
+    back_button = CTkButton(register_window, image=back_icon_tk, text='', width=120, height=50, corner_radius=10,
+                            fg_color="white", hover_color="white", font=("Inter", 17, "bold"),
+                            text_color="#333333", command=register_window.destroy)
+    back_button.place(relx=0.07, rely=0.93, anchor="center")
 
     # Bind the validation function to entry events
     entries = [Efullname, Eusername, Epassword, Ecpassword]

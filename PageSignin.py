@@ -1,4 +1,5 @@
 from customtkinter import *
+from PIL import Image, ImageTk
 from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, ASSETS_PATH, check_sign_complete, signin_failed
 from db_con import validate_login_credentials
 from  MainPage import open_homepage
@@ -59,6 +60,13 @@ def open_signin_window(select_window):
 
     signbtn.configure(command=validate_and_open_homepage)
 
+    back_icon_path = ASSETS_PATH / 'Back_icon.png'
+    back_icon = Image.open(back_icon_path)
+    resized_back_icon = back_icon.resize((85, 35))  # Adjust size as needed
+    back_icon_tk = ImageTk.PhotoImage(resized_back_icon)
+
     # Back button that closes this window and shows the main window
-    back_button = CTkButton(SignFrame, text="Back", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=signin_window.destroy)
-    back_button.place(relx=0.5, rely=0.83, anchor="center")
+    back_button = CTkButton(signin_window, image=back_icon_tk, text='', width=120, height=50, corner_radius=10,
+                            fg_color="white", hover_color="white", font=("Inter", 17, "bold"),
+                            text_color="#333333", command=signin_window.destroy)
+    back_button.place(relx=0.07, rely=0.93, anchor="center")
