@@ -1,8 +1,8 @@
 from customtkinter import *
-from PIL import Image, ImageTk
-from pathlib import Path
+import datetime 
 from PageUtils import ASSETS_PATH, set_icon_image, update_datetime
 from db_con import fetch_visitor_data
+
 
 def create_info_frame(parent, text, width, height, relx, rely):
     info_frame = CTkFrame(parent, fg_color="#E9F3F2", width=width, height=height, corner_radius=10,
@@ -14,19 +14,19 @@ def create_info_frame(parent, text, width, height, relx, rely):
 
     return info_frame
 
-def create_table(row_frame, col_frame, rows, cols):
-    headers = ["Name", "Date", "Log In Time", "Log Out Time", "Resident", "Purpose", "Security"]  # Define the column headers
-    # Create headers
-    for c in range(cols):
-        header = CTkLabel(col_frame, width=120,text=headers[c], font=("Arial", 15, "bold"), fg_color="#93ACAF", text_color="white")
-        header.grid(row=0, column=c, padx=10, pady=5, sticky="ew")
+def create_visitor_table(visitorframe, visitor_data):
+    for i in range(15):  # Assuming 10 is the maximum number of rows you want
+        y_offset = 0.36 + (i * 0.0375)  # Adjust the y offset for each row
 
-    # Create the table cells
-    for r in range(1, rows + 1):
-        for c in range(cols):
-            cell = CTkEntry(row_frame, state='readonly', height=40, fg_color="white", text_color="#333333", border_width=1, corner_radius=1)
-            cell.grid(row=r, column=c,padx=0, pady=0, sticky="ew")
-            cell.insert(0, "Sample Data")
+        entries = []
+        for j in range(7):  # Assuming 7 columns based on your data structure
+            entry = CTkEntry(visitorframe, width=150, height=30, state='normal', fg_color="white", corner_radius=0, border_width=1)
+            entry.place(relx=0.0465 + (j * 0.1277), rely=y_offset)  # Adjust x position based on column
+            entries.append(entry)
+
+        if i < len(visitor_data):
+            for entry, value in zip(entries, visitor_data[i]):
+                entry.insert(0, value if value is not None else "")
 
 def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
     Visitorframe = CTkFrame(visitorpage_window, fg_color="#F6FCFC", width=1057, height=715)
@@ -48,13 +48,39 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
     update_datetime(date_label, time_label)
     visitorpage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
+    VTfilter = CTkFrame (Visitorframe, width=290, height=50, fg_color="white", corner_radius=5,
+                          border_color="#B9BDBD", border_width=1)
+    VTfilter.place(relx=0.043, rely=0.2)
+
+    FilterB = CTkComboBox(VTfilter, width=285.0, height=45, values=[" Recent"," Oldest"," A - Z", " Z - A"], button_color="white",
+                          button_hover_color="#ADCBCF", corner_radius=0, dropdown_hover_color="#ADCBCF", fg_color="white",
+                          border_width=0, font=("Inter", 16, "bold"))
+    FilterB.place(relx=0.5, rely=0.5, anchor='center')
+
     VTCols = CTkFrame (Visitorframe, width=960, height=50, fg_color="#93ACAF", corner_radius=0,
                           border_color="#B9BDBD", border_width=1)
-    VTCols.place(relx=0.5, rely=0.364, anchor="center")
+    VTCols.place(relx=0.5, rely=0.33, anchor="center")
 
-    VTRows = CTkFrame (Visitorframe, width=960, height=400, fg_color="white",
-                          border_color="#B9BDBD", border_width=1)
-    VTRows.place(relx=0.5, rely=0.67, anchor="center")
-    create_table(VTRows, VTCols, 10, 7)
+    # Your specific headings and their relative positions
+    headings = {
+        "Name": 0.065,
+        "Date": 0.21,
+        "Log In": 0.35,
+        "Log Out": 0.485,
+        "Resident": 0.630,
+        "Security": 0.775,
+        "Purpose": 0.920
+    }
 
+    # Place each header label at the specified x position
+    for heading, position in headings.items():
+        heading_label = CTkLabel(VTCols, text=heading, font=("Inter", 14, "bold"), text_color="white", fg_color="transparent")
+        heading_label.place(relx=position, rely=0.5, anchor="center")
+
+    VTRows = CTkFrame (Visitorframe, width=960, height=400, fg_color="white", corner_radius=0,
+                          border_color="#B9BDBD", border_width=0)
+    VTRows.place(relx=0.5, rely=0.65, anchor="center")
+    # Fetch data and create visitor table
+    visitor_data = fetch_visitor_data()
+    create_visitor_table(Visitorframe, visitor_data)
 

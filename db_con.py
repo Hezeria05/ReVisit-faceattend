@@ -216,11 +216,7 @@ def fetch_visitor_data():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        query = """
-        SELECT visit_name, log_purpose, log_day, login_time, logout_time, sec_id, res_id
-        FROM visitor_data
-        """
-        cursor.execute(query)
+        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY log_day DESC, login_time DESC LIMIT 15")
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
