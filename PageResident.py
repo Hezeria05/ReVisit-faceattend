@@ -22,5 +22,5 @@ def Resident_page(homepage_window):
     entries_list, id_list = create_resident_table(Residentframe, resident_data)
     EditBtn = CTkButton(Residentframe, text="Edit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF",
                         font=("Inter", 17, "bold"), text_color="#333333",
-                        command=lambda: toggle_edit_save(EditBtn, entries_list, id_list, True))
+                        command=lambda: toggle_edit_save(Residentframe, EditBtn, entries_list, id_list, True))
     EditBtn.place(relx=0.5, rely=0.928, anchor='n')

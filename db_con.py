@@ -1,7 +1,6 @@
 import mysql.connector
 from datetime import datetime, timedelta
 
-
 def connect_to_database():
     return mysql.connector.connect(
         host="localhost",
@@ -240,7 +239,7 @@ def fetch_resident_data():
         cursor.close()
         conn.close()
         
-def update_resident_data(res_id, name, address, phone):
+def update_resident_data(window, res_id, name, address, phone):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
