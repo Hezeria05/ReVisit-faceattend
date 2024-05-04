@@ -18,7 +18,7 @@ def face_register(visitor_name, RegVframe, RCameraFrame, Entryframe, Existinglab
     Entryframe.destroy()  # Remove the entry frame after name is submitted
 
     # Prepare the label for the camera feed inside RegVframe
-    camera_label = CTkLabel(RCameraFrame, text="", width=640, height=480)
+    camera_label = CTkLabel(RCameraFrame, text="", width=680, height=480)
     camera_label.place(relx=0.5, rely=0.5, anchor='center')
      # Add a label for "Scanning..."
     scanning_label = CTkLabel(RegVframe, text="Scanning...", font=("Inter", 30, "bold"), fg_color="transparent", text_color="#333333")
