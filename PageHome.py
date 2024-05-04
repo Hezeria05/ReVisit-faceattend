@@ -87,3 +87,5 @@ def Home_page(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct
     # Update date and time periodically
     update_datetime(date_label, time_label)
     homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
+
+    # Homeframe.after(2000, Homeframe.destroy)

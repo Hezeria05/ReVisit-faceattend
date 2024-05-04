@@ -87,7 +87,7 @@ def open_register_window(main_window):
     createbtn = CTkButton(RegFrame, text="Create Account", width=140, height=40, corner_radius=10,
                         fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
                         text_color="#333333", state="disabled")
-    createbtn.place(relx=0.5, rely=0.85, anchor="center")
+    createbtn.place(relx=0.5, rely=0.9, anchor="center")
 
     back_icon_path = ASSETS_PATH / 'Back_icon.png'
     back_icon = Image.open(back_icon_path)

@@ -3,14 +3,14 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
 from tkinter import messagebox
-from db_con import register_security_admin
+from db_con import register_security_admin, fetch_resident_data, update_resident_data
 from datetime import datetime
 
 
 # Constants
 ASSETS_PATH = Path(r"C:\Users\grace\Desktop\ReVisit-faceattend\assets")
 
-#General
+#General_____________________________________________________________________________________________________________
 def set_background_image(window, image_path, size):
     # """Sets the background image for a given window."""
     bg_image_orig = Image.open(image_path)
@@ -20,7 +20,7 @@ def set_background_image(window, image_path, size):
     bg_image_label.place(relwidth=1, relheight=1)
     # bg_image_label.image = bg_image_tk
 
-#Register and Sign In
+#Register and Sign In_____________________________________________________________________________________________________________
 # Globals to hold the eye images (to avoid loading them multiple times)
 open_eye_tk = None
 close_eye_tk = None
@@ -70,7 +70,7 @@ def create_asterisk(entry_widget, parent_frame, relx, y, anchor):
     manage_asterisk(entry_widget, asterisk_label, relx, y, anchor)
     entry_widget.bind("<KeyRelease>", lambda event: manage_asterisk(entry_widget, asterisk_label, relx, y, anchor))
 
-#Sign In Page
+#Sign In Page_____________________________________________________________________________________________________________
 def check_sign_complete(entries, signbtn):
     # """Check if all entry fields are completed."""
     for entry in entries:
@@ -92,7 +92,7 @@ def signin_failed(signin_window):
     signin_window.after(2000, LogFailfr.destroy)
 
 
-#Registration of Account Page
+#Registration of Account Page_____________________________________________________________________________________________________________
 def check_entries_complete(entries, match_label, createbtn, Epassword, Ecpassword):
     all_complete = True
     for entry in entries:
@@ -134,7 +134,7 @@ def display_success_and_close(register_window):
     LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
     register_window.after(2000, register_window.destroy)
 
-#Main Page
+#Main Page_____________________________________________________________________________________________________________
 def set_icon_image(frame, image_path, relx, rely, anchor, size):
     icon_image_orig = Image.open(image_path)
     resized_iconimage = icon_image_orig.resize(size)
@@ -154,9 +154,22 @@ def indicate(selected_indicator, new_page, Home_indct, Visitor_indct, Resident_i
     new_page()
 
 def logout(window):
-    window.destroy()
+    LogoutModal = CTkFrame(window, fg_color="white", width=650, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogoutModal.place(relx=0.634, rely=0.5, anchor='center')
+    set_icon_image(LogoutModal, ASSETS_PATH / 'question_icon.png', relx=0.5, rely=0.13, anchor='n', size=(110, 110))
+    LbOut = CTkLabel(LogoutModal, text="Continue to Logout?", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbOut.place(relx=0.5, rely=0.5, anchor='n')
+    contbtn = CTkButton(LogoutModal, text="Continue", width=250, height=50, corner_radius=10,
+                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
+                        command=lambda:window.destroy())
+    contbtn.place(relx=0.725, rely=0.8, anchor='center')
 
-#Home Page
+    cancelbtn = CTkButton(LogoutModal, text="Cancel", width=250, height=50, corner_radius=10,
+                            fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
+                            command=lambda:LogoutModal.destroy())
+    cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
+
+#Home Page_____________________________________________________________________________________________________________
 def update_datetime(date_label, time_label):
     # Get the current date and time
     now = datetime.now()
@@ -171,7 +184,7 @@ def update_datetime(date_label, time_label):
     date_label.configure(text=formatted_date)
     time_label.configure(text=formatted_time)
 
-    #Log in Visitor Page
+#Log in Visitor Page_____________________________________________________________________________________________________________
 def view_history(sec_id, LogVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
     LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
@@ -188,3 +201,70 @@ def view_history(sec_id, LogVframe, logsucess, ASSETS_PATH, set_icon_image, indi
 
     viewbtn.configure(command=lambda: indicate(Visitor_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct), Home_indct, Visitor_indct, Resident_indct))
     donebtn.configure(command=lambda: LogVframe.destroy())
+
+#ResidentPage_____________________________________________________________________________________________________________
+def validate_full_name(event):
+    if event.char.isalpha() or event.char == " ":
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
+
+def validate_phone_number(event):
+    if event.keysym in ('BackSpace', 'Delete', 'Left', 'Right', 'Tab'):
+        return True
+    elif event.char.isdigit():
+        current_text = event.widget.get()
+        selection_length = len(event.widget.selection_get()) if event.widget.selection_present() else 0
+        if len(current_text) - selection_length + 1 <= 11:
+            return True
+        else:
+            return "break"
+    else:
+        return "break"
+
+def on_entry_change(event, save_button):
+    save_button.configure(state='normal')
+
+def toggle_edit_save(edit_btn, entries_list, id_list, is_edit_mode):
+    if is_edit_mode:
+        edit_btn.configure(text="Save", state='disabled', command=lambda: toggle_edit_save(edit_btn, entries_list, id_list, False))
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='normal')
+                entry.bind("<KeyRelease>", lambda event, btn=edit_btn: on_entry_change(event, btn))
+    else:
+        edit_btn.configure(text="Edit", command=lambda: toggle_edit_save(edit_btn, entries_list, id_list, True))
+        save_edited_data(entries_list, id_list)
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='disabled')
+                entry.unbind("<KeyRelease>")
+
+def save_edited_data(entries_list, id_list):
+    for entries, res_id in zip(entries_list, id_list):
+        name, address, phone = [entry.get() for entry in entries]
+        update_resident_data(res_id, name, address, phone) # This function needs to be implemented in your db_con module
+
+def create_resident_table(Residentframe, resident_data):
+    entries_list = []
+    id_list = []  # Separate list to store res_ids
+    for i, data_row in enumerate(resident_data):
+        y_offset = 0.234 + (i * 0.0375)
+        entries = []
+        res_id = data_row[0]  # First element is res_id
+        row_data = data_row[1:]  # Skip res_id for display purposes
+        for j, value in enumerate(row_data):
+            entry = CTkEntry(Residentframe, width=320, height=30, fg_color="white", corner_radius=0, border_width=1)
+            entry.place(relx=0.0465 + (j * 0.302), rely=y_offset)
+            entry.insert(0, value if value is not None else "")
+            entry.configure(state='disabled')
+            if j == 0:  # Name field
+                entry.bind("<KeyPress>", validate_full_name)
+            elif j == 2:  # Phone number field
+                entry.bind("<KeyPress>", validate_phone_number)
+            entries.append(entry)
+        entries_list.append(entries)
+        id_list.append(res_id)  # Store res_id separately
+    return entries_list, id_list

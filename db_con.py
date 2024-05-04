@@ -230,7 +230,7 @@ def fetch_resident_data():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT res_name, res_address, res_phonenumber FROM resident_data")
+        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data")
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -239,28 +239,19 @@ def fetch_resident_data():
     finally:
         cursor.close()
         conn.close()
-
-def update_resident_data(resident_data):
+        
+def update_resident_data(res_id, name, address, phone):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        # Prepare the SQL query to update data
-        query = """
-        UPDATE resident_data
-        SET res_address = %s, res_phonenumber = %s
-        WHERE res_name = %s
-        """
-        # Execute the query for each row of data
-        for row in resident_data:
-            # Assuming the name is the identifier for updates
-            name, address, phone = row
-            cursor.execute(query, (address, phone, name))
-
-        conn.commit()  # Commit the changes to the database
+        # Use res_id for the WHERE clause
+        query = "UPDATE resident_data SET res_name = %s, res_address = %s, res_phonenumber = %s WHERE res_id = %s"
+        cursor.execute(query, (name, address, phone, res_id))
+        conn.commit()
         print("Resident data updated successfully.")
     except mysql.connector.Error as err:
         print(f"Failed to update resident data: {err}")
-        conn.rollback()  # Rollback in case of error
+        conn.rollback()
     finally:
         cursor.close()
         conn.close()

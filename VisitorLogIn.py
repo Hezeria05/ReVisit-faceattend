@@ -19,10 +19,10 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogInVHeading = CTkLabel(LogInVframe, text="Log In Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogInVHeading.place(relx=0.043, rely=0.06)
 
-    CameraFrame = CTkFrame(LogInVframe, fg_color="white", width=450, height=350, border_color="#B9BDBD", border_width=2)
+    CameraFrame = CTkFrame(LogInVframe, fg_color="white", width=450, height=450, border_color="#B9BDBD", border_width=2)
     CameraFrame.place(relx=0.043, rely=0.15)
     BscanFrame = CTkFrame(LogInVframe, fg_color="transparent", width=450, height=50)
-    BscanFrame.place(relx=0.043, rely=0.68)
+    BscanFrame.place(relx=0.043, rely=0.82)
     scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=40, corner_radius=10, fg_color="#ADCBCF",
                         hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333")
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')

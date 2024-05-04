@@ -51,7 +51,7 @@ def open_signin_window(select_window):
 
     # Sign-in button
     signbtn = CTkButton(SignFrame, text="Sign In", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
-    signbtn.place(relx=0.5, rely=0.75, anchor="center")
+    signbtn.place(relx=0.5, rely=0.8, anchor="center")
 
      # Bind the validation function to entry events
     entries = [Eusername, Epassword]
