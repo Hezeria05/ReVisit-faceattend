@@ -153,7 +153,7 @@ def indicate(selected_indicator, new_page, Home_indct, Visitor_indct, Resident_i
     selected_indicator.configure(fg_color="#00507E")  # Update the active indicator color
     new_page()
 
-def logout(window):
+def logout(window, btn):
     LogoutModal = CTkFrame(window, fg_color="white", width=650, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogoutModal.place(relx=0.634, rely=0.5, anchor='center')
     set_icon_image(LogoutModal, ASSETS_PATH / 'question_icon.png', relx=0.5, rely=0.13, anchor='n', size=(110, 110))
@@ -165,8 +165,8 @@ def logout(window):
     contbtn.place(relx=0.725, rely=0.8, anchor='center')
 
     cancelbtn = CTkButton(LogoutModal, text="Cancel", width=250, height=50, corner_radius=10,
-                            fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
-                            command=lambda:LogoutModal.destroy())
+                      fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
+                      command=lambda: (LogoutModal.destroy(), btn.configure(state='normal')))
     cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 
 #Home Page_____________________________________________________________________________________________________________

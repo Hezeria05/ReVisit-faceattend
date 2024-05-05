@@ -8,7 +8,7 @@ def connect_to_database():
         passwd="",
         database="visitor_attendance"
     )
-
+#Registration of Account Page_____________________________________________________________________________________________________________
 def register_security_admin(name, username, password, register_window, FnExistlabel, UnExistlabel):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -37,7 +37,7 @@ def register_security_admin(name, username, password, register_window, FnExistla
         cursor.close()
         conn.close()
 
-
+#Sign In Page_____________________________________________________________________________________________________________
 def validate_login_credentials(username, password):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -62,6 +62,7 @@ def validate_login_credentials(username, password):
         # Handle the case when the query returns None (no result found)
         return False, None
 
+#Home Page_____________________________________________________________________________________________________________
 def count_logged_in():
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -107,6 +108,7 @@ def count_total_today():
         cursor.close()
         conn.close()
 
+#Log in Visitor Page_____________________________________________________________________________________________________________
 def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -172,7 +174,7 @@ def fetch_residents():
         conn.close()
 
 
-
+#Log out Visitor Page_____________________________________________________________________________________________________________
 def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -211,7 +213,8 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
         cursor.close()
         conn.close()
 
-def fetch_visitor_data():
+#Visitor Page_____________________________________________________________________________________________________________
+def fetch_visitor_data_desc():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
@@ -225,6 +228,50 @@ def fetch_visitor_data():
         cursor.close()
         conn.close()
 
+def fetch_visitor_data_asc():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY log_day ASC, login_time ASC LIMIT 15")
+        data = cursor.fetchall()
+        return data
+    except mysql.connector.Error as err:
+        print(f"Failed to fetch visitor data: {err}")
+        return []
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_visitor_data_name_asc():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY visit_name ASC LIMIT 15")
+        data = cursor.fetchall()
+        return data
+    except mysql.connector.Error as err:
+        print(f"Failed to fetch visitor data: {err}")
+        return []
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_visitor_data_name_desc():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY visit_name DESC LIMIT 15")
+        data = cursor.fetchall()
+        return data
+    except mysql.connector.Error as err:
+        print(f"Failed to fetch visitor data: {err}")
+        return []
+    finally:
+        cursor.close()
+        conn.close()
+
+
+#Resident Page_____________________________________________________________________________________________________________
 def fetch_resident_data():
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -238,7 +285,7 @@ def fetch_resident_data():
     finally:
         cursor.close()
         conn.close()
-        
+
 def update_resident_data(window, res_id, name, address, phone):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -247,7 +294,7 @@ def update_resident_data(window, res_id, name, address, phone):
         query = "UPDATE resident_data SET res_name = %s, res_address = %s, res_phonenumber = %s WHERE res_id = %s"
         cursor.execute(query, (name, address, phone, res_id))
         conn.commit()
-        print("Resident data updated successfully.")
+        # print("Resident data updated successfully.")
     except mysql.connector.Error as err:
         print(f"Failed to update resident data: {err}")
         conn.rollback()

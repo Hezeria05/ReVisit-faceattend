@@ -48,7 +48,7 @@ Resident_btn.configure(command=lambda: indicate(Resident_indct, lambda: Resident
 
 # Add a logout button
 logout_btn = CTkButton(Sidebar, text="LOG OUT", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 25, "bold"),
-                text_color="#333333", command=lambda:logout(homepage_window))
+                text_color="#333333", command=lambda:(logout(homepage_window,logout_btn), logout_btn.configure(state='disabled')))
 logout_btn.place(relx=0.5, rely=0.85, anchor='n')
 
 # Call Home_page() to display the home page by default
