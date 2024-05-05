@@ -202,6 +202,20 @@ def view_history(sec_id, LogVframe, logsucess, ASSETS_PATH, set_icon_image, indi
     viewbtn.configure(command=lambda: indicate(Visitor_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct), Home_indct, Visitor_indct, Resident_indct))
     donebtn.configure(command=lambda: LogVframe.destroy())
 
+
+# Visitor Page
+
+def hide_btn( btn1, btn2, btn3, btn4):
+    btn1.configure(fg_color="#FEFEFE")
+    btn2.configure(fg_color="#FEFEFE")
+    btn3.configure(fg_color="#FEFEFE")
+    btn4.configure(fg_color="#FEFEFE")
+
+def btnind(selected_btn, btn1, btn2, btn3, btn4):
+    # Pass all indicator labels to hide_indicators
+    hide_btn(btn1, btn2, btn3, btn4)
+    selected_btn.configure(fg_color="#93ACAF")
+
 #ResidentPage_____________________________________________________________________________________________________________
 def validate_full_name(event):
     if event.char.isalpha() or event.char == " ":
