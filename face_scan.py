@@ -2,7 +2,6 @@ import tkinter as tk
 from customtkinter import *
 import cv2
 from face_recognition import KNN
-
 from PIL import Image, ImageTk
 
 

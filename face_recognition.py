@@ -1,8 +1,12 @@
 import cv2
 import numpy as np
 import os
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-#algorithm integration in face recognition
+# Algorithm integration in face recognition
 
 def load_face_data(dirpath):
     face_data = []
@@ -23,7 +27,6 @@ def load_face_data(dirpath):
         return None, None, None  # Return None if no data available
 
     face_dataset = np.concatenate(face_data, axis=0)
-    face_dataset = np.array([i.flatten() for i in face_dataset])
     face_labels = np.concatenate(labels)
 
     return face_dataset, face_labels, name
@@ -31,7 +34,7 @@ def load_face_data(dirpath):
 def distance(x, X):
     return np.sqrt(np.sum((x-X)**2))
 
-def KNN(X, Y, x, K=5):
+def KNN(X, Y, x, K=3):
     m = X.shape[0]
     x = x.flatten()
     val = []
@@ -46,3 +49,31 @@ def KNN(X, Y, x, K=5):
     index = counts.argmax()
     prediction = unique_labels[index]
     return prediction
+
+def KNN_predict(X, Y, X_test, K=3):
+    y_pred = []
+    for x in X_test:
+        prediction = KNN(X, Y, x, K)
+        y_pred.append(prediction)
+    return np.array(y_pred)
+
+# Load data
+dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+X, Y, name_dict = load_face_data(dirpath)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Predict using KNN
+y_pred = KNN_predict(X_train, y_train, X_test, K=3)
+
+# Generate confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Visualization
+f, ax = plt.subplots(figsize=(5, 5))
+sns.heatmap(cm, annot=True, linewidths=0.5, linecolor="red", fmt=".0f", ax=ax)
+plt.xlabel("Predicted labels")
+plt.ylabel("True labels")
+plt.title("Confusion Matrix")
+plt.show()
