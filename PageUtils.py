@@ -93,7 +93,7 @@ def signin_failed(signin_window):
 
 
 #Registration of Account Page_____________________________________________________________________________________________________________
-def check_entries_complete(entries, match_label, createbtn, Epassword, Ecpassword):
+def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword):
     all_complete = True
     for entry in entries:
         if not entry.get().strip():  # Check if any field is empty
@@ -101,24 +101,38 @@ def check_entries_complete(entries, match_label, createbtn, Epassword, Ecpasswor
             break
 
     if all_complete:
-        check_password_match(Epassword, Ecpassword, match_label, createbtn)  # Call password match check when all fields are complete
+        check_password_match(Epassword, Ecpassword, ecp_label, createbtn)  # Call password match check when all fields are complete
     else:
         disable_submit_button(createbtn)  # Disable button if any field is empty
 
-def check_password_match(Epassword, Ecpassword, match_label, createbtn):
+# New function to handle input in the "Password" field
+def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label):
+    password = Epassword.get().strip()
+
+    # Check if the password length is at least 8 characters
+    if len(password) >= 8:
+        ep_label.configure(text="", text_color="red")
+        Ecpassword.configure(state="normal")  # Enable "Confirm Password" field
+        check_password_match(Epassword, Ecpassword, ecp_label, createbtn)  # Continue to check password match
+    else:
+        Ecpassword.configure(state="disabled")  # Keep "Confirm Password" field disabled
+        ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+        disable_submit_button(createbtn)  # Ensure submit button is disabled
+
+def check_password_match(Epassword, Ecpassword, ecp_label, createbtn):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
-    if password and confirm_password:  # Check only if both fields are not empty
+    if password and confirm_password:
         if password == confirm_password:
-            match_label.configure(text="Passwords match", text_color="green")
+            ecp_label.configure(text="Passwords match", text_color="green")
             enable_submit_button(createbtn)  # Enable button if passwords match
         else:
-            match_label.configure(text="Passwords do not match", text_color="red")
+            ecp_label.configure(text="Passwords do not match", text_color="red")
             disable_submit_button(createbtn)  # Disable button if passwords do not match
     else:
-        match_label.configure(text="")  # Clear any previous messages
-        disable_submit_button(createbtn)  # Keep button disabled if either password field is empty
+        ecp_label.configure(text="")  # Clear any previous messages
+        disable_submit_button(createbtn)
 
 def enable_submit_button(button):
     button.configure(state="normal")

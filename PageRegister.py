@@ -2,7 +2,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, set_icon_image, display_success_and_close
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, handle_password_input, display_success_and_close
 from db_con import register_security_admin
 
 def open_register_window(main_window):
@@ -67,21 +67,24 @@ def open_register_window(main_window):
     create_asterisk(Epassword, RegFrame, relx=0.255, y=290, anchor='n')
     #Eye Toggle
     create_password_toggle_button(Epassword, RegFrame, relx=0.82, y=335, anchor='n')
+    ep_label = CTkLabel(RegFrame, text='', fg_color="transparent", font=("Inter", 12), text_color="red")
+    ep_label.place(relx=0.11, y=373, anchor='nw')
 
     #CONFIRM PASSWORD
     Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
-    Ecpassword.place(relx=0.5, y=420, anchor='n')
+    Ecpassword.place(relx=0.5, y=430, anchor='n')
     Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
-    Lcpassword.place(relx=0.11, y=390, anchor='nw')
-    create_asterisk(Ecpassword, RegFrame, relx=0.369, y=388, anchor='n')
+    Lcpassword.place(relx=0.11, y=400, anchor='nw')
+    Ecpassword.configure(state="disabled")
+    create_asterisk(Ecpassword, RegFrame, relx=0.369, y=398, anchor='n')
     #Eye Toggle
-    create_password_toggle_button(Ecpassword, RegFrame, relx=0.82, y=428, anchor='n')
+    create_password_toggle_button(Ecpassword, RegFrame, relx=0.82, y=438, anchor='n')
 
     # Add a label to show password match status
-    match_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
-    match_label.place(relx=0.11, y=465, anchor='nw')
+    ecp_label = CTkLabel(RegFrame, text='', fg_color="#F0F6F9", font=("Inter", 12), text_color="#333333")
+    ecp_label.place(relx=0.11, y=475, anchor='nw')
 
     # Reg-in button
     createbtn = CTkButton(RegFrame, text="Create Account", width=140, height=40, corner_radius=10,
@@ -103,9 +106,9 @@ def open_register_window(main_window):
     # Bind the validation function to entry events
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event, entries=entries, match_label=match_label, createbtn=createbtn, Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, match_label, createbtn, Epassword, Ecpassword))
-    Epassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
-    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, match_label, createbtn))
+        entry.bind("<KeyRelease>", lambda event, entries=entries, ecp_label=ecp_label, createbtn=createbtn, Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword))
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label))
+    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, ecp_label, createbtn))
     def handle_registration():
         # Disable the register button to prevent multiple submissions
         createbtn.configure(state="disabled")
@@ -128,7 +131,7 @@ def open_register_window(main_window):
             # Log the exception or show it in a way appropriate for your application's logging strategy
             print(f"Error during registration: {e}")
             # Provide feedback to the user that an error occurred
-            match_label.configure(text="An unexpected error occurred. Please try again.", text_color="red")
+            ecp_label.configure(text="An unexpected error occurred. Please try again.", text_color="red")
             # Re-enable the button to allow the user to try again
             createbtn.configure(state="normal")
             # Clear error messages after 3 seconds (3000 milliseconds)
