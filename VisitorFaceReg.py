@@ -38,7 +38,8 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
             scanbtn.configure(state="normal")
             scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
 
-        submitbtn = CTkButton(Entryframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", command=submit_and_destroy)
+        submitbtn = CTkButton(Entryframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", 
+                              hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled", command=submit_and_destroy)
         submitbtn.place(relx=0.5, rely=0.7, anchor='n')
         Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
         Existinglabel.place(relx=0.105, rely=0.58, anchor='nw')

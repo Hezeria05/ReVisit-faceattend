@@ -5,6 +5,7 @@ import numpy as np
 import os
 import time
 from PIL import Image, ImageTk
+from PageUtils import set_icon_image, ASSETS_PATH
 from VisitorLogIn import on_login_click
 
 def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
@@ -78,7 +79,15 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, Ex
             np.save(os.path.join(dirpath, visitor_name + '.npy'), face_data_np)
         cap.release()
         cv2.destroyAllWindows()
-        on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
-        RegVframe.destroy()
+        display_success_and_close(RegVframe)  # Assuming RegVframe is your register window
+
+    def display_success_and_close(register_window):
+        RegisScssfr = CTkFrame(register_window, fg_color="white", width=750, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+        RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
+        # Assuming ASSETS_PATH and set_icon_image are defined somewhere in your code
+        set_icon_image(RegisScssfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+        LbSuccess = CTkLabel(RegisScssfr, text="Registered Successfully", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+        LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+        register_window.after(2000, lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
 
     show_frame()
