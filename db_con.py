@@ -337,7 +337,7 @@ def fetch_resident_data():
     cursor = conn.cursor()
     try:
         # Limit the results to 18
-        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 18")
+        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15")
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
