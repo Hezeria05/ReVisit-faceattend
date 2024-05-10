@@ -218,7 +218,15 @@ def fetch_visitor_data_desc():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY log_day DESC, login_time DESC LIMIT 15")
+        query = """
+        SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+        FROM visitor_data vd
+        JOIN resident_data rd ON vd.res_id = rd.res_id
+        JOIN security_admin sa ON vd.sec_id = sa.sec_id
+        ORDER BY vd.log_day DESC, vd.login_time DESC
+        LIMIT 15
+        """
+        cursor.execute(query)
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -232,7 +240,15 @@ def fetch_visitor_data_asc():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY log_day ASC, login_time ASC LIMIT 15")
+        query = """
+        SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+        FROM visitor_data vd
+        JOIN resident_data rd ON vd.res_id = rd.res_id
+        JOIN security_admin sa ON vd.sec_id = sa.sec_id
+        ORDER BY vd.log_day ASC, vd.login_time ASC
+        LIMIT 15
+        """
+        cursor.execute(query)
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -246,7 +262,15 @@ def fetch_visitor_data_name_asc():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY visit_name ASC LIMIT 15")
+        query = """
+        SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+        FROM visitor_data vd
+        JOIN resident_data rd ON vd.res_id = rd.res_id
+        JOIN security_admin sa ON vd.sec_id = sa.sec_id
+        ORDER BY vd.visit_name ASC
+        LIMIT 15
+        """
+        cursor.execute(query)
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -260,7 +284,15 @@ def fetch_visitor_data_name_desc():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT visit_name, log_day, login_time, logout_time, res_id, sec_id, log_purpose FROM visitor_data ORDER BY visit_name DESC LIMIT 15")
+        query = """
+        SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+        FROM visitor_data vd
+        JOIN resident_data rd ON vd.res_id = rd.res_id
+        JOIN security_admin sa ON vd.sec_id = sa.sec_id
+        ORDER BY vd.visit_name DESC
+        LIMIT 15
+        """
+        cursor.execute(query)
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -269,7 +301,6 @@ def fetch_visitor_data_name_desc():
     finally:
         cursor.close()
         conn.close()
-
 
 #Resident Page_____________________________________________________________________________________________________________
 def fetch_resident_data():
