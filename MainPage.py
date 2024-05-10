@@ -3,13 +3,13 @@ from PageUtils import set_background_image, ASSETS_PATH, set_icon_image, logout,
 from PageHome import Home_page
 from PageVisitor import Visitor_page
 from PageResident import Resident_page
-#def open_homepage(sec_id):
+# def open_homepage(sec_id):
 homepage_window = CTk()
 homepage_window.title('Home')
 homepage_window.geometry('1440x900+300+70')
 homepage_window.minsize(1440, 900)
 homepage_window.maxsize(1440, 900)
-homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
+# homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
 sec_id = 13
 # Background for the new window
 set_background_image(homepage_window, ASSETS_PATH / 'HOME PAGE.png', size=(1440,900))

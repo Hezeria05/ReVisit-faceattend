@@ -12,6 +12,14 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         else:
             return "break"
 
+    def validate_length(event, entry):
+        if len(entry.get()) >= 50:
+            if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
+                return True
+            else:
+                return "break"
+        return True
+
     RegVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     RegVframe.place(relx=0.266, rely=0.118)
     RegVHeading = CTkLabel(RegVframe, text="Face Registration", font=("Inter", 35, "bold"), text_color="#333333")
@@ -28,6 +36,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         Vname.place(relx=0.5, rely=0.35, anchor='n')
         Vname.bind("<KeyPress>", validate_full_name)
         Vname.bind("<KeyRelease>", lambda event: vname_text.set(Vname.get().upper()))
+        Vname.bind("<KeyPress>", lambda event: validate_length(event, Vname))
         LVname = CTkLabel(Entryframe, text='Visitor Name', fg_color="transparent", font=("Inter", 20, "bold"), text_color="#333333")
         LVname.place(relx=0.2, rely=0.18, anchor='n')
         create_asterisk(Vname, Entryframe, relx=0.314, y=32, anchor='n')

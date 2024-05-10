@@ -11,6 +11,22 @@ from VisitorLogOut import on_logout_click
 import ttkbootstrap as tb
 
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+    def validate_LogPurpose(event):
+        if event.char.isalpha() or event.char == " ":
+            return True
+        elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+            return True
+        else:
+            return "break"
+
+    def validate_length(event, entry):
+        if len(entry.get()) >= 50:
+            if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
+                return True
+            else:
+                return "break"
+        return True
+
     # Main registration frame
     LogInVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     LogInVframe.place(relx=0.266, rely=0.118)
@@ -52,6 +68,8 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogPurpose= CTkEntry(LogInEframe, width=360.0, height=45, placeholder_text="State Purpose",
                     corner_radius=8, border_width=1, border_color='#DEE6EA')
     LogPurpose.place(relx=0.5, rely=0.6, anchor='n')
+    LogPurpose.bind("<KeyPress>", validate_LogPurpose)
+    LogPurpose.bind("<KeyPress>", lambda event: validate_length(event, LogPurpose))
     LbPurpose = CTkLabel(LogInEframe, text='Purpose of Visit', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.place(relx=0.22, rely=0.54, anchor='n')
     create_asterisk(LogPurpose, LogInEframe, relx=0.375, y=293, anchor='n')

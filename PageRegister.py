@@ -6,6 +6,13 @@ from PageUtils import create_asterisk, set_background_image, create_password_tog
 from db_con import register_security_admin
 
 def open_register_window(main_window):
+    def validate_length(event, entry):
+        if len(entry.get()) >= 50:
+            if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
+                return True
+            else:
+                return "break"
+        return True
 
     def validate_full_name(event):
         # Check if the character typed is a letter
@@ -39,6 +46,7 @@ def open_register_window(main_window):
                          corner_radius=8, border_width=1, border_color='#DEE6EA')
     Efullname.place(relx=0.5, y=140, anchor='n')
     Efullname.bind("<KeyPress>", validate_full_name)
+    Efullname.bind("<KeyPress>", lambda event: validate_full_name(event) and validate_length(event, Efullname))
     Lfullname = CTkLabel(RegFrame, text='Full Name', fg_color="#F0F6F9",
                          font=("Inter", 15, "bold"), text_color="#333333")
     Lfullname.place(relx=0.11, y=110, anchor='nw')
@@ -50,6 +58,7 @@ def open_register_window(main_window):
     Eusername = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Username",
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     Eusername.place(relx=0.5, y=230, anchor='n')
+    Eusername.bind("<KeyPress>", lambda event: validate_length(event, Eusername))
     Lusername = CTkLabel(RegFrame, text='Username', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lusername.place(relx=0.11, y=200, anchor='nw')
@@ -61,6 +70,7 @@ def open_register_window(main_window):
     Epassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
     Epassword.place(relx=0.5, y=328, anchor='n')
+    Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword))
     Lpassword = CTkLabel(RegFrame, text='Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lpassword.place(relx=0.11, y=298, anchor='nw')
@@ -74,6 +84,7 @@ def open_register_window(main_window):
     Ecpassword = CTkEntry(RegFrame, width=420.0, height=45.0, placeholder_text="Enter Password",
                         corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
     Ecpassword.place(relx=0.5, y=430, anchor='n')
+    Ecpassword.bind("<KeyPress>", lambda event: validate_length(event, Ecpassword))
     Lcpassword = CTkLabel(RegFrame, text='Confirm Password', fg_color="#F0F6F9",
                         font=("Inter", 15, "bold"), text_color="#333333")
     Lcpassword.place(relx=0.11, y=400, anchor='nw')
