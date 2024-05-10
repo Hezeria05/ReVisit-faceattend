@@ -39,10 +39,10 @@ def Resident_page(homepage_window):
 
     next_button = CTkButton(Residentframe, text="Next",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
                         font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("next"))
-    next_button.place(relx=0.9, rely=0.87, anchor="center")
+    next_button.place(relx=0.9, rely=0.9, anchor="center")
     back_button = CTkButton(Residentframe, text="Back",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
                         font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("back"))
-    back_button.place(relx=0.8, rely=0.87, anchor="center")
+    back_button.place(relx=0.8, rely=0.9, anchor="center")
     back_button.configure(state='disabled')  # Initially disabled
 
     def navigate(direction):
