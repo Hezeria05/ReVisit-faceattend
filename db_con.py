@@ -215,13 +215,14 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
                 if visitor_data:
                     save_data_to_csv(visitor_data)
                 return True  # Logout was successful
-            elif logout_time is not None:
-                Existinglabel.configure(text='Logged out already.')
             else:
-                Existinglabel.configure(text='Log in first.')
+                if logout_time is not None:
+                    Existinglabel.configure(text='Logged out already.')
+                else:
+                    Existinglabel.configure(text='Log in first.')
         else:
             Existinglabel.configure(text='Visitor not found or never logged in.')
-        return False  # Logout was not successful
+        return False # Logout was not successful
 
     except mysql.connector.Error as err:
         Existinglabel.configure(text=f"Failed to update visitor data: {err}")
@@ -240,8 +241,6 @@ def save_data_to_csv(data):
         if not file_exists:
             writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
         writer.writerow(data)
-    # Set file to read-only mode
-    os.chmod(file_path, 0o444)
 #Visitor Page_____________________________________________________________________________________________________________
 def fetch_visitor_data_desc():
     conn = connect_to_database()
