@@ -1,5 +1,7 @@
 import mysql.connector
-from datetime import datetime, timedelta
+from datetime import datetime
+import csv
+import os
 
 def connect_to_database():
     return mysql.connector.connect(
@@ -179,6 +181,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
+        # Check for the most recent login without a logout
         query_check = """
         SELECT login_time, logout_time FROM visitor_data WHERE visit_name = %s AND sec_id = %s ORDER BY log_day DESC, login_time DESC LIMIT 1
         """
@@ -197,6 +200,20 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
                 """
                 cursor.execute(query_update, (logout_time, False, log_day, visit_name, login_time, sec_id))
                 conn.commit()
+
+                # Fetch the updated data with JOINs
+                query_fetch = """
+                SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+                FROM visitor_data vd
+                JOIN resident_data rd ON vd.res_id = rd.res_id
+                JOIN security_admin sa ON vd.sec_id = sa.sec_id
+                WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
+                """
+                cursor.execute(query_fetch, (visit_name, sec_id, login_time))
+                visitor_data = cursor.fetchone()
+
+                if visitor_data:
+                    save_data_to_csv(visitor_data)
                 return True  # Logout was successful
             elif logout_time is not None:
                 Existinglabel.configure(text='Logged out already.')
@@ -213,6 +230,18 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
         cursor.close()
         conn.close()
 
+def save_data_to_csv(data):
+    COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
+    file_path = f"C:\\Users\\grace\\Desktop\\Visitor_Attendance\\{data[1]}_VAttendance.csv"
+
+    file_exists = os.path.isfile(file_path)
+    with open(file_path, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        if not file_exists:
+            writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
+        writer.writerow(data)
+    # Set file to read-only mode
+    os.chmod(file_path, 0o444)
 #Visitor Page_____________________________________________________________________________________________________________
 def fetch_visitor_data_desc():
     conn = connect_to_database()
