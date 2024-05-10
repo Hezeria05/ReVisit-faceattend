@@ -332,12 +332,12 @@ def fetch_visitor_data_name_desc():
         conn.close()
 
 #Resident Page_____________________________________________________________________________________________________________
-def fetch_resident_data():
+
+def fetch_resident_data(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        # Limit the results to 18
-        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15")
+        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15 OFFSET %s", (offset,))
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -348,17 +348,18 @@ def fetch_resident_data():
         conn.close()
 
 def update_resident_data(window, res_id, name, address, phone):
-    conn = connect_to_database()
-    cursor = conn.cursor()
     try:
-        # Use res_id for the WHERE clause
+        conn = connect_to_database()  # Ensure this function returns a valid connection
+        cursor = conn.cursor()
         query = "UPDATE resident_data SET res_name = %s, res_address = %s, res_phonenumber = %s WHERE res_id = %s"
         cursor.execute(query, (name, address, phone, res_id))
         conn.commit()
-        # print("Resident data updated successfully.")
-    except mysql.connector.Error as err:
-        print(f"Failed to update resident data: {err}")
-        conn.rollback()
+    except Exception as e:  # Broad exception handling for any database-related errors
+        print(f"Failed to update resident data: {e}")
+        if conn:
+            conn.rollback()
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()

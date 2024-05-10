@@ -252,39 +252,6 @@ def validate_phone_number(event):
     else:
         return "break"
 
-def on_entry_change(event, save_button, entries_list):
-    all_valid = True
-    for entries in entries_list:
-        # Assuming the phone number is always the third entry
-        phone_entry = entries[2]
-        # Validate phone number length
-        if len(phone_entry.get()) < 11:
-            all_valid = False
-            break
-    # Update the state of the save button based on the validation
-    save_button.configure(state='normal' if all_valid else 'disabled')
-
-def toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, is_edit_mode):
-    if is_edit_mode:
-        edit_btn.configure(text="Save", state='disabled', command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, False))
-        for entries in entries_list:
-            for entry in entries:
-                entry.configure(state='normal')
-                # Bind KeyRelease to check validation after any change
-                entry.bind("<KeyRelease>", lambda event, btn=edit_btn, elist=entries_list: on_entry_change(event, btn, elist))
-    else:
-        edit_btn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, True))
-        save_edited_data(Residentframe, entries_list, id_list)
-        for entries in entries_list:
-            for entry in entries:
-                entry.configure(state='disabled')
-                entry.unbind("<KeyRelease>")
-def save_edited_data(Residentframe, entries_list, id_list):
-    for entries, res_id in zip(entries_list, id_list):
-        name, address, phone = [entry.get() for entry in entries]
-        update_resident_data(Residentframe, res_id, name, address, phone) # This function needs to be implemented in your db_con module
-        save_success(Residentframe)
-
 def create_resident_table(Residentframe, resident_data):
     entries_list = []
     id_list = []  # Separate list to store res_ids
@@ -306,6 +273,38 @@ def create_resident_table(Residentframe, resident_data):
         entries_list.append(entries)
         id_list.append(res_id)  # Store res_id separately
     return entries_list, id_list
+
+def toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, is_edit_mode):
+    if is_edit_mode:
+        edit_btn.configure(text="Save", state='disabled', command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, False))
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='normal')
+                # Properly bind the KeyRelease event to validate input
+                entry.bind("<KeyRelease>", lambda event, btn=edit_btn, elist=entries_list: on_entry_change(event, btn, elist))
+    else:
+        edit_btn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, True))
+        save_edited_data(Residentframe, entries_list, id_list)
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='disabled')
+                entry.unbind("<KeyRelease>")
+
+def on_entry_change(event, save_button, entries_list):
+    all_valid = True
+    for entries in entries_list:
+        phone_entry = entries[2]
+        if len(phone_entry.get()) < 11:  # Check for valid phone number length
+            all_valid = False
+            break
+    save_button.configure(state='normal' if all_valid else 'disabled')
+
+def save_edited_data(Residentframe, entries_list, id_list):
+    for entries, res_id in zip(entries_list, id_list):
+        name, address, phone = [entry.get() for entry in entries]
+        update_resident_data(Residentframe, res_id, name, address, phone) # This function needs to be implemented in your db_con module
+        save_success(Residentframe)
+
 
 def save_success(window):
     SaveSucessfr = CTkFrame(window, fg_color="white", width=700, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
