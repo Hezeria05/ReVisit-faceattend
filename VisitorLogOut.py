@@ -1,6 +1,7 @@
 import tkinter as tk
 from customtkinter import *
 import cv2
+import os
 from face_recognition import load_face_data
 from PageUtils import ASSETS_PATH, set_icon_image, indicate, view_history
 from face_scan import start_camera
@@ -38,6 +39,9 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
         success = logout_visitor(visitor_name, sec_id, Existinglabel)
         if success:
             cap.release()
+            data_path = os.path.join(dirpath, f"{visitor_name}.npy")
+            if os.path.exists(data_path):
+                os.remove(data_path)
             logsucess = "Logout successfully!"
             view_history(sec_id, LogOutVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
 
