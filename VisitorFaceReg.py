@@ -1,19 +1,11 @@
 import tkinter as tk
 import cv2
 from customtkinter import *
-from PageUtils import create_asterisk, check_sign_complete
+from PageUtils import create_asterisk, check_sign_complete, validate_full_name
 from face_registration import face_register
 from PIL import Image, ImageTk
 
 def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
-    def validate_full_name(event):
-        if event.char.isalpha() or event.char == " ":
-            return True
-        elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
-            return True
-        else:
-            return "break"
-
     def validate_length(event, entry):
         if len(entry.get()) >= 50:
             if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):

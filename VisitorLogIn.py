@@ -85,11 +85,22 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                           hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
     submitbtn.place(relx=0.5, rely=0.8, anchor='n')
 
-
-    # Validation and submission
     entries = [LogVname, ResidID, LogPurpose]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))
+        entry.bind("<KeyRelease>", lambda event, entries=entries: check_entries_and_enable_submit(entries, submitbtn))
+
+    def check_entries_and_enable_submit(entries, submitbtn):
+        # Check if the Resident ID is set to the placeholder "--Select--"
+        if ResidID.get() == "--Select--":
+            print("Select address first")
+            submitbtn.configure(state="disabled")  # Disable the submit button
+        else:
+            # Check if all other entries are correctly filled
+            if all(entry.get().strip() != '' for entry in entries):
+                submitbtn.configure(state="normal")  # Enable the submit button if all conditions are met
+            else:
+                submitbtn.configure(state="disabled")  # Keep the submit button disabled
+
 
     def handle_submit():
         # Retrieve data from entries

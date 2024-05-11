@@ -20,6 +20,15 @@ def set_background_image(window, image_path, size):
     bg_image_label.place(relwidth=1, relheight=1)
     # bg_image_label.image = bg_image_tk
 
+def validate_full_name(event):
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
+
+
 #Register and Sign In_____________________________________________________________________________________________________________
 # Globals to hold the eye images (to avoid loading them multiple times)
 open_eye_tk = None
@@ -232,7 +241,7 @@ def btnind(selected_btn, btn1, btn2, btn3, btn4):
 
 #ResidentPage_____________________________________________________________________________________________________________
 def validate_full_name(event):
-    if event.char.isalpha() or event.char == " ":
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
         return True
     elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
         return True

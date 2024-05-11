@@ -2,7 +2,7 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
-from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, handle_password_input, display_success_and_close
+from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, handle_password_input, display_success_and_close, validate_full_name
 from db_con import register_security_admin
 
 def open_register_window(main_window):
@@ -14,16 +14,6 @@ def open_register_window(main_window):
                 return "break"
         return True
 
-    def validate_full_name(event):
-        # Check if the character typed is a letter
-        if event.char.isalpha() or event.char == " ":
-            return True
-        # Allow space and control characters like backspace
-        elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
-            return True
-        else:
-            # Reject the character by returning "break" to stop the event from propagating
-            return "break"
     register_window = CTkToplevel(main_window)
     register_window.geometry('1200x800+400+100')
     register_window.title('Register Account')
