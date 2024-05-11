@@ -5,6 +5,13 @@ from db_con import validate_login_credentials
 from  MainPage import open_homepage
 
 def open_signin_window(select_window):
+    def validate_length(event, entry):
+        if len(entry.get()) >= 50:
+            if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
+                return True
+            else:
+                return "break"
+        return True
     signin_window = CTkToplevel(select_window)
     signin_window.geometry('1200x800+400+100')
     signin_window.title('Sign In')
@@ -25,12 +32,14 @@ def open_signin_window(select_window):
 
     Eusername = CTkEntry(SignFrame, width=420.0, height=45.0, placeholder_text="Enter Username", corner_radius=8, border_width=1, border_color='#DEE6EA')
     Eusername.place(relx=0.5, y=230, anchor='n')
+    Eusername.bind("<KeyPress>", lambda event: validate_length(event, Eusername))
     Lusername = CTkLabel(SignFrame, text='Username', fg_color="#F0F6F9", font=("Inter", 15, "bold"), text_color="#333333")
     Lusername.place(relx=0.17, y=200, anchor='n')
     create_asterisk(Eusername, SignFrame, relx=0.250, y=198, anchor='n')
 
     Epassword = CTkEntry(SignFrame, width=420.0, height=45.0, placeholder_text="Enter Password", corner_radius=8, border_width=1, border_color='#DEE6EA', show="*")
     Epassword.place(relx=0.5, y=320, anchor='n')
+    Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword))
     Lpassword = CTkLabel(SignFrame, text='Password', fg_color="#F0F6F9", font=("Inter", 15, "bold"), text_color="#333333")
     Lpassword.place(relx=0.17, y=290, anchor='n')
     create_asterisk(Epassword, SignFrame, relx=0.250, y=288, anchor='n')
