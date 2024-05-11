@@ -43,39 +43,45 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         LVname = CTkLabel(Entryframe, text='Visitor Name', fg_color="transparent", font=("Inter", 20, "bold"), text_color="#333333")
         LVname.place(relx=0.2, rely=0.18, anchor='n')
         create_asterisk(Vname, Entryframe, relx=0.314, y=32, anchor='n')
+        Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
+        Existinglabel.place(relx=0.105, rely=0.58, anchor='nw')
+
 
         def submit_and_destroy():
             face_name = Vname.get()
-            Entryframe.destroy()
-            nonlocal cap
-            camera_label = CTkLabel(RCameraFrame, width=680, height=480, text="")
-            camera_label.place(relx=0, rely=0)
+            dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
 
-            cap = cv2.VideoCapture(0)  # Initialize the camera
+            # Check if a file with the same name already exists
+            if os.path.isfile(os.path.join(dirpath, face_name + '.npy')):
+                Existinglabel.configure(text='Already Existing!')
+            else:
+                Entryframe.destroy()
+                nonlocal cap
+                camera_label = CTkLabel(RCameraFrame, width=680, height=480, text="")
+                camera_label.place(relx=0, rely=0)
 
-            def show_frame():
-                ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
-                if not ret:
-                    print("Failed to grab frame")
-                    camera_label.after(10, show_frame)  # Try again after 10 ms
-                    return  # Exit the function if no frame is captured
-                cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-                img = Image.fromarray(cv2image)
-                imgtk = ImageTk.PhotoImage(image=img)
-                camera_label.imgtk = imgtk  # Keep a reference, avoid garbage collection
-                camera_label.configure(image=imgtk)
-                camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
+                cap = cv2.VideoCapture(0)  # Initialize the camera
 
-            show_frame()
-            scanbtn.configure(state="normal")
-            scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
+                def show_frame():
+                    ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
+                    if not ret:
+                        print("Failed to grab frame")
+                        camera_label.after(10, show_frame)  # Try again after 10 ms
+                        return  # Exit the function if no frame is captured
+                    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+                    img = Image.fromarray(cv2image)
+                    imgtk = ImageTk.PhotoImage(image=img)
+                    camera_label.imgtk = imgtk  # Keep a reference, avoid garbage collection
+                    camera_label.configure(image=imgtk)
+                    camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
+
+                show_frame()
+                scanbtn.configure(state="normal")
+                scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, Entryframe, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct))
 
         submitbtn = CTkButton(Entryframe, text="Submit", width=140, height=40, corner_radius=10, fg_color="#ADCBCF", 
                               hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled", command=submit_and_destroy)
         submitbtn.place(relx=0.5, rely=0.7, anchor='n')
-        Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-        Existinglabel.place(relx=0.105, rely=0.58, anchor='nw')
-
         entries = [Vname]
         for entry in entries:
             entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, submitbtn))

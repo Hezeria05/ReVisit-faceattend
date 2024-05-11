@@ -8,16 +8,9 @@ from PIL import Image, ImageTk
 from PageUtils import set_icon_image, ASSETS_PATH
 from VisitorLogIn import on_login_click
 
-def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, Existinglabel, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
     scanbtn.destroy()
-
-    # Check if a file with the same name already exists
-    if os.path.isfile(os.path.join(dirpath, visitor_name + '.npy')):
-        Existinglabel.configure(text='Already Existing!')
-        # Existinglabel.after(3000, Existinglabel.place_forget)
-        return  # Exit the function if name exists
-    Entryframe.destroy()  # Remove the entry frame after name is submitted
 
     # Prepare the label for the camera feed inside RegVframe
     camera_label = CTkLabel(RCameraFrame, text="", width=680, height=480)
