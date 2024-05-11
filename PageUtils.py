@@ -254,7 +254,16 @@ def validate_phone_number(event):
     elif event.char.isdigit():
         current_text = event.widget.get()
         selection_length = len(event.widget.selection_get()) if event.widget.selection_present() else 0
-        if len(current_text) - selection_length + 1 <= 11:
+        new_text = current_text[:event.widget.index("insert")] + event.char + current_text[event.widget.index("insert"):]
+
+        # Allow starting to type "09"
+        if len(new_text) == 1 and event.char == "0":
+            return True
+        elif len(new_text) == 2 and new_text.startswith("09"):
+            return True
+
+        # Check if the text starts with '09' and respects the maximum length condition
+        if new_text.startswith("09") and len(new_text) - selection_length <= 11:
             return True
         else:
             return "break"

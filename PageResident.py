@@ -34,39 +34,39 @@ def Resident_page(homepage_window):
     RTRows = CTkFrame (Residentframe, width=960, height=210, fg_color="white", corner_radius=0, border_color="#B9BDBD", border_width=0)
     RTRows.place(relx=0.5, rely=0.65, anchor="center")
 
-    # Pagination controls
-    current_offset = 0
+    # # Pagination controls
+    # current_offset = 0
 
-    next_button = CTkButton(Residentframe, text="Next",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
-                        font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("next"))
-    next_button.place(relx=0.9, rely=0.9, anchor="center")
-    back_button = CTkButton(Residentframe, text="Back",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
-                        font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("back"))
-    back_button.place(relx=0.8, rely=0.9, anchor="center")
-    back_button.configure(state='disabled')  # Initially disabled
+    # next_button = CTkButton(Residentframe, text="Next",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
+    #                     font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("next"))
+    # next_button.place(relx=0.9, rely=0.9, anchor="center")
+    # back_button = CTkButton(Residentframe, text="Back",width=50, height=40, corner_radius=10, fg_color="transparent", hover_color="#F6FCFC",
+    #                     font=("Inter", 17, "bold"), text_color="#333333", command=lambda: navigate("back"))
+    # back_button.place(relx=0.8, rely=0.9, anchor="center")
+    # back_button.configure(state='disabled')  # Initially disabled
 
-    def navigate(direction):
-        nonlocal current_offset, entries_list, id_list
-        if direction == "next":
-            new_offset = current_offset + 15
-        elif direction == "back":
-            new_offset = max(0, current_offset - 15)
+    # def navigate(direction):
+    #     nonlocal current_offset, entries_list, id_list
+    #     if direction == "next":
+    #         new_offset = current_offset + 15
+    #     elif direction == "back":
+    #         new_offset = max(0, current_offset - 15)
 
-        updated, new_entries_list, new_id_list = update_table_display(Residentframe, new_offset, entries_list, id_list)
-        if updated:
-            entries_list, id_list = new_entries_list, new_id_list
-            current_offset = new_offset
-            back_button.configure(state='normal' if current_offset > 0 else 'disabled')
-            if not fetch_resident_data(current_offset + 15):
-                next_button.configure(state='disabled')
-            else:
-                next_button.configure(state='normal')
+    #     updated, new_entries_list, new_id_list = update_table_display(Residentframe, new_offset, entries_list, id_list)
+    #     if updated:
+    #         entries_list, id_list = new_entries_list, new_id_list
+    #         current_offset = new_offset
+    #         back_button.configure(state='normal' if current_offset > 0 else 'disabled')
+    #         if not fetch_resident_data(current_offset + 15):
+    #             next_button.configure(state='disabled')
+    #         else:
+    #             next_button.configure(state='normal')
 
-            # Reset Edit button to initial state when new data is loaded
-            EditBtn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, EditBtn, entries_list, id_list, True))
-        else:
-            next_button.configure(state='disabled')
-        # Initial data display
+    #         # Reset Edit button to initial state when new data is loaded
+    #         EditBtn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, EditBtn, entries_list, id_list, True))
+    #     else:
+    #         next_button.configure(state='disabled')
+    #     # Initial data display
     # Ensure initial data fetch is always called with an offset
     resident_data = fetch_resident_data(0)
     entries_list, id_list = create_resident_table(Residentframe, resident_data)

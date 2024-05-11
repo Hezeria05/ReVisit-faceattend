@@ -12,7 +12,7 @@ import ttkbootstrap as tb
 
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     def validate_LogPurpose(event):
-        if event.char.isalpha() or event.char == " ":
+        if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
             return True
         elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
             return True
