@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from PageUtils import create_asterisk, set_background_image, create_password_toggle_button, check_entries_complete, check_password_match, ASSETS_PATH, handle_password_input, display_success_and_close, validate_full_name
 from db_con import register_security_admin
+from dy_PageUtils import configure_grid, create_standard_entry, create_standard_label, create_warning_label
 
 # def open_register_window(main_window):
 register_window = CTk()
@@ -16,8 +17,6 @@ register_window.configure(fg_color='white')
 register_window.maxsize(register_window.winfo_screenwidth(), register_window.winfo_screenheight())
 register_window.rowconfigure((0, 2), weight=1, uniform='a')
 register_window.rowconfigure(1, weight=10, uniform='a')
-
-
 
 def on_resize(event):
     width = event.width
@@ -58,85 +57,53 @@ LogoF.grid(row=1, column=1)
 BackF = CTkFrame(register_window, fg_color="light green", corner_radius=10, width=110, height=40)
 BackF.grid(row=2, column=0, sticky="nsew")
 
+
+
+# FULL NAME
 InputF1 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
 InputF1.grid(row=2, column=1, sticky="nsew", pady=2)
-InputF1.columnconfigure(0, weight=1, uniform='a')
-InputF1.rowconfigure(1, weight=4, uniform='a')
-InputF1.rowconfigure((0,2), weight=2, uniform='a')
-# FULL NAME
-Efullname = CTkEntry(InputF1, placeholder_text="Enter Full Name", font=("Inter", 15),
-                        corner_radius=8, border_width=1.5, border_color='#F47575')
-Efullname.grid(row=1, column=0, sticky='nsew')
+configure_grid(InputF1)
+Efullname = create_standard_entry(InputF1, "Enter Full Name")
+Lfullname = create_standard_label(InputF1, 'Full Name')
+FnExistlabel = create_warning_label(InputF1, "Warning: Name Already Exists")
 
-Lfullname = CTkLabel(InputF1, text='Full Name', fg_color="transparent",
-                        font=("Inter", 18, "bold"), text_color="#333333")
-Lfullname.grid(row=0, column=0, sticky='ws', padx=2)
 
-FnExistlabel = CTkLabel(InputF1, text='warning', fg_color="transparent",
-                        font=("Inter", 12), text_color="red")
-FnExistlabel.grid(row=2, column=0, sticky='ws', padx=2)
-
+# USERNAME
 InputF2 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
 InputF2.grid(row=3, column=1, sticky="nsew", pady=2)
-InputF2.columnconfigure(0, weight=1, uniform='a')
-InputF2.rowconfigure(1, weight=4, uniform='a')
-InputF2.rowconfigure((0,2), weight=2, uniform='a')
-# FULL NAME
-EUsername = CTkEntry(InputF2, placeholder_text="Enter Username", font=("Inter", 15),
-                        corner_radius=8, border_width=1.5, border_color='#F47575')
-EUsername.grid(row=1, column=0, sticky='nsew')
-
-LUsername = CTkLabel(InputF2, text='Username', fg_color="transparent",
-                        font=("Inter", 18, "bold"), text_color="#333333")
-LUsername.grid(row=0, column=0, sticky='ws', padx=2)
-
-UnExistlabel = CTkLabel(InputF2, text='warning', fg_color="transparent",
-                        font=("Inter", 12), text_color="red")
-UnExistlabel.grid(row=2, column=0, sticky='ws', padx=2)
+configure_grid(InputF2)
+Eusername = create_standard_entry(InputF2, "Enter Username")
+Lusername = create_standard_label(InputF2, 'Username')
+UnExistlabel = create_warning_label(InputF2, "Warning: Username Already Exists")
 
 
-# InputF3 = CTkFrame(CreateF, fg_color="light pink", corner_radius=10)
-# InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-# InputF1.columnconfigure(0, weight=1, uniform='a')
-# InputF1.rowconfigure(1, weight=4, uniform='a')
-# InputF1.rowconfigure((0,2), weight=2, uniform='a')
-# # FULL NAME
-# Efullname = CTkEntry(InputF1, placeholder_text="Enter Full Name", font=("Inter", 15),
-#                         corner_radius=8, border_width=1.5, border_color='#F47575')
-# Efullname.grid(row=1, column=0, sticky='nsew')
-
-# Lfullname = CTkLabel(InputF1, text='Full Name', fg_color="transparent",
-#                         font=("Inter", 18, "bold"), text_color="#333333")
-# Lfullname.grid(row=0, column=0, sticky='ws', padx=2)
-
-# FnExistlabel = CTkLabel(InputF1, text='warning', fg_color="transparent",
-#                         font=("Inter", 12), text_color="red")
-# FnExistlabel.grid(row=2, column=0, sticky='ws', padx=2)
+# PASSWORD
+InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
+InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
+configure_grid(InputF3)
+Epassword = create_standard_entry(InputF3, "Enter Password")
+Lpassword = create_standard_label(InputF3, 'Enter Password')
+epExistlabel = create_warning_label(InputF3, "Warning: Password Error")
 
 
-# InputF4 = CTkFrame(CreateF, fg_color="light green", corner_radius=10)
-# InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
-# InputF1.columnconfigure(0, weight=1, uniform='a')
-# InputF1.rowconfigure(1, weight=4, uniform='a')
-# InputF1.rowconfigure((0,2), weight=2, uniform='a')
-# # FULL NAME
-# Efullname = CTkEntry(InputF1, placeholder_text="Enter Full Name", font=("Inter", 15),
-#                         corner_radius=8, border_width=1.5, border_color='#F47575')
-# Efullname.grid(row=1, column=0, sticky='nsew')
-
-# Lfullname = CTkLabel(InputF1, text='Full Name', fg_color="transparent",
-#                         font=("Inter", 18, "bold"), text_color="#333333")
-# Lfullname.grid(row=0, column=0, sticky='ws', padx=2)
-
-# FnExistlabel = CTkLabel(InputF1, text='warning', fg_color="transparent",
-#                         font=("Inter", 12), text_color="red")
-# FnExistlabel.grid(row=2, column=0, sticky='ws', padx=2)
+# CONFIRM PASSWORD
+InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
+InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
+configure_grid(InputF4)
+Ecpassword = create_standard_entry(InputF4, "Confirm Password")
+Lcpassword = create_standard_label(InputF4, 'Confirm Password')
+ecpExistlabel = create_warning_label(InputF4, "Warning: Passwords Do Not Match")
 
 
-CAbtn = CTkFrame(CreateF, fg_color="gray", corner_radius=10)
-CAbtn.grid(row=6, column=1, sticky="nsew", pady=20)
+CAFrame= CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
+CAFrame.grid(row=6, column=1, sticky="nsew")
+CAFrame.columnconfigure(0, weight=1, uniform='a')
+CAFrame.rowconfigure(0, weight=1, uniform='a')
 
-
+CAbtn = CTkButton(CAFrame, text="Create Account", width=180, height=50, corner_radius=10,
+                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 17, "bold"),
+                        text_color="#333333", state="disabled")
+CAbtn.grid(row=0, column=0, sticky="ne", pady=20)
 
 
 register_window.mainloop()
