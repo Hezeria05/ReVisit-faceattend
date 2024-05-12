@@ -21,7 +21,7 @@ def update_table_display(Residentframe, offset, entries_list, id_list):
 def Resident_page(homepage_window):
     Residentframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
     Residentframe.place(relx=0.266, rely=0.118)
-    ResidentHeading = CTkLabel(Residentframe, text="Resident's List", font=("Inter", 35, "bold"), text_color="#333333")
+    ResidentHeading = CTkLabel(Residentframe, text="Residents List", font=("Inter", 35, "bold"), text_color="#333333")
     ResidentHeading.place(relx=0.043, rely=0.06)
     RTCols = CTkFrame (Residentframe, width=960, height=50, fg_color="#93ACAF", corner_radius=0, border_color="#B9BDBD", border_width=1)
     RTCols.place(relx=0.5, rely=0.2, anchor="center")
