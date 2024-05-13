@@ -1,7 +1,36 @@
 from customtkinter import *
+from PIL import Image
+import os
 
+#_______________________________________GENERAL
 
+def configure_frame(frame, row_weights, column_weights):
+    for i, weight in enumerate(row_weights):
+        frame.rowconfigure(i, weight=weight, uniform='a')
 
+    for i, weight in enumerate(column_weights):
+        frame.columnconfigure(i, weight=weight, uniform='a')
+
+def load_image(file_name, size):
+    image_path = os.path.join(os.path.dirname(__file__), 'assets', file_name)
+    image = CTkImage(light_image=Image.open(image_path), size=size)
+    return image
+
+def validate_length(event, entry, max):
+    if len(entry.get()) >= max:
+        if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
+            return True
+        else:
+            return "break"
+    return True
+
+def validate_full_name(event):
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
 
 #_______________________________________dyPAGEREGISTER
 
@@ -15,11 +44,6 @@ def create_standard_label(parent, text):
     label = CTkLabel(parent, text=text, fg_color="transparent", font=font, text_color=text_color)
     label.grid(**grid_options)
     return label
-
-def configure_grid(widget):
-    widget.columnconfigure(0, weight=1, uniform='a')
-    widget.rowconfigure(1, weight=4, uniform='a')
-    widget.rowconfigure((0, 2), weight=2, uniform='a')
 
 def create_standard_entry(parent, placeholder):
     # Standard entry properties
