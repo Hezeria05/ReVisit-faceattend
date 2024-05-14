@@ -124,8 +124,10 @@ def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label)
         Ecpassword.configure(state="normal")  # Enable "Confirm Password" field
         check_password_match(Epassword, Ecpassword, ecp_label, createbtn)  # Continue to check password match
     else:
+        Ecpassword.delete(0, 'end')  # Clear the "Confirm Password" field
         Ecpassword.configure(state="disabled")  # Keep "Confirm Password" field disabled
         ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+        ecp_label.configure(text="")  # Clear any previous messages in the confirm password label
         disable_submit_button(createbtn)  # Ensure submit button is disabled
 
 def check_password_match(Epassword, Ecpassword, ecp_label, createbtn):
