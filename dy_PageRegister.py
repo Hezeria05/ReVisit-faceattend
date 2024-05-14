@@ -5,8 +5,8 @@ from pathlib import Path
 from db_con import register_security_admin
 from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
                           load_image, configure_frame, validate_length, validate_full_name,
-                          toggle_password_visibility, check_entries_complete,
-                          check_password_match, handle_password_input)
+                          toggle_password_visibility, check_entries_complete, change_border_color,
+                          check_password_match, handle_password_input, display_success_and_close)
 # def open_register_window(main_window):
 register_window = CTk()
 # register_window = CTkToplevel(main_window)
@@ -54,13 +54,6 @@ configure_frame(CreateF, [1], [1])
 backimage = load_image('Back_icon.png', (95, 40))
 back_button = CTkButton(BackF, image=backimage, text='', fg_color="white", hover_color="white", command=register_window.destroy)
 back_button.grid(row=0, column=0, sticky="e", padx=18)
-
-# Function to change border color on input
-def change_border_color(entry):
-    if entry.get():
-        entry.configure(border_color="green")
-    else:
-        entry.configure(border_color="red")
 
 # FULL NAME
 InputF1 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
@@ -141,7 +134,7 @@ def handle_registration():
     try:
         success = register_security_admin(full_name, username, password, register_window, FnExistlabel, UnExistlabel)
         if success:
-            print("Success")
+            display_success_and_close(register_window)
         else:
             register_window.after(3000, clear_error_labels)
             CAbtn.configure(state="normal")

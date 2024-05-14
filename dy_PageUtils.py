@@ -16,6 +16,11 @@ def load_image(file_name, size):
     image = CTkImage(light_image=Image.open(image_path), size=size)
     return image
 
+def set_icon_image(frame, image_path, relx, rely, anchor, size):
+    icon_image = load_image(image_path, size)
+    icon_image_label = CTkLabel(frame, image=icon_image, text='')
+    icon_image_label.place(relx=relx, rely=rely, anchor=anchor)
+
 def validate_length(event, entry, max):
     if len(entry.get()) >= max:
         if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
@@ -40,6 +45,12 @@ def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye
         inputfield.configure(show="")
         btn.configure(image=eye_open_img)
         visible_flag[0] = True
+# Function to change border color on input
+def change_border_color(entry):
+    if entry.get():
+        entry.configure(border_color="green")
+    else:
+        entry.configure(border_color="red")
 #_______________________________________dyPAGEREGISTER
 
 def create_standard_label(parent, text):
@@ -126,3 +137,12 @@ def enable_submit_button(button):
 
 def disable_submit_button(button):
     button.configure(state="disabled")
+
+def display_success_and_close(register_window):
+    RegisScssfr = CTkFrame(register_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(RegisScssfr,'success_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+    LbSuccess = CTkLabel(RegisScssfr, text="Registered Successfully", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+    register_window.after(2000, register_window.destroy)
+
