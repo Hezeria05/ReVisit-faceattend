@@ -31,7 +31,15 @@ def validate_full_name(event):
         return True
     else:
         return "break"
-
+def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye_open_img):
+    if visible_flag[0]:
+        inputfield.configure(show="*")
+        btn.configure(image=eye_close_img)
+        visible_flag[0] = False
+    else:
+        inputfield.configure(show="")
+        btn.configure(image=eye_open_img)
+        visible_flag[0] = True
 #_______________________________________dyPAGEREGISTER
 
 def create_standard_label(parent, text):
