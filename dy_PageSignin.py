@@ -12,7 +12,7 @@ def open_signin_window(select_window):
 # signin_window = CTk()
     signin_window = CTkToplevel(select_window)
     signin_window.grab_set()
-    signin_window.geometry('1200x800+400+100')
+    signin_window.geometry('1200x800+400+75')
     signin_window.title('Sign In')
     signin_window.minsize(1000, 900)
     signin_window.configure(fg_color='white')
