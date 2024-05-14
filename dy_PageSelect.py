@@ -57,7 +57,7 @@ signinbtn = CTkButton(ButtonFrame, text="SIGN IN", width=50, height=80, corner_r
 signinbtn.grid(row=1, column=1, sticky="ew", padx=50, pady=15)
 registerbtn = CTkButton(ButtonFrame, text="REGISTER", width=50, height=80, corner_radius=10, fg_color="#ADCBCF", 
                         hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333", command=lambda: open_register_window(select_window))
-registerbtn.grid(row=2, column=1, sticky="ew", padx=50, pady=10)
+registerbtn.grid(row=2, column=1, sticky="ew", padx=50, pady=15)
 
 
 # Start the application loop

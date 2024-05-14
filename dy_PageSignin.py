@@ -17,8 +17,6 @@ def open_signin_window(select_window):
     signin_window.minsize(1000, 900)
     signin_window.configure(fg_color='white')
     signin_window.maxsize(signin_window.winfo_screenwidth(), signin_window.winfo_screenheight())
-    signin_window.rowconfigure((0, 2), weight=1, uniform='a')
-    signin_window.rowconfigure(1, weight=10, uniform='a')
 
     def signinon_resize(event):
             width = event.width
@@ -26,20 +24,24 @@ def open_signin_window(select_window):
             max_width = 1200
             if min_width <= width < max_width:
                 column_weights = (1, 1, 1, 10, 3)
+                row_weights = (1, 10, 1, 1)
                 LogoF.grid_forget()
-                BackF.grid(row=2, column=0, columnspan=1, sticky="nsew")
+                BackF.grid(row=3, column=0, columnspan=1, sticky="nsew")
             elif width >= max_width:
                 column_weights = (2, 5, 2, 7, 1)
+                row_weights = (1, 10, 1, 1)
                 LogoF.grid(row=1, column=1)
-                BackF.grid(row=2, column=0, sticky="nsew")
+                BackF.grid(row=3, column=0, sticky="nsew")
 
             for i, weight in enumerate(column_weights):
                 signin_window.columnconfigure(i, weight=weight, uniform='a')
+            for i, weight in enumerate(row_weights):
+                signin_window.rowconfigure(i, weight=weight, uniform='a')
 
     signin_window.bind('<Configure>', signinon_resize)
 
     SignFrame = CTkFrame(signin_window, fg_color="#D1DDE2", corner_radius=10, width=660, height=780)
-    SignFrame.grid(row=1, rowspan=2, column=3, sticky="ew", padx=10)
+    SignFrame.grid(row=1, column=3, sticky="nsew", padx=10)
     configure_frame(SignFrame, [1, 4, 2, 4, 4, 4, 4], [1, 10, 1])
 
     LabelFrame = CTkLabel(SignFrame, fg_color="transparent", text="Sign In", font=("Inter", 40, "bold"), text_color="#333333")
@@ -49,12 +51,11 @@ def open_signin_window(select_window):
     LogoF.grid(row=1, column=1)
 
     BackF = CTkFrame(signin_window, fg_color="transparent", corner_radius=10, width=110, height=40)
-    BackF.grid(row=2, column=0, sticky="nsew")
     configure_frame(SignFrame, [1], [1])
 
     backimage = load_image('Back_icon.png', (95, 40))
     back_button = CTkButton(BackF, image=backimage, text='', fg_color="white", hover_color="white", command=signin_window.destroy)
-    back_button.grid(row=0, column=0, sticky="e", padx=18)
+    back_button.grid(row=0, column=0, sticky="s", padx=18)
 
 
     # USERNAME

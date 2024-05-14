@@ -16,8 +16,6 @@ def open_register_window(main_window):
     register_window.minsize(1000, 900)
     register_window.configure(fg_color='white')
     register_window.maxsize(register_window.winfo_screenwidth(), register_window.winfo_screenheight())
-    register_window.rowconfigure((0, 2), weight=1, uniform='a')
-    register_window.rowconfigure(1, weight=10, uniform='a')
 
     def registeron_resize(event):
         width = event.width
@@ -25,15 +23,19 @@ def open_register_window(main_window):
         max_width = 1200
         if min_width <= width < max_width:
             column_weights = (1, 1, 1, 10, 3)
+            row_weights = (1, 10, 1)
             LogoF.grid_forget()
             BackF.grid(row=2, column=0, columnspan=1, sticky="nsew")
         elif width >= max_width:
             column_weights = (2, 5, 2, 7, 1)
+            row_weights = (1, 10, 1)
             LogoF.grid(row=1, column=1)
             BackF.grid(row=2, column=0, sticky="nsew")
 
         for i, weight in enumerate(column_weights):
             register_window.columnconfigure(i, weight=weight, uniform='a')
+        for i, weight in enumerate(row_weights):
+                register_window.rowconfigure(i, weight=weight, uniform='a')
 
     register_window.bind('<Configure>', registeron_resize)
 
