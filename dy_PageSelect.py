@@ -1,5 +1,5 @@
 from customtkinter import *
-from PageSignin import open_signin_window
+from dy_PageSignin import open_signin_window
 from dy_PageRegister import open_register_window
 from dy_PageUtils import load_image
 
@@ -16,8 +16,8 @@ def on_resize(event):
     width = event.width
 
     if width >= 1000 and width < 1300:
-        column_weights = (1, 6, 1)
-        row_weights = (1, 6, 1)
+        column_weights = (1, 5, 1)
+        row_weights = (1, 5, 1)
     elif width > 1300:
         column_weights = (2, 4, 2)
         row_weights = (1, 4, 1)

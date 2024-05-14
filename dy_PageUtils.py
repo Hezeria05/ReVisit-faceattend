@@ -146,3 +146,23 @@ def display_success_and_close(register_window):
     LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
     register_window.after(2000, register_window.destroy)
 
+#_______________________________________dyPAGESIGNIN
+def check_sign_complete(entries, signbtn):
+    # """Check if all entry fields are completed."""
+    for entry in entries:
+        if not entry.get():
+            disable_submit_button(signbtn)
+            return False
+    enable_submit_button(signbtn)
+    return True
+
+def signin_failed(signin_window):
+    LogFailfr = CTkFrame(signin_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogFailfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(LogFailfr,'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+
+    LbSuccess = CTkLabel(LogFailfr, text="Invalid Username or Password", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+
+    # Destroy the frame after 3 seconds
+    signin_window.after(2000, LogFailfr.destroy)
