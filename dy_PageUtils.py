@@ -166,3 +166,15 @@ def signin_failed(signin_window):
 
     # Destroy the frame after 3 seconds
     signin_window.after(2000, LogFailfr.destroy)
+
+
+#_______________________________________dyMainPage
+def hide_indicators(Home_indct, Visitor_indct, Resident_indct):
+    Home_indct.configure(fg_color="#FEFEFE")
+    Visitor_indct.configure(fg_color="#FEFEFE")
+    Resident_indct.configure(fg_color="#FEFEFE")
+
+def indicate(selected_indicator, Home_indct, Visitor_indct, Resident_indct, new_page):
+    hide_indicators(Home_indct, Visitor_indct, Resident_indct)
+    selected_indicator.configure(fg_color="#00507E")  # Update the active indicator color
+    new_page()
