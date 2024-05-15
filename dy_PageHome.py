@@ -1,5 +1,5 @@
 from customtkinter import *
-from dy_PageUtils import configure_frame
+from dy_PageUtils import configure_frame, update_datetime, load_image
 from VisitorFaceReg import on_register_click
 from VisitorLogIn import on_login_click
 from VisitorLogOut import on_logout_click
@@ -20,13 +20,36 @@ def create_inner_frame(parent, row, column, columnspan=1, rowspan=1, fg_color="w
     return inner_frame
 
 def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct):
+    logged_in_count = count_logged_in()
+    logged_out_count = count_logged_out()
+    total_count = count_total_today()
     Homeframe = CTkFrame(homepage_window, fg_color="white")
     Homeframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(Homeframe, [1, 3, 3, 9, 3, 1], [1, 6, 1, 6, 1, 6, 1])
 
     HeadingF = create_frame(Homeframe, row=1, column=1, columnspan=2, height=60)
     DateTimeF = create_frame(Homeframe, row=1, column=5)
+     # Configure date and time display
+    time_label = CTkLabel(DateTimeF, fg_color="transparent", text="", font=("Arial", 28, "bold"), text_color="#333333")
+    time_label.place(relx=0.3, rely=0.22, anchor="n")
+    date_label = CTkLabel(DateTimeF, fg_color="transparent", text="", font=("Inter", 14, "bold"), text_color="#333333")
+    date_label.place(relx=0.265, rely=0.52, anchor="n")
+    calimage = load_image('calendar_icon.png', (75, 75))
+    calendar = CTkLabel(DateTimeF, image=calimage, text="")
+    calendar.place( relx=0.75, rely=0.09, anchor='n')
+
+
+    # Update date and time periodically
+    update_datetime(date_label, time_label)
+    homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
+
+#__________________________________________________________
     TotalVisitF = create_frame(Homeframe, row=2, column=1)
+    Totallabel = CTkLabel(TotalVisitF, fg_color="transparent", text="Total Number of Visitors Today", 
+                          font=("Arial", 20, "bold"), text_color="#333333")
+    Totallabel.place(relx=0.5, rely=0.125, anchor="n")
+    TotalV = CTkLabel (TotalVisitF, text=str(total_count), font=("Arial", 30, "bold"), text_color="#00507E")
+    TotalV.place(relx=0.5, rely=0.5, anchor="n")
 
     # Register Visitor Section
     RegisterVisitF = create_frame(Homeframe, row=3, column=1)

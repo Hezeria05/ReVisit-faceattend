@@ -1,6 +1,7 @@
 from customtkinter import *
 from PIL import Image
 import os
+from datetime import datetime
 
 #_______________________________________GENERAL
 
@@ -51,6 +52,20 @@ def change_border_color(entry):
         entry.configure(border_color="green")
     else:
         entry.configure(border_color="red")
+
+def update_datetime(date_label, time_label):
+    # Get the current date and time
+    now = datetime.now()
+
+    # Format date as "Month Day, Year"
+    formatted_date = now.strftime("%B %d, %Y")
+
+    # Format time as "Hour:Minute:Second AM/PM"
+    formatted_time = now.strftime("%I:%M %p")
+
+    # Update the text of the labels with the current date and time
+    date_label.configure(text=formatted_date)
+    time_label.configure(text=formatted_time)
 #_______________________________________dyPAGEREGISTER
 
 def create_standard_label(parent, text):
