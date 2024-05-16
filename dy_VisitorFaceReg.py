@@ -30,7 +30,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         Vname.bind("<KeyPress>", validate_full_name)
         Vname.bind("<KeyRelease>", lambda event: vname_text.set(Vname.get().upper()))
         Vname.bind("<KeyPress>", lambda event: validate_length(event, Vname, 50))
-        LVname = CTkLabel(Entryframe, text='Enter Visitor Name:', fg_color="transparent", font=("Inter", 20, "bold"), text_color="#333333")
+        LVname = CTkLabel(Entryframe, text='Enter Visitor Name:', fg_color="transparent", font=("Inter", 18, "bold"), text_color="#333333")
         LVname.grid(row=0, column=1, sticky="sw", pady=6)
         Existinglabel = CTkLabel(Entryframe, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
         Existinglabel.grid(row=2, column=1, sticky="nw", pady=2)

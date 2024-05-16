@@ -75,7 +75,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, ho
         display_success_and_close(RegVframe)  # Assuming RegVframe is your register window
 
     def display_success_and_close(register_window):
-        RegisScssfr = CTkFrame(register_window, fg_color="white", width=750, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+        RegisScssfr = CTkFrame(register_window, fg_color="white", width=600, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
         RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
         # Assuming ASSETS_PATH and set_icon_image are defined somewhere in your code
         set_icon_image(RegisScssfr, ASSETS_PATH / 'success_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
