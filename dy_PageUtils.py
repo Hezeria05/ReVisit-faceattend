@@ -79,7 +79,7 @@ def create_standard_label(parent, text):
     label.grid(**grid_options)
     return label
 
-def create_standard_entry(parent, placeholder):
+def create_standard_entry(parent, placeholder, state="normal"):
     # Standard entry properties
     font = ("Inter", 15)
     corner_radius = 8
@@ -89,7 +89,7 @@ def create_standard_entry(parent, placeholder):
 
     # Create and configure the entry
     entry = CTkEntry(parent, placeholder_text=placeholder, font=font,
-                     corner_radius=corner_radius, border_width=border_width, border_color=border_color)
+                     corner_radius=corner_radius, border_width=border_width, border_color=border_color, state=state)
     entry.grid(**grid_options)
     return entry
 

@@ -89,7 +89,7 @@ def open_register_window(main_window):
     Lpassword = create_standard_label(InputF3, 'Enter Password')
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
     eyeopenimg = load_image('Eye_Open.png', (25, 16))
-    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=10, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
+    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
     eyep_button.place(relx=0.93, rely=0.5, anchor="center")
     password_visible = [False]
     eyep_button.configure(command=lambda: toggle_password_visibility(Epassword, eyep_button, password_visible, eyecloseimg, eyeopenimg))
@@ -99,12 +99,12 @@ def open_register_window(main_window):
     InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
     configure_frame(InputF4, [2, 4, 2], [1])
-    Ecpassword = create_standard_entry(InputF4, "Confirm Password")
+    Ecpassword = create_standard_entry(InputF4, "Confirm Password", state="readonly")
     Ecpassword.bind("<KeyPress>", lambda event: validate_length(event, Ecpassword, 45))
     Ecpassword.bind("<KeyRelease>", lambda event: change_border_color(Ecpassword))
     Ecpassword.configure(show="*")
     Lcpassword = create_standard_label(InputF4, 'Confirm Password')
-    eyecp_button = CTkButton(InputF4, image=eyecloseimg, text='', width=10, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
+    eyecp_button = CTkButton(InputF4, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
     eyecp_button.place(relx=0.93, rely=0.5, anchor="center")
     confirm_password_visible = [False]
     eyecp_button.configure(command=lambda: toggle_password_visibility(Ecpassword, eyecp_button, confirm_password_visible, eyecloseimg, eyeopenimg))

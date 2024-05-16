@@ -10,7 +10,7 @@ homepage_window.geometry('1300x900+300+70')
 homepage_window.minsize(1300, 900)
 homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
 homepage_window.configure(fg_color='#E9F3F2')
-
+sec_id = 1
 def mainon_resize(event):
     width = event.width
     min_width = 1300
@@ -65,11 +65,11 @@ def create_sidebar_button(parent, row, image_path, image_size, command, indicato
 
     return button, indicator
 
-home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (131, 36), lambda: indicate(Home_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct)), "#00507E")
-visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct)))
-resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct)))
+home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (131, 36), lambda: indicate(Home_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)), "#00507E")
+visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
+resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
 
-Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct)
+Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)
 
 LogbtnF = CTkFrame(Sidebar, fg_color="yellow", corner_radius=0, border_width=1, border_color="#C1C1C1")
 LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")

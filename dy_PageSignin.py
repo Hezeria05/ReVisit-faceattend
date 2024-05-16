@@ -79,7 +79,7 @@ def open_signin_window(select_window):
     Lpassword = create_standard_label(InputF3, 'Enter Password')
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
     eyeopenimg = load_image('Eye_Open.png', (25, 16))
-    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=10, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
+    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
     eyep_button.place(relx=0.93, rely=0.5, anchor="center")
     password_visible = [False]
     eyep_button.configure(command=lambda: toggle_password_visibility(Epassword, eyep_button, password_visible, eyecloseimg, eyeopenimg))
