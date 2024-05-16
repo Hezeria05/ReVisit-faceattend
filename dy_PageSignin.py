@@ -1,10 +1,9 @@
 from customtkinter import *
 from PIL import Image, ImageTk
 from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
-                          load_image, configure_frame, validate_length, validate_full_name,
-                          toggle_password_visibility, check_entries_complete, change_border_color,
-                          check_password_match, handle_password_input, display_success_and_close
-                          , check_sign_complete, signin_failed)
+                          load_image, configure_frame, validate_length,
+                          toggle_password_visibility, change_border_color,
+                          check_sign_complete, signin_failed)
 from db_con import validate_login_credentials
 from  MainPage import open_homepage
 
