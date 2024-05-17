@@ -10,7 +10,7 @@ homepage_window.geometry('1300x900+300+70')
 homepage_window.minsize(1300, 900)
 homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
 homepage_window.configure(fg_color='#E9F3F2')
-sec_id = 1
+sec_id = 24
 def mainon_resize(event):
     width = event.width
     min_width = 1300
