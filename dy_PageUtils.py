@@ -83,6 +83,23 @@ def view_history(sec_id, LogVframe, logsucess, set_icon_image, indicate, Visitor
 
     viewbtn.configure(command=lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
     donebtn.configure(command=lambda: LogVframe.destroy())
+
+
+def logout(window, btn):
+    LogoutModal = CTkFrame(window, fg_color="white", width=650, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogoutModal.place(relx=0.634, rely=0.5, anchor='center')
+    set_icon_image(LogoutModal,'question_icon.png', relx=0.5, rely=0.13, anchor='n', size=(110, 110))
+    LbOut = CTkLabel(LogoutModal, text="Continue to Logout?", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbOut.place(relx=0.5, rely=0.5, anchor='n')
+    contbtn = CTkButton(LogoutModal, text="Continue", width=250, height=50, corner_radius=10,
+                        fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
+                        command=lambda:window.destroy())
+    contbtn.place(relx=0.725, rely=0.8, anchor='center')
+
+    cancelbtn = CTkButton(LogoutModal, text="Cancel", width=250, height=50, corner_radius=10,
+                      fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333",
+                      command=lambda: (LogoutModal.destroy(), btn.configure(state='normal')))
+    cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 #_______________________________________dyPAGEREGISTER
 
 def create_standard_label(parent, text):
