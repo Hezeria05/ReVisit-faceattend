@@ -19,8 +19,8 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogInVHeading = CTkLabel(LogInVframe, text="Log In Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogInVHeading.place(relx=0.043, rely=0.06)
 
-    CameraFrame = CTkFrame(LogInVframe, fg_color="white", border_color="#B9BDBD", border_width=2)
-    CameraFrame.grid(row=1, column=1, sticky="nsew")
+    CameraFrame = CTkFrame(LogInVframe, fg_color="white",width=600, height=450, border_color="#B9BDBD", border_width=2)
+    CameraFrame.grid(row=1, column=1,)
     BscanFrame = CTkFrame(LogInVframe, fg_color="white")
     BscanFrame.grid(row=2, column=1, sticky="nsew")
     scanbtn = CTkButton(BscanFrame, text="SCAN", width=140, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF",
@@ -81,9 +81,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_entries_and_enable_submit(entries, submitbtn))
 
     def check_entries_and_enable_submit(entries, submitbtn):
-        print("Checking entries...")  # Debug print
         if ResidID.get() == "--Select--":
-            print("Select address first")  # Debug print
             LogPurpose.delete(0, 'end')
             LogPurpose.configure(border_color="red")
             Existinglabel.configure(text="Select Resident Address First!")
@@ -97,14 +95,9 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                 submitbtn.configure(state="disabled")
 
     def handle_submit():
-        print("Submit button clicked")  # Debug print
         visitor_name = LogVname.get()
         selected_address = ResidID.get()
         purpose = LogPurpose.get()
-
-        print(f"Visitor Name: {visitor_name}")  # Debug print
-        print(f"Selected Address: {selected_address}")  # Debug print
-        print(f"Purpose: {purpose}")  # Debug print
 
         resident_id = None
         for resident_tuple in fetch_residents():
@@ -113,15 +106,12 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                 break
 
         if resident_id is not None:
-            print(f"Resident ID: {resident_id}")  # Debug print
             success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
             if success:
-                print("Visitor data inserted successfully.")  # Debug print
                 cap.release()
                 logsucess = "Login Successfully!"
                 view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
             else:
-                print("Failed to insert visitor data or visitor already logged in.")  # Debug print
                 submitbtn.configure(
                     text="Logout",
                     command=lambda: logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe)
@@ -129,7 +119,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                 Existinglabel.configure(text="Visitor already Logged in.")
                 cap.release()
         else:
-            print("Resident ID not found for the selected address.")  # Debug print
+            print("Resident ID not found for the selected address.")
 
     submitbtn.configure(command=handle_submit)
 
@@ -146,8 +136,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
         scanbtn.configure(state="disabled")
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
-        print("Face dataset loaded successfully.")  # Debug print
         scanbtn.configure(state="normal")
         scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap))
 
-print("on_login_click function defined")  # Debug print
+

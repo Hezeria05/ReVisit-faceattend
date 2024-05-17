@@ -1,11 +1,9 @@
-import tkinter as tk
 from customtkinter import *
 import cv2
 import os
 from face_recognition import load_face_data
-from PageUtils import ASSETS_PATH, set_icon_image, indicate, view_history
-from dy_PageUtils import (configure_frame, validate_length, validate_full_name,
-                          check_sign_complete, change_border_color)
+from dy_PageUtils import (configure_frame, validate_length, change_border_color, view_history,
+                          indicate, set_icon_image)
 from face_scan import start_camera
 from db_con import logout_visitor
 from dy_PageVisitor import Visitor_page
@@ -45,7 +43,7 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
             if os.path.exists(data_path):
                 os.remove(data_path)
             logsucess = "Logout successfully!"
-            view_history(sec_id, LogOutVframe, logsucess, ASSETS_PATH, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
 
     # Now update the logout button command to use handle_logout
     logoutbtn.configure(command=handle_logout)
@@ -57,7 +55,7 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
         logoutbtn.place(relx=0.845, rely=0.5, anchor='center')
         scanbtn.place_forget()  # Hide scan button
 
-    scanbtn = CTkButton(LogOutEframe, text="Scan", width=170, height=45, corner_radius=10, fg_color="#ADCBCF",
+    scanbtn = CTkButton(LogOutEframe, text="SCAN", width=140, height=50, corner_radius=10, fg_color="#ADCBCF",
                         hover_color="#93ACAF", font=("Inter", 20, "bold"), text_color="#333333",
                         command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, callback=display_fields))
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')
@@ -71,9 +69,3 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, callback=display_fields))
-
-
-if __name__ == "__main__":
-    app = tk.Tk()
-    on_logout_click(app)
-    app.mainloop()
