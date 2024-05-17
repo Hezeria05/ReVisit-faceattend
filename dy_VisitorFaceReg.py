@@ -14,7 +14,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
     RegVHeading = CTkLabel(RegVframe, text="Face Registration", font=("Inter", 35, "bold"), text_color="#333333")
     RegVHeading.place(relx=0.043, rely=0.06)
     RCameraFrame = CTkFrame(RegVframe, fg_color="white", border_color="#B9BDBD", border_width=2)
-    RCameraFrame.grid(row=1, column=1, sticky="nsew")
+    RCameraFrame.grid(row=1, column=1, sticky="nsew", padx=50)
     configure_frame(RCameraFrame, [1], [1])
     cap = None  # Placeholder for the camera object
 

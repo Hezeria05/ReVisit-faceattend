@@ -2,22 +2,13 @@ from customtkinter import *
 import cv2
 from face_recognition import load_face_data
 from dy_PageUtils import (configure_frame, validate_length, change_border_color, view_history,
-                          indicate, set_icon_image)
+                          indicate, set_icon_image, validate_full_name)
 from face_scan import start_camera
 from db_con import insert_visitor_data, fetch_residents
-from PageVisitor import Visitor_page
-from VisitorLogOut import on_logout_click
+from dy_PageVisitor import Visitor_page
+from dy_VisitorLogOut import on_logout_click
 
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
-    print("on_login_click called")  # Debug print
-
-    def validate_LogPurpose(event):
-        if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
-            return True
-        elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
-            return True
-        else:
-            return "break"
 
     # Main registration frame
     LogInVframe = CTkFrame(homepage_window, fg_color="white")
@@ -74,7 +65,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
                           corner_radius=8, border_width=2, border_color='red')
     LogPurpose.grid(row=1, column=0, sticky="new")
     LogPurpose.bind("<KeyRelease>", lambda event: change_border_color(LogPurpose))
-    LogPurpose.bind("<KeyPress>", validate_LogPurpose)
+    LogPurpose.bind("<KeyPress>", validate_full_name)
     LogPurpose.bind("<KeyPress>", lambda event: validate_length(event, LogPurpose, 50))
     LbPurpose = CTkLabel(Purposef, text='Purpose of Visit', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.grid(row=0, column=0, sticky="sw")

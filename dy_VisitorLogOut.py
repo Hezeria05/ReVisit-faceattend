@@ -4,16 +4,18 @@ import cv2
 import os
 from face_recognition import load_face_data
 from PageUtils import ASSETS_PATH, set_icon_image, indicate, view_history
+from dy_PageUtils import (configure_frame, validate_length, validate_full_name,
+                          check_sign_complete, change_border_color)
 from face_scan import start_camera
 from db_con import logout_visitor
-from PageVisitor import Visitor_page
+from dy_PageVisitor import Visitor_page
 
 
 def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
     LogOutVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
-    LogOutVframe.place(relx=0.266, rely=0.118)
-
+    LogOutVframe.grid(row=1, column=1, sticky="nsew")
+    configure_frame(LogOutVframe, [2,8,1,2], [1,4,1])
     # Heading
     LogOutVHeading = CTkLabel(LogOutVframe, text="Log Out Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogOutVHeading.place(relx=0.043, rely=0.06)
