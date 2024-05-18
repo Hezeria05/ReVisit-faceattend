@@ -5,13 +5,14 @@ from dy_VisitorLogIn import on_login_click
 from dy_VisitorLogOut import on_logout_click
 from db_con import count_logged_in, count_logged_out, count_total_today
 
-def create_frame(parent, row, column, rowspan=1, columnspan=1, fg_color="#E9F3F2", border_width=1, border_color="#BFC3C3", height=None, pady=10):
+def create_frame(parent, row, column, rowspan=1, columnspan=1, fg_color="#E9F3F2", border_width=2, 
+                 border_color="#BFC3C3", height=None, padx=None,pady=10, corner_radius=None):
     if height is None:
-        frame = CTkFrame(parent, fg_color=fg_color, border_width=border_width, border_color=border_color)
-        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew", pady=pady)
+        frame = CTkFrame(parent, fg_color=fg_color, border_width=border_width, border_color=border_color, corner_radius=corner_radius)
+        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew", padx=padx ,pady=pady)
     else:
-        frame = CTkFrame(parent, fg_color=fg_color, height=height)
-        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="new", pady=pady)
+        frame = CTkFrame(parent, fg_color=fg_color, height=height, corner_radius=corner_radius)
+        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="new", padx=padx ,pady=pady)
     return frame
 
 def create_inner_frame(parent, row, column, columnspan=1, rowspan=1, fg_color="white", padx=2, pady=5):
@@ -52,7 +53,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     configure_frame(HeadingF, [1], [1])
     HomeHeading = CTkLabel(HeadingF, text="Welcome to Home Page!", font=("Inter", 35, "bold"), fg_color="transparent",text_color="#333333" )
     HomeHeading.grid(row=0, column=0, sticky="nw")
-    DateTimeF = create_frame(Homeframe, row=1, column=5)
+    DateTimeF = create_frame(Homeframe, row=1, column=5, padx=10, corner_radius=10)
     
     # Configure date and time display
     time_label = CTkLabel(DateTimeF, fg_color="transparent", text="", font=("Arial", 30, "bold"), text_color="#333333")

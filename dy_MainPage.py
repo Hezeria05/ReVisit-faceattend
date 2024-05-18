@@ -6,28 +6,28 @@ from dy_PageVisitor import Visitor_page
 
 homepage_window = CTk()
 homepage_window.title('Main Window')
-homepage_window.geometry('1300x900+300+70')
-homepage_window.minsize(1300, 900)
+homepage_window.geometry('1500x900+300+70')
+homepage_window.minsize(1500, 900)
 homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
 homepage_window.configure(fg_color='#E9F3F2')
 sec_id = 24
 def mainon_resize(event):
     width = event.width
-    min_width = 1300
-    max_width = 1400
-    if min_width <= width <= max_width:
-        column_weights = (1, 7)
-        row_weights = (1, 8, 1)
-        home2image = load_image('home2_icon.png', (27, 27))
-        home_button.configure(image=home2image)
-        visitor2image = load_image('visitor2_icon.png', (31, 31))
-        visitor_button.configure(image=visitor2image)
-        resident2image = load_image('list2_icon.png', (30, 30))
-        resident_button.configure(image=resident2image)
-        logout2image = load_image('userlogout_icon.png', (40, 40))
-        logout_btn.configure(image=logout2image, text="")
-        configure_frame(Sidebar, [5, 2, 2, 2, 2, 9, 5], [3, 5, 3])
-    elif width > max_width:
+    min_width = 1500
+    # max_width = 1600
+    # if min_width <= width <= max_width:
+    #     column_weights = (1, 7)
+    #     row_weights = (1, 8, 1)
+    #     home2image = load_image('home2_icon.png', (43, 43))
+    #     home_button.configure(image=home2image)
+    #     visitor2image = load_image('visitor2_icon.png', (43, 43))
+    #     visitor_button.configure(image=visitor2image)
+    #     resident2image = load_image('list2_icon.png', (43, 43))
+    #     resident_button.configure(image=resident2image)
+    #     logout2image = load_image('userlogout_icon.png', (40, 40))
+    #     logout_btn.configure(image=logout2image, text="")
+    #     configure_frame(Sidebar, [5, 2, 2, 2, 2, 9, 5], [3, 5, 3])
+    if width >= min_width:
         column_weights = (2, 7)
         row_weights = (1, 8, 1)
         homeimage = load_image('home_icon.png', (131, 36))
@@ -38,6 +38,9 @@ def mainon_resize(event):
         resident_button.configure(image=residentimage)
         logout_btn.configure(text="LOG OUT", image=None)
         configure_frame(Sidebar, [5, 2, 2, 2, 2, 9, 5], [1, 5, 1])
+    else:
+        column_weights = (2, 7)
+        row_weights = (1, 8, 1)
 
     for i, weight in enumerate(column_weights):
         homepage_window.columnconfigure(i, weight=weight, uniform='a')
