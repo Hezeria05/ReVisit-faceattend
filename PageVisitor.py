@@ -81,9 +81,6 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
                     width=100, height=30, fg_color="#FEFEFE", corner_radius=25, border_width=3, border_color="#91ABAE")
     btn4.pack(side='left', padx=7, fill='both', expand=True)
 
-    VTCols = CTkFrame(Visitorframe, width=960, height=50, fg_color="#93ACAF", corner_radius=0,
-                      border_color="#B9BDBD", border_width=1)
-    VTCols.place(relx=0.5, rely=0.33, anchor="center")
 
     btn1.configure(command=lambda: (refresh_visitor_table(fetch_visitor_data_desc), btnind(btn1, btn1, btn2, btn3, btn4)))
     btn2.configure(command=lambda: (refresh_visitor_table(fetch_visitor_data_asc), btnind(btn2, btn1, btn2, btn3, btn4)))
@@ -103,6 +100,9 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct):
     for heading, position in headings.items():
         heading_label = CTkLabel(VTCols, text=heading, font=("Inter", 14, "bold"), text_color="white", fg_color="transparent")
         heading_label.place(relx=position, rely=0.5, anchor="center")
+    VTCols = CTkFrame(Visitorframe, width=960, height=50, fg_color="#93ACAF", corner_radius=0,
+                      border_color="#B9BDBD", border_width=1)
+    VTCols.place(relx=0.5, rely=0.33, anchor="center")
 
     VTRows = CTkFrame(Visitorframe, width=960, height=400, fg_color="white", corner_radius=0,
                       border_color="#B9BDBD", border_width=0)
