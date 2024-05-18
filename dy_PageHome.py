@@ -5,13 +5,13 @@ from dy_VisitorLogIn import on_login_click
 from dy_VisitorLogOut import on_logout_click
 from db_con import count_logged_in, count_logged_out, count_total_today
 
-def create_frame(parent, row, column, rowspan=1, columnspan=1, fg_color="#E9F3F2", border_width=1, border_color="#BFC3C3", height=None):
+def create_frame(parent, row, column, rowspan=1, columnspan=1, fg_color="#E9F3F2", border_width=1, border_color="#BFC3C3", height=None, pady=10):
     if height is None:
         frame = CTkFrame(parent, fg_color=fg_color, border_width=border_width, border_color=border_color)
-        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew", pady=10)
+        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew", pady=pady)
     else:
         frame = CTkFrame(parent, fg_color=fg_color, height=height)
-        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="new", pady=10)
+        frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="new", pady=pady)
     return frame
 
 def create_inner_frame(parent, row, column, columnspan=1, rowspan=1, fg_color="white", padx=2, pady=5):
@@ -81,14 +81,25 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     # Log in Visitor Section
     login_command = lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
     create_section(Homeframe, row=3, column=3, text="LOGIN", image_path='login_icon.png', button_text="LOGIN", button_command=login_command)
-    invisit = create_frame(Homeframe, row=4, column=3)
+    invisit = create_frame(Homeframe, row=4, column=3, pady = 1)
     configure_frame(invisit, [1], [1])
     invframe = create_inner_frame(invisit, row=0, column=0, padx=15, pady=15)
+    configure_frame(invframe, [3,3], [1,1,1])
+    Activelbl = CTkLabel(invframe, fg_color="transparent", text="Active Visitors", font=("Arial", 21, "bold"), text_color="#333333")
+    Activelbl.grid(row=0, column=0, columnspan=2, sticky="nw", padx=7, pady=4)
+    actiV = CTkLabel(invframe, text=str(logged_in_count), font=("Arial", 30, "bold"), text_color="#00507E")
+    actiV.place(relx=0.5, rely=0.65, anchor="center")
+
 
 
     # Log out Visitor Section
     logout_command = lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
     create_section(Homeframe, row=3, column=5, text="LOGOUT", image_path='logout_icon.png', button_text="LOGOUT", button_command=logout_command)
-    outvisit = create_frame(Homeframe, row=4, column=5)
+    outvisit = create_frame(Homeframe, row=4, column=5, pady = 1)
     configure_frame(outvisit, [1], [1])
     outvframe = create_inner_frame(outvisit, row=0, column=0, padx=15, pady=15)
+    configure_frame(outvframe, [3,3], [1,1,1])
+    Departedlbl = CTkLabel(outvframe, fg_color="transparent", text="Departed Visitors", font=("Arial", 21, "bold"), text_color="#333333")
+    Departedlbl.grid(row=0, column=0, columnspan=2, sticky="nw", padx=7, pady=4)
+    departV = CTkLabel(outvframe, text=str(logged_out_count), font=("Arial", 30, "bold"), text_color="#00507E")
+    departV.place(relx=0.5, rely=0.65, anchor="center")
