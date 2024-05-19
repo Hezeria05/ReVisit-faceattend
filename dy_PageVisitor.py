@@ -34,6 +34,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     VisitorHeading.grid(row=0, column=0, columnspan=3, sticky="nw")
     timef = CTkFrame (headingf, fg_color="#E9F3F2", border_width=2, border_color="#BFC3C3", corner_radius=10)
     timef.grid(row=0, column=4, sticky="nsew")
+
     # Configure date and time display
     time_label = CTkLabel(timef, fg_color="transparent", text="", font=("Arial", 30, "bold"), text_color="#333333")
     time_label.place(relx=0.3, rely=0.22, anchor="n")
