@@ -50,12 +50,17 @@ def mainon_resize(event):
 homepage_window.bind('<Configure>', mainon_resize)
 
 # Sidebar
-Sidebar = CTkFrame(homepage_window, fg_color="#FEFEFE", corner_radius=0, border_width=1, border_color="#C1C1C1")
+Sidebar = CTkFrame(homepage_window, fg_color="#FEFEFE", corner_radius=0)
 Sidebar.grid(row=0, rowspan=3, column=0, columnspan=1, sticky="nsew")
-configure_frame(Sidebar, [5, 3, 2, 2, 2, 8, 5], [1, 5, 1])
+configure_frame(Sidebar, [8, 2, 2, 2, 5, 5], [1, 5, 1])
 
-SBLogo = CTkFrame(Sidebar, fg_color="yellow", corner_radius=0, border_width=1, border_color="#C1C1C1")
-SBLogo.grid(row=0, column=0, columnspan=3, sticky="nsew")
+SBLogo = CTkFrame(Sidebar, fg_color="#FEFEFE", corner_radius=0)
+SBLogo.grid(row=0, rowspan=2, column=0, columnspan=3, sticky="nsew")
+configure_frame(SBLogo, [1], [1])
+logoimage = load_image('REVISITlogosb.png', (216, 216))
+logolabel = CTkLabel(SBLogo, image=logoimage, text="")
+logolabel.grid(row=0, column=0, sticky="n")
+
 
 def create_sidebar_button(parent, row, image_path, image_size, command, indicator_color="#FEFEFE"):
     frame = CTkFrame(parent, fg_color="transparent", corner_radius=0)
@@ -77,7 +82,7 @@ resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.p
 
 Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)
 
-LogbtnF = CTkFrame(Sidebar, fg_color="transparent", corner_radius=0, border_width=1, border_color="#C1C1C1")
+LogbtnF = CTkFrame(Sidebar, fg_color="transparent", corner_radius=0)
 LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")
 configure_frame(LogbtnF, [1], [1])
 # Add a logout button
@@ -85,10 +90,10 @@ logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#FEFEFE", hover_color=
                 text_color="#333333", command=lambda:(logout(homepage_window,logout_btn), logout_btn.configure(state='disabled')))
 logout_btn.grid(row=0, column=0, sticky="nsew", padx=50, pady=50)
 
-Topbar = CTkFrame(homepage_window, fg_color="red", corner_radius=0)
+Topbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Topbar.grid(row=0, column=1, sticky="nsew")
 
-Btmbar = CTkFrame(homepage_window, fg_color="green", corner_radius=0)
+Btmbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Btmbar.grid(row=2, column=1, sticky="nsew")
 
 homepage_window.mainloop()

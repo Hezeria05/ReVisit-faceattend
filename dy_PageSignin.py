@@ -46,8 +46,12 @@ def open_signin_window(select_window):
     LabelFrame = CTkLabel(SignFrame, fg_color="transparent", text="Sign In", font=("Inter", 40, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1, sticky="s")
 
-    LogoF = CTkFrame(signin_window, fg_color="light pink", corner_radius=10, width=660, height=400)
+    LogoF = CTkFrame(signin_window, fg_color="transparent", corner_radius=10, width=660, height=470)
     LogoF.grid(row=1, column=1)
+    configure_frame(LogoF, [1], [1])
+    logoimage = load_image('REVISITlogoshadow.png', (458, 458))
+    logolabel = CTkLabel(LogoF, image=logoimage, text="")
+    logolabel.grid(row=0, column=0, sticky="s")
 
     BackF = CTkFrame(signin_window, fg_color="transparent", corner_radius=10, width=110, height=40)
     configure_frame(SignFrame, [1], [1])

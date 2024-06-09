@@ -1,7 +1,7 @@
 from customtkinter import *
 from dy_PageSignin import open_signin_window
 from dy_PageRegister import open_register_window
-from dy_PageUtils import load_image
+from dy_PageUtils import load_image, configure_frame
 
 # Setup the main application window
 select_window = CTk()
@@ -33,23 +33,22 @@ select_window.bind('<Configure>', on_resize)
 # Setup the main frame
 SelectFrame = CTkFrame(select_window, fg_color="white", corner_radius=10, width=830, height=700)
 SelectFrame.grid(row=1, column=1, sticky="nsew")
-SelectFrame.columnconfigure((0, 2), weight=1, uniform='a')
-SelectFrame.columnconfigure(1, weight=10, uniform='a')
-SelectFrame.rowconfigure((0, 1), weight=1, uniform='a')
+configure_frame(SelectFrame, [4,3], [1,10,1])
+
+LogoFrame = CTkFrame(SelectFrame, fg_color="transparent", corner_radius=10)
+LogoFrame.grid(row=0, column=1, sticky="nsew")
+configure_frame(LogoFrame, [1,10], [1])
 
 # Load and display the logo image
 
-logoimage = load_image('CarltonLOGO.png', (600, 210))
-logolabel = CTkLabel(SelectFrame, image=logoimage, text="")
-logolabel.grid(row=0, column=1, sticky="nsew", pady=20)
+logoimage = load_image('REVISITLOGOflat.png', (348, 348))
+logolabel = CTkLabel(LogoFrame, image=logoimage, text="")
+logolabel.grid(row=1, column=0, sticky="s")
 
 # Setup the button frame
 ButtonFrame = CTkFrame(SelectFrame, fg_color="transparent", corner_radius=10, width=830, height=700)
-ButtonFrame.grid(row=1, column=1, sticky="nsew", pady=20)
-ButtonFrame.columnconfigure((0, 2), weight=1, uniform='a')
-ButtonFrame.columnconfigure(1, weight=3, uniform='a')
-ButtonFrame.rowconfigure((0, 3), weight=1, uniform='a')
-ButtonFrame.rowconfigure((1, 2), weight=3, uniform='a')
+ButtonFrame.grid(row=1, column=1, sticky="sew")
+configure_frame(ButtonFrame, [1,3,3,1], [1,3,1])
 
 #Buttons
 signinbtn = CTkButton(ButtonFrame, text="SIGN IN", width=50, height=80, corner_radius=10, fg_color="#ADCBCF", 

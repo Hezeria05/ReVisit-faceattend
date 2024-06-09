@@ -241,3 +241,33 @@ def btnind(selected_btn, btn1, btn2, btn3, btn4):
     hide_btn(btn1, btn2, btn3, btn4)
     selected_btn.configure(fg_color="#93ACAF")
 
+#ResidentPage_____________________________________________________________________________________________________________
+def validate_full_name(event):
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
+
+def validate_phone_number(event):
+    if event.keysym in ('BackSpace', 'Delete', 'Left', 'Right', 'Tab'):
+        return True
+    elif event.char.isdigit():
+        current_text = event.widget.get()
+        selection_length = len(event.widget.selection_get()) if event.widget.selection_present() else 0
+        new_text = current_text[:event.widget.index("insert")] + event.char + current_text[event.widget.index("insert"):]
+
+        # Allow starting to type "09"
+        if len(new_text) == 1 and event.char == "0":
+            return True
+        elif len(new_text) == 2 and new_text.startswith("09"):
+            return True
+
+        # Check if the text starts with '09' and respects the maximum length condition
+        if new_text.startswith("09") and len(new_text) - selection_length <= 11:
+            return True
+        else:
+            return "break"
+    else:
+        return "break"

@@ -45,7 +45,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     logged_in_count = count_logged_in()
     logged_out_count = count_logged_out()
     total_count = count_total_today()
-    Homeframe = CTkFrame(homepage_window, fg_color="white")
+    Homeframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Homeframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(Homeframe, [1, 3, 3, 9, 3, 1], [1, 6, 1, 6, 1, 6, 1])
 

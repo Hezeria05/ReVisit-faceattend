@@ -242,7 +242,7 @@ def save_data_to_csv(data):
             writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
         writer.writerow(data)
 #Visitor Page_____________________________________________________________________________________________________________
-def fetch_visitor_data_desc():
+def fetch_visitor_data_desc(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
@@ -252,9 +252,9 @@ def fetch_visitor_data_desc():
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.log_day DESC, vd.login_time DESC
-        LIMIT 15
+        LIMIT 15 OFFSET %s
         """
-        cursor.execute(query)
+        cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -264,7 +264,7 @@ def fetch_visitor_data_desc():
         cursor.close()
         conn.close()
 
-def fetch_visitor_data_asc():
+def fetch_visitor_data_asc(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
@@ -274,9 +274,9 @@ def fetch_visitor_data_asc():
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.log_day ASC, vd.login_time ASC
-        LIMIT 15
+        LIMIT 15 OFFSET %s
         """
-        cursor.execute(query)
+        cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -286,7 +286,7 @@ def fetch_visitor_data_asc():
         cursor.close()
         conn.close()
 
-def fetch_visitor_data_name_asc():
+def fetch_visitor_data_name_asc(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
@@ -296,9 +296,9 @@ def fetch_visitor_data_name_asc():
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.visit_name ASC
-        LIMIT 15
+        LIMIT 15 OFFSET %s
         """
-        cursor.execute(query)
+        cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -308,7 +308,7 @@ def fetch_visitor_data_name_asc():
         cursor.close()
         conn.close()
 
-def fetch_visitor_data_name_desc():
+def fetch_visitor_data_name_desc(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
@@ -318,9 +318,9 @@ def fetch_visitor_data_name_desc():
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.visit_name DESC
-        LIMIT 15
+        LIMIT 15 OFFSET %s
         """
-        cursor.execute(query)
+        cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
     except mysql.connector.Error as err:
@@ -330,6 +330,20 @@ def fetch_visitor_data_name_desc():
         cursor.close()
         conn.close()
 
+def get_total_visitors():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT COUNT(*) FROM visitor_data")
+        result = cursor.fetchone()
+        total_visitors = result[0] if result else 0
+        return total_visitors
+    except mysql.connector.Error as err:
+        print(f"Failed to count total visitors: {err}")
+        return 0
+    finally:
+        cursor.close()
+        conn.close()
 #Resident Page_____________________________________________________________________________________________________________
 
 def fetch_resident_data(offset=0):
@@ -342,6 +356,21 @@ def fetch_resident_data(offset=0):
     except mysql.connector.Error as err:
         print(f"Failed to fetch resident data: {err}")
         return []
+    finally:
+        cursor.close()
+        conn.close()
+
+def get_total_residents():
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT COUNT(*) FROM resident_data")
+        result = cursor.fetchone()
+        total_residents = result[0] if result else 0
+        return total_residents
+    except mysql.connector.Error as err:
+        print(f"Failed to count total residents: {err}")
+        return 0
     finally:
         cursor.close()
         conn.close()

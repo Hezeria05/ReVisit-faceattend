@@ -46,8 +46,12 @@ def open_register_window(main_window):
     LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 40, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)
 
-    LogoF = CTkFrame(register_window, fg_color="light pink", corner_radius=10, width=660, height=400)
+    LogoF = CTkFrame(register_window, fg_color="transparent", corner_radius=10, width=660, height=470)
     LogoF.grid(row=1, column=1)
+    configure_frame(LogoF, [1], [1])
+    logoimage = load_image('REVISITlogoshadow.png', (458, 458))
+    logolabel = CTkLabel(LogoF, image=logoimage, text="")
+    logolabel.grid(row=0, column=0, sticky="s")
 
     BackF = CTkFrame(register_window, fg_color="transparent", corner_radius=10, width=110, height=40)
     BackF.grid(row=2, column=0, sticky="nsew")
