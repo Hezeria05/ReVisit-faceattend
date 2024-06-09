@@ -109,11 +109,19 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     configure_frame(tablebody, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1])
 
     pagination_frame = CTkFrame(Visitorframe, fg_color="transparent")
-    pagination_frame.grid(row=4, column=1, columnspan=2, pady=10)
-    back_button = CTkButton(pagination_frame, text="Back", command=lambda: navigate_page(-1))
-    next_button = CTkButton(pagination_frame, text="Next", command=lambda: navigate_page(1))
-    back_button.grid(row=0, column=0, padx=10)
-    next_button.grid(row=0, column=1, padx=10)
+    pagination_frame.place(relx=0.5, rely=0.93, anchor="center")
+    configure_frame(pagination_frame, [1], [1,1])
+    pageimage = load_image('paginationframe.png', (144, 54))
+    pagelabel = CTkLabel(pagination_frame, image=pageimage, text="")
+    pagelabel.grid(row=0, column=0, columnspan=2, sticky="nsew")
+    previmage = load_image('prev.png', (30, 30))
+    back_button = CTkButton(pagination_frame, image=previmage,text='', width=35,
+    fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
+    nextimage = load_image('next.png', (30, 30))
+    next_button = CTkButton(pagination_frame, image=nextimage,text='', width=35,
+    fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
+    back_button.grid(row=0, column=0)
+    next_button.grid(row=0, column=1)
 
     total_visitors = get_total_visitors()
     total_pages = (total_visitors + 14) // 15
