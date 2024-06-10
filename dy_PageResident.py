@@ -1,7 +1,15 @@
 from customtkinter import *
 import datetime 
-from dy_PageUtils import set_icon_image, toggle_edit_save, btnind, configure_frame, load_image, validate_full_name, validate_phone_number
+from dy_PageUtils import set_icon_image, toggle_edit_save, validate_length, configure_frame, load_image, validate_full_name, validate_phone_number
 from db_con import fetch_resident_data, get_total_residents
+
+def validate_search_entry(event):
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" "):
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
 
 def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id):
     # Initialize current page state
@@ -20,14 +28,17 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     configure_frame(headingf, [1], [6, 1, 6, 2, 6])
     ResidentHeading = CTkLabel(headingf, text="Residents List", font=("Inter", 35, "bold"), fg_color="transparent", text_color="#333333")
     ResidentHeading.grid(row=0, column=0, columnspan=3, sticky="nw", padx=40)
-    searchf = CTkFrame(headingf, fg_color="white", border_width=2, border_color="#BFC3C3", corner_radius=10)
-    searchf.grid(row=0, column=3, columnspan=4, sticky="new", padx=20)
-
+    searchf = CTkFrame(headingf, fg_color="white", width=450, height=100, border_width=2, border_color="#BFC3C3", corner_radius=10)
+    searchf.place(relx=0.85, rely=0.3, anchor="center")
     # Add search entry and button
-    search_entry = CTkEntry(searchf, fg_color="white", border_width=1, width=200)
+    search_entry = CTkEntry(searchf, fg_color="white", border_width=0, width=220, height=35)
     search_entry.grid(row=0, column=0, padx=10, pady=10)
-    search_button = CTkButton(searchf, text="Search", command=lambda: search_residents(search_entry.get()))
-    search_button.grid(row=0, column=1, padx=10, pady=10)
+    search_entry.bind("<KeyPress>", lambda event: validate_length(event, search_entry, 35))
+    search_entry.bind("<KeyPress>", lambda event: validate_search_entry(event))
+    searchimage = load_image('search.png', (34, 34))
+    search_button = CTkButton(searchf, text="", image=searchimage, width=34,
+                            fg_color="transparent", hover_color="white", command=lambda: search_residents(search_entry.get()))
+    search_button.grid(row=0, column=1, sticky="e", padx=10)
 
     tablef = CTkFrame(Residentframe, fg_color="transparent")
     tablef.grid(row=2, column=1, columnspan=3, sticky="nsew")
