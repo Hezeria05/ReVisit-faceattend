@@ -47,9 +47,11 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     pagelabel = CTkLabel(pagination_frame, image=pageimage, text="")
     pagelabel.grid(row=0, column=0, columnspan=2, sticky="nsew")
     previmage = load_image('prev.png', (30, 30))
-    back_button = CTkButton(pagination_frame, image=previmage,text='', width=35,
+    prevdisimage = load_image('prevdis.png', (30, 30))
+    back_button = CTkButton(pagination_frame, image=prevdisimage,text='', width=35,
     fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
     nextimage = load_image('next.png', (30, 30))
+    nextdisimage = load_image('nextdis.png', (30, 30))
     next_button = CTkButton(pagination_frame, image=nextimage,text='', width=35,
     fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
     back_button.grid(row=0, column=0)
@@ -71,8 +73,14 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
         create_resident_table(tablebody, resident_data)
         
         # Disable buttons if necessary
-        back_button.configure(state='normal' if current_page > 0 else 'disabled')
-        next_button.configure(state='normal' if current_page < total_pages - 1 else 'disabled')
+        if current_page > 0:
+            back_button.configure(state='normal', image=previmage)
+        else:
+            back_button.configure(state='disabled', image=prevdisimage)
+        if current_page < total_pages - 1:
+            next_button.configure(state='normal', image=nextimage)
+        else:
+            next_button.configure(state='disabled', image=nextdisimage)
 
     # Initial data fetch and table creation
     refresh_resident_table()
