@@ -48,17 +48,26 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     pagelabel.grid(row=0, column=0, columnspan=2, sticky="nsew")
     previmage = load_image('prev.png', (30, 30))
     prevdisimage = load_image('prevdis.png', (30, 30))
-    back_button = CTkButton(pagination_frame, image=prevdisimage,text='', width=35,
-    fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
     nextimage = load_image('next.png', (30, 30))
     nextdisimage = load_image('nextdis.png', (30, 30))
-    next_button = CTkButton(pagination_frame, image=nextimage,text='', width=35,
-    fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
-    back_button.grid(row=0, column=0)
-    next_button.grid(row=0, column=1)
-
+   
+    #Configure Buttons
     total_residents = get_total_residents()
     total_pages = (total_residents + 14) // 15  # Calculate the total number of pages
+    initial_back_image = previmage if current_page > 0 else prevdisimage
+    initial_next_image = nextimage if current_page < total_pages - 1 else nextdisimage
+
+    # Create back button with initial image
+    back_button = CTkButton(pagination_frame, image=initial_back_image, text='', width=35,
+                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
+
+    # Create next button with initial image
+    next_button = CTkButton(pagination_frame, image=initial_next_image, text='', width=35,
+                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
+
+    # Update button images based on initial conditions
+    back_button.grid(row=0, column=0)
+    next_button.grid(row=0, column=1)
 
     def navigate_page(direction):
         nonlocal current_page
@@ -71,7 +80,7 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
         for widget in tablebody.winfo_children():
             widget.destroy()
         create_resident_table(tablebody, resident_data)
-        
+
         # Disable buttons if necessary
         if current_page > 0:
             back_button.configure(state='normal', image=previmage)

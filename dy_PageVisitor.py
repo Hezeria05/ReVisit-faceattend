@@ -108,6 +108,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     tablebody.grid(row=1, column=0, columnspan=7, sticky="nsew")
     configure_frame(tablebody, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1])
 
+    #Initiate the canvas
     pagination_frame = CTkFrame(Visitorframe, fg_color="transparent")
     pagination_frame.place(relx=0.5, rely=0.93, anchor="center")
     configure_frame(pagination_frame, [1], [1,1])
@@ -116,18 +117,24 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     pagelabel.grid(row=0, column=0, columnspan=2, sticky="nsew")
     previmage = load_image('prev.png', (30, 30))
     prevdisimage = load_image('prevdis.png', (30, 30))
-    back_button = CTkButton(pagination_frame, image=prevdisimage,text='', width=35,
-    fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
     nextimage = load_image('next.png', (30, 30))
     nextdisimage = load_image('nextdis.png', (30, 30))
-    next_button = CTkButton(pagination_frame, image=nextimage,text='', width=35,
-    fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
-    back_button.grid(row=0, column=0)
-    next_button.grid(row=0, column=1)
 
+    #Configure Buttons
     total_visitors = get_total_visitors()
     total_pages = (total_visitors + 14) // 15
+    initial_back_image = previmage if current_page > 0 else prevdisimage
+    initial_next_image = nextimage if current_page < total_pages - 1 else nextdisimage
 
+    # Create back button with initial image
+    back_button = CTkButton(pagination_frame, image=initial_back_image, text='', width=35,
+                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
+
+    # Create next button with initial image
+    next_button = CTkButton(pagination_frame, image=initial_next_image, text='', width=35,
+                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
+
+    # Function to navigate pages
     def navigate_page(direction):
         nonlocal current_page
         current_page += direction
@@ -140,5 +147,10 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
             next_button.configure(state='normal', image=nextimage)
         else:
             next_button.configure(state='disabled', image=nextdisimage)
+
+    # Update button images based on initial conditions
+    back_button.grid(row=0, column=0)
+    next_button.grid(row=0, column=1)
+
 
     refresh_visitor_table(fetch_visitor_data_desc)
