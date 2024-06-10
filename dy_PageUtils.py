@@ -2,6 +2,8 @@ from customtkinter import *
 from PIL import Image
 import os
 from datetime import datetime
+from db_con import update_resident_data
+
 
 #_______________________________________GENERAL
 
@@ -271,3 +273,49 @@ def validate_phone_number(event):
             return "break"
     else:
         return "break"
+
+def toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, is_edit_mode):
+    if is_edit_mode:
+        edit_btn.configure(text="Save", state='disabled', command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, False))
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='normal')
+                entry.bind("<KeyRelease>", lambda event, btn=edit_btn, elist=entries_list: on_entry_change(event, btn, elist))
+    else:
+        edit_btn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, True))
+        save_edited_data(Residentframe, entries_list, id_list)
+        for entries in entries_list:
+            for entry in entries:
+                entry.configure(state='disabled')
+                entry.unbind("<KeyRelease>")
+
+def on_entry_change(event, save_button, entries_list):
+    all_valid = True
+    for entries in entries_list:
+        phone_entry = entries[2]
+        if len(phone_entry.get()) < 11:  # Check for valid phone number length
+            all_valid = False
+            break
+    save_button.configure(state='normal' if all_valid else 'disabled')
+
+def save_edited_data(Residentframe, entries_list, id_list):
+    for entries, res_id in zip(entries_list, id_list):
+        name, address, phone = [entry.get() for entry in entries]
+        update_resident_data(Residentframe, res_id, name, address, phone)  # This function needs to be implemented in your db_con module
+        save_success(Residentframe)
+
+def save_success(window):
+    SaveSucessfr = CTkFrame(window, fg_color="white", width=700, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    SaveSucessfr.place(relx=0.5, rely=0.5, anchor='center')
+
+    # Assuming the function set_icon_image is implemented and ASSETS_PATH is defined correctly
+    set_icon_image(SaveSucessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
+
+    LbSuccess = CTkLabel(SaveSucessfr, text="Saved Successfully!", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.62, anchor='n')
+
+    # Automatically destroy the frame after 3000 milliseconds (3 seconds)
+    SaveSucessfr.after(2500, SaveSucessfr.destroy)
+
+# Call the Resident_page function with appropriate parameters (example usage)
+# Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)

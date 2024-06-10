@@ -346,19 +346,35 @@ def get_total_visitors():
         conn.close()
 #Resident Page_____________________________________________________________________________________________________________
 
-def fetch_resident_data(offset=0):
+def fetch_resident_data(offset=0, search_query=""):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15 OFFSET %s", (offset,))
+        if search_query:
+            query = """
+            SELECT SQL_CALC_FOUND_ROWS res_id, res_name, res_address, res_phonenumber 
+            FROM resident_data 
+            WHERE res_name LIKE %s OR res_address LIKE %s OR res_phonenumber LIKE %s 
+            LIMIT 15 OFFSET %s
+            """
+            cursor.execute(query, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%', offset))
+        else:
+            query = "SELECT SQL_CALC_FOUND_ROWS res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15 OFFSET %s"
+            cursor.execute(query, (offset,))
+
         data = cursor.fetchall()
-        return data
+        
+        cursor.execute("SELECT FOUND_ROWS()")
+        total_results = cursor.fetchone()[0]
+
+        return data, total_results
     except mysql.connector.Error as err:
         print(f"Failed to fetch resident data: {err}")
-        return []
+        return [], 0
     finally:
         cursor.close()
         conn.close()
+
 
 def get_total_residents():
     conn = connect_to_database()

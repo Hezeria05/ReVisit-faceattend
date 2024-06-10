@@ -1,13 +1,15 @@
 from customtkinter import *
 import datetime 
-from dy_PageUtils import set_icon_image, update_datetime, btnind, configure_frame, load_image, validate_full_name, validate_phone_number
-from db_con import fetch_resident_data, get_total_residents, update_resident_data
+from dy_PageUtils import set_icon_image, toggle_edit_save, btnind, configure_frame, load_image, validate_full_name, validate_phone_number
+from db_con import fetch_resident_data, get_total_residents
 
 def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id):
     # Initialize current page state
     current_page = 0
     entries_list = []
     id_list = []
+    search_query = ""
+    total_results = 0
 
     Residentframe = CTkFrame(visitorpage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Residentframe.grid(row=1, column=1, sticky="nsew")
@@ -20,6 +22,12 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     ResidentHeading.grid(row=0, column=0, columnspan=3, sticky="nw", padx=40)
     searchf = CTkFrame(headingf, fg_color="white", border_width=2, border_color="#BFC3C3", corner_radius=10)
     searchf.grid(row=0, column=3, columnspan=4, sticky="new", padx=20)
+
+    # Add search entry and button
+    search_entry = CTkEntry(searchf, fg_color="white", border_width=1, width=200)
+    search_entry.grid(row=0, column=0, padx=10, pady=10)
+    search_button = CTkButton(searchf, text="Search", command=lambda: search_residents(search_entry.get()))
+    search_button.grid(row=0, column=1, padx=10, pady=10)
 
     tablef = CTkFrame(Residentframe, fg_color="transparent")
     tablef.grid(row=2, column=1, columnspan=3, sticky="nsew")
@@ -42,8 +50,10 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     configure_frame(tablebody, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1])  # rows and columns
 
     # Create Edit Button
-    edit_button = CTkButton(Residentframe, text="Edit", command=lambda: toggle_edit_save(Residentframe, edit_button, entries_list, id_list, True))
-    edit_button.grid(row=3, column=1, pady=20)
+    edit_button = CTkButton(Residentframe, text="Edit", width=120, height=50, corner_radius=10,
+                    fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"),
+                    text_color="#333333", command=lambda: toggle_edit_save(Residentframe, edit_button, entries_list, id_list, True))
+    edit_button.place(relx=0.5, rely=0.9285, anchor="center")
 
     # Create pagination buttons
     pagination_frame = CTkFrame(Residentframe, fg_color="transparent")
@@ -57,18 +67,12 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     nextimage = load_image('next.png', (30, 30))
     nextdisimage = load_image('nextdis.png', (30, 30))
    
-    # Configure Buttons
-    total_residents = get_total_residents()
-    total_pages = (total_residents + 14) // 15  # Calculate the total number of pages
-    initial_back_image = previmage if current_page > 0 else prevdisimage
-    initial_next_image = nextimage if current_page < total_pages - 1 else nextdisimage
-
     # Create back button with initial image
-    back_button = CTkButton(pagination_frame, image=initial_back_image, text='', width=35,
-                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
+    back_button = CTkButton(pagination_frame, image=prevdisimage, text='', width=35,
+                            fg_color="transparent", hover_color="white", state='disabled', command=lambda: navigate_page(-1))
 
     # Create next button with initial image
-    next_button = CTkButton(pagination_frame, image=initial_next_image, text='', width=35,
+    next_button = CTkButton(pagination_frame, image=nextimage, text='', width=35,
                             fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
 
     # Update button images based on initial conditions
@@ -81,20 +85,20 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
         refresh_resident_table()
 
     def refresh_resident_table():
-        nonlocal entries_list, id_list
+        nonlocal entries_list, id_list, search_query, total_results
         offset = current_page * 15
-        resident_data = fetch_resident_data(offset)
+        resident_data, total_results = fetch_resident_data(offset, search_query)
         for widget in tablebody.winfo_children():
             widget.destroy()
         entries_list, id_list = create_resident_table(tablebody, resident_data)
         edit_button.configure(command=lambda: toggle_edit_save(Residentframe, edit_button, entries_list, id_list, True))
 
-        # Disable buttons if necessary
+        # Update pagination buttons
         if current_page > 0:
             back_button.configure(state='normal', image=previmage)
         else:
             back_button.configure(state='disabled', image=prevdisimage)
-        if current_page < total_pages - 1:
+        if (current_page + 1) * 15 < total_results:
             next_button.configure(state='normal', image=nextimage)
         else:
             next_button.configure(state='disabled', image=nextdisimage)
@@ -121,80 +125,10 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
 
         return entries_list, id_list
 
+    def search_residents(query):
+        nonlocal search_query, current_page
+        search_query = query
+        current_page = 0  # Reset to first page on new search
+        refresh_resident_table()
+
     refresh_resident_table()
-
-def validate_full_name(event):
-    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
-        return True
-    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
-        return True
-    else:
-        return "break"
-
-def validate_phone_number(event):
-    if event.keysym in ('BackSpace', 'Delete', 'Left', 'Right', 'Tab'):
-        return True
-    elif event.char.isdigit():
-        current_text = event.widget.get()
-        selection_length = len(event.widget.selection_get()) if event.widget.selection_present() else 0
-        new_text = current_text[:event.widget.index("insert")] + event.char + current_text[event.widget.index("insert"):]
-
-        # Allow starting to type "09"
-        if len(new_text) == 1 and event.char == "0":
-            return True
-        elif len(new_text) == 2 and new_text.startswith("09"):
-            return True
-
-        # Check if the text starts with '09' and respects the maximum length condition
-        if new_text.startswith("09") and len(new_text) - selection_length <= 11:
-            return True
-        else:
-            return "break"
-    else:
-        return "break"
-
-def toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, is_edit_mode):
-    if is_edit_mode:
-        edit_btn.configure(text="Save", state='disabled', command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, False))
-        for entries in entries_list:
-            for entry in entries:
-                entry.configure(state='normal')
-                entry.bind("<KeyRelease>", lambda event, btn=edit_btn, elist=entries_list: on_entry_change(event, btn, elist))
-    else:
-        edit_btn.configure(text="Edit", command=lambda: toggle_edit_save(Residentframe, edit_btn, entries_list, id_list, True))
-        save_edited_data(Residentframe, entries_list, id_list)
-        for entries in entries_list:
-            for entry in entries:
-                entry.configure(state='disabled')
-                entry.unbind("<KeyRelease>")
-
-def on_entry_change(event, save_button, entries_list):
-    all_valid = True
-    for entries in entries_list:
-        phone_entry = entries[2]
-        if len(phone_entry.get()) < 11:  # Check for valid phone number length
-            all_valid = False
-            break
-    save_button.configure(state='normal' if all_valid else 'disabled')
-
-def save_edited_data(Residentframe, entries_list, id_list):
-    for entries, res_id in zip(entries_list, id_list):
-        name, address, phone = [entry.get() for entry in entries]
-        update_resident_data(Residentframe, res_id, name, address, phone)  # This function needs to be implemented in your db_con module
-        save_success(Residentframe)
-
-def save_success(window):
-    SaveSucessfr = CTkFrame(window, fg_color="white", width=700, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
-    SaveSucessfr.place(relx=0.5, rely=0.5, anchor='center')
-
-    # Assuming the function set_icon_image is implemented and ASSETS_PATH is defined correctly
-    set_icon_image(SaveSucessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
-
-    LbSuccess = CTkLabel(SaveSucessfr, text="Saved Successfully!", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
-    LbSuccess.place(relx=0.5, rely=0.62, anchor='n')
-
-    # Automatically destroy the frame after 3000 milliseconds (3 seconds)
-    SaveSucessfr.after(2500, SaveSucessfr.destroy)
-
-# Call the Resident_page function with appropriate parameters (example usage)
-# Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)
