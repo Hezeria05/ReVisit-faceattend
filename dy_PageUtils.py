@@ -51,9 +51,9 @@ def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye
 # Function to change border color on input
 def change_border_color(entry):
     if entry.get():
-        entry.configure(border_color="green")
+        entry.configure(border_color="#1DB56C")
     else:
-        entry.configure(border_color="red")
+        entry.configure(border_color="#FB6B6B")
 
 def update_datetime(date_label, time_label):
     # Get the current date and time
@@ -163,7 +163,7 @@ def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label)
         check_password_match(Epassword, Ecpassword, ecp_label, createbtn)  # Continue to check password match
     else:
         Ecpassword.delete(0, 'end')  # Clear the "Confirm Password" field
-        Ecpassword.configure(state="disabled", border_color="red")  # Keep "Confirm Password" field disabled
+        Ecpassword.configure(state="disabled", border_color="#FB6B6B")  # Keep "Confirm Password" field disabled
         ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
         ecp_label.configure(text="")  # Clear any previous messages in the confirm password label
         disable_submit_button(createbtn)  # Ensure submit button is disabled

@@ -31,7 +31,7 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     searchf = CTkFrame(headingf, fg_color="white", width=450, height=100, border_width=2, border_color="#BFC3C3", corner_radius=10)
     searchf.place(relx=0.85, rely=0.3, anchor="center")
     # Add search entry and button
-    search_entry = CTkEntry(searchf, fg_color="white", border_width=0, width=220, height=35)
+    search_entry = CTkEntry(searchf, fg_color="white", border_width=0, width=220, height=35, placeholder_text="Search")
     search_entry.grid(row=0, column=0, padx=10, pady=10)
     search_entry.bind("<KeyPress>", lambda event: validate_length(event, search_entry, 35))
     search_entry.bind("<KeyPress>", lambda event: validate_search_entry(event))

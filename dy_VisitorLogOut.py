@@ -11,7 +11,7 @@ from dy_PageVisitor import Visitor_page
 
 def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
     # Main registration frame
-    LogOutVframe = CTkFrame(homepage_window, fg_color="#F6FCFC", width=1057, height=715)
+    LogOutVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogOutVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(LogOutVframe, [2,8,1,2], [1,4,1])
     # Heading

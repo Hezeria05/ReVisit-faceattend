@@ -8,7 +8,7 @@ from face_registration import face_register
 
 
 def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
-    RegVframe = CTkFrame(homepage_window, fg_color="white")
+    RegVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     RegVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(RegVframe, [2,8,1,2], [1,4,1])
     RegVHeading = CTkLabel(RegVframe, text="Face Registration", font=("Inter", 35, "bold"), text_color="#333333")
@@ -24,7 +24,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         Entryframe = CTkFrame(RegVframe, fg_color="#E9F3F2", corner_radius=10, border_color="#B9BDBD", border_width=2)
         Entryframe.grid(row=1, column=1, sticky="nsew", padx=150, pady=120)
         configure_frame(Entryframe, [2, 2, 1, 2,1], [1,8,1])
-        Vname = CTkEntry(Entryframe, textvariable=vname_text, corner_radius=8, border_width=2, border_color='red')
+        Vname = CTkEntry(Entryframe, textvariable=vname_text, corner_radius=8, border_width=2, border_color='#FB6B6B')
         Vname.grid(row=1, column=1, sticky="nsew")
         Vname.bind("<KeyRelease>", lambda event: change_border_color(Vname))
         Vname.bind("<KeyPress>", validate_full_name)

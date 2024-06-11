@@ -11,7 +11,7 @@ from dy_VisitorLogOut import on_logout_click
 def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
 
     # Main registration frame
-    LogInVframe = CTkFrame(homepage_window, fg_color="white")
+    LogInVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogInVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(LogInVframe, [3, 10, 2, 1], [1, 9, 1, 8, 1])
 
@@ -62,7 +62,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     Purposef.grid(row=3, column=1, sticky="nsew", pady=3)
     configure_frame(Purposef, [1, 2, 1], [1])
     LogPurpose = CTkEntry(Purposef, placeholder_text="State Purpose", height=45,
-                          corner_radius=8, border_width=2, border_color='red')
+                          corner_radius=8, border_width=2, border_color='#FB6B6B')
     LogPurpose.grid(row=1, column=0, sticky="new")
     LogPurpose.bind("<KeyRelease>", lambda event: change_border_color(LogPurpose))
     LogPurpose.bind("<KeyPress>", validate_full_name)
@@ -83,7 +83,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     def check_entries_and_enable_submit(entries, submitbtn):
         if ResidID.get() == "--Select--":
             LogPurpose.delete(0, 'end')
-            LogPurpose.configure(border_color="red")
+            LogPurpose.configure(border_color="#FB6B6B")
             Existinglabel.configure(text="Select Resident Address First!")
             submitbtn.configure(state="disabled")
         else:

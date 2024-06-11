@@ -5,7 +5,7 @@ from dy_PageUtils import (create_standard_entry, create_standard_label, create_w
                           toggle_password_visibility, change_border_color,
                           check_sign_complete, signin_failed)
 from db_con import validate_login_credentials
-from  MainPage import open_homepage
+from  dy_MainPage import open_homepage
 
 def open_signin_window(select_window):
 # signin_window = CTk()

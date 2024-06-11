@@ -104,7 +104,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
         heading_label = CTkLabel(tableheading, text=heading, font=("Inter", 14, "bold"), text_color="white", fg_color="transparent")
         heading_label.grid(row=0, column=column, sticky="nsew", padx=0, pady=0)
 
-    tablebody = CTkFrame(tablef, fg_color="transparent", border_width=2, border_color="green", corner_radius=0)
+    tablebody = CTkFrame(tablef, fg_color="transparent", border_width=2, border_color="#93ACAF", corner_radius=0)
     tablebody.grid(row=1, column=0, columnspan=7, sticky="nsew")
     configure_frame(tablebody, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1])
 
