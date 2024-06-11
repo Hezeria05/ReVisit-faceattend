@@ -71,6 +71,14 @@ def open_register_window(main_window):
     Efullname.bind("<KeyPress>", lambda event: validate_length(event, Efullname, 50))
     Efullname.bind("<KeyRelease>", lambda event: change_border_color(Efullname))
     FnExistlabel = create_warning_label(InputF1, "")
+    # Ensure first letter is uppercase
+    def capitalize_first_letter(event):
+        content = Efullname.get()
+        if content and content[0].islower():
+            Efullname.delete(0, END)
+            Efullname.insert(0, content.capitalize())
+
+    Efullname.bind("<KeyRelease>", capitalize_first_letter)
 
     # USERNAME
     InputF2 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
@@ -127,7 +135,7 @@ def open_register_window(main_window):
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries, ecp_label=ecpExistlabel, createbtn=CAbtn,
                 Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword))
-    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel))
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
     Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, ecpExistlabel, CAbtn))
 
     def handle_registration():
