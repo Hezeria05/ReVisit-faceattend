@@ -1,8 +1,8 @@
 from customtkinter import *
 from PIL import Image, ImageTk
-from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
+from dy_PageUtils import (create_standard_entry, validate_all, create_warning_label,
                           load_image, configure_frame, validate_length, create_image_label,
-                          create_eye_button,check_sign_complete, signin_failed)
+                          create_eye_button,check_sign_complete, signin_failed, validate_no_space)
 from db_con import validate_login_credentials
 from  dy_MainPage import open_homepage
 
@@ -76,7 +76,8 @@ def open_signin_window(select_window):
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
     configure_frame(InputF3, [2, 4, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
-    Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword, 45))
+    Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
+    Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
     password_visible = [False]
