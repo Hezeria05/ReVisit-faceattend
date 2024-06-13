@@ -59,6 +59,8 @@ def open_signin_window(select_window):
     back_button = CTkButton(BackF, image=backimage, text='', fg_color="white", hover_color="white", command=signin_window.destroy)
     back_button.grid(row=0, column=0, sticky="s", padx=18)
 
+    eyecloseimg = load_image('Eye_Close.png', (25, 20))
+    eyeopenimg = load_image('Eye_Open.png', (25, 16))
 
     # USERNAME
     InputF2 = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)
@@ -77,8 +79,6 @@ def open_signin_window(select_window):
     Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword, 45))
     Epassword.configure(show="*")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
-    eyecloseimg = load_image('Eye_Close.png', (25, 20))
-    eyeopenimg = load_image('Eye_Open.png', (25, 16))
     password_visible = [False]
     eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")

@@ -24,6 +24,18 @@ def set_icon_image(frame, image_path, relx, rely, anchor, size):
     icon_image_label = CTkLabel(frame, image=icon_image, text='')
     icon_image_label.place(relx=relx, rely=rely, anchor=anchor)
 
+def validate_all(event, entry_widget, length, char_val):
+        if char_val == 1:
+            vresult = validate_char(event)
+            if vresult == "break":
+                return vresult
+        result = validate_and_remove_leading_space(event, entry_widget)
+        if result == "break":
+            return result
+        lgresult = validate_length(event, entry_widget, length)
+        if lgresult == "break":
+            return lgresult
+
 def validate_and_remove_leading_space(event, entry):
         if event.char == ' ' and entry.get() == '':
             return "break"  # Prevent space character from being inserted

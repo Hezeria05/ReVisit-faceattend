@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from db_con import register_security_admin
 from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,
-                          load_image, configure_frame, validate_length, validate_char, handle_ecpassword_input,
+                          load_image, configure_frame, validate_all, handle_ecpassword_input,
                           create_eye_button, check_entries_complete,capitalize_first_letter, validate_no_space,
                           check_password_match, handle_password_input, display_success_and_close)
 def open_register_window(main_window):
@@ -62,14 +62,8 @@ def open_register_window(main_window):
     back_button = CTkButton(BackF, image=backimage, text='', fg_color="white", hover_color="white", command=register_window.destroy)
     back_button.grid(row=0, column=0, sticky="e", padx=18)
 
-
-    def validate_all(event, entry_widget, length, char_val):
-        if char_val == 1:
-            validate_char(event)
-        result = validate_and_remove_leading_space(event, entry_widget)
-        if result == "break":
-            return result
-        validate_length(event, entry_widget, length)
+    eyecloseimg = load_image('Eye_Close.png', (25, 20))
+    eyeopenimg = load_image('Eye_Open.png', (25, 16))
 
    # FULL NAME
     InputF1 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
@@ -90,7 +84,6 @@ def open_register_window(main_window):
     Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
     UnExistlabel = create_warning_label(InputF2, "")
 
-
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
@@ -100,8 +93,6 @@ def open_register_window(main_window):
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
-    eyecloseimg = load_image('Eye_Close.png', (25, 20))
-    eyeopenimg = load_image('Eye_Open.png', (25, 16))
     password_visible = [False]
     eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")
