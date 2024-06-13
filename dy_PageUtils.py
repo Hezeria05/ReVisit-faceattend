@@ -176,38 +176,36 @@ def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label,
 
     if not password:
         ep_label.configure(text="", text_color="red")
-        ecp_label.configure(text="", text_color="red")
-        disable_submit_button(createbtn)
+        if len(confirm_password) >= 1:
+            ecp_label.configure(text="Enter Password First!", text_color="red")
     else:
         if len(password) >= 8:
             ep_label.configure(text="", text_color="red")
-            Ecpassword.configure(show='' if confirm_password_visible[0] else '*')
+            Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
             check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
-        elif len(password) >= 1:
-            if len(confirm_password) >= 1:
-                ecp_label.configure(text="Password must be at least 8 characters long", text_color="red")
-                disable_submit_button(createbtn)
-            else:
-                ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
-                disable_submit_button(createbtn)
+        else:
+            ecp_label.configure(text="", text_color="red")
+            ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+            disable_submit_button(createbtn)
 
 def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
     if not confirm_password:
-        ep_label.configure(text="", text_color="red")
         ecp_label.configure(text="", text_color="red")
-        disable_submit_button(createbtn)
+        if len(password) >= 1:
+            ecp_label.configure(text="", text_color="red")
     else:
-        if len(password) >= 8:
-            Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
-            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
-        elif len(password) >= 1:
-            ecp_label.configure(text="Password must be at least 8 characters long", text_color="red")
-        else:
-            ecp_label.configure(text="Enter Password First!", text_color="red")
-            disable_submit_button(createbtn)
+        if len(confirm_password) >= 1:
+            if not password:
+                ecp_label.configure(text="Enter Password First!", text_color="red")
+            elif 8 < len(password) >= 1:
+                ecp_label.configure(text="", text_color="red")
+                ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+                disable_submit_button(createbtn)
+            else:
+                check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
 
 
 def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn):
