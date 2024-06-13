@@ -48,12 +48,6 @@ def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye
         inputfield.configure(show="")
         btn.configure(image=eye_open_img)
         visible_flag[0] = True
-# Function to change border color on input
-def change_border_color(entry):
-    if entry.get():
-        entry.configure(border_color="#1DB56C")
-    else:
-        entry.configure(border_color="#FB6B6B")
 
 def update_datetime(date_label, time_label):
     # Get the current date and time
@@ -104,15 +98,14 @@ def logout(window, btn):
     cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 #_______________________________________dyPAGEREGISTER
 
-def create_standard_label(parent, text):
+def create_standard_label(parent, text, relx=0, rely=0, anchor="nw"):
     # Standard label properties
     font = ("Inter", 18, "bold")
     text_color = "#333333"
-    grid_options = {'row': 0, 'column': 0, 'sticky': 'ws', 'padx': 2}
 
     # Create and configure the label
     label = CTkLabel(parent, text=text, fg_color="transparent", font=font, text_color=text_color)
-    label.grid(**grid_options)
+    label.place(relx=relx, rely=rely, anchor=anchor)
     return label
 
 def create_standard_entry(parent, placeholder, state="normal"):
@@ -120,7 +113,7 @@ def create_standard_entry(parent, placeholder, state="normal"):
     font = ("Inter", 15)
     corner_radius = 8
     border_width = 1.5
-    border_color = '#F47575'
+    border_color = '#ADCBCF'
     grid_options = {'row': 1, 'column': 0, 'sticky': 'nsew'}
 
     # Create and configure the entry
@@ -139,6 +132,13 @@ def create_warning_label(parent, text):
     warning_label = CTkLabel(parent, text=text, fg_color="transparent", font=font, text_color=text_color)
     warning_label.grid(**grid_options)
     return warning_label
+
+# Ensure first letter is uppercase
+def capitalize_first_letter(event, entry):
+    content = entry.get()
+    if content and content[0].islower():
+        entry.delete(0, END)
+        entry.insert(0, content.capitalize())
 
 def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword):
     all_complete = all(entry.get().strip() for entry in entries)

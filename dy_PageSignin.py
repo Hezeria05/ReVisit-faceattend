@@ -2,7 +2,7 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
                           load_image, configure_frame, validate_length,
-                          toggle_password_visibility, change_border_color,
+                          toggle_password_visibility,
                           check_sign_complete, signin_failed)
 from db_con import validate_login_credentials
 from  dy_MainPage import open_homepage
@@ -67,7 +67,6 @@ def open_signin_window(select_window):
     configure_frame(InputF2, [2, 4, 2], [1])
     Eusername = create_standard_entry(InputF2, "Enter Username")
     Eusername.bind("<KeyPress>", lambda event: validate_length(event, Eusername, 50))
-    Eusername.bind("<KeyRelease>", lambda event: change_border_color(Eusername))
     Lusername = create_standard_label(InputF2, 'Username')
     UnExistlabel = create_warning_label(InputF2, "")
 
@@ -77,7 +76,6 @@ def open_signin_window(select_window):
     configure_frame(InputF3, [2, 4, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword, 45))
-    Epassword.bind("<KeyRelease>", lambda event: change_border_color(Epassword))
     Epassword.configure(show="*")
     Lpassword = create_standard_label(InputF3, 'Enter Password')
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
