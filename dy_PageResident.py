@@ -1,6 +1,6 @@
 from customtkinter import *
 import datetime 
-from dy_PageUtils import set_icon_image, toggle_edit_save, validate_length, configure_frame, load_image, validate_full_name, validate_phone_number
+from dy_PageUtils import set_icon_image, toggle_edit_save, validate_length, configure_frame, load_image, validate_char, validate_phone_number
 from db_con import fetch_resident_data, get_total_residents
 
 def validate_search_entry(event):
@@ -127,7 +127,7 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
                 entry.configure(state='disabled')
                 entry.grid(row=i, column=j, sticky="nsew", padx=0, pady=0)  # Use grid method for positioning
                 if j == 0:  # Name field
-                    entry.bind("<KeyPress>", validate_full_name)
+                    entry.bind("<KeyPress>", validate_char)
                 elif j == 2:  # Phone number field
                     entry.bind("<KeyPress>", validate_phone_number)
                 entries.append(entry)

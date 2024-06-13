@@ -24,6 +24,10 @@ def set_icon_image(frame, image_path, relx, rely, anchor, size):
     icon_image_label = CTkLabel(frame, image=icon_image, text='')
     icon_image_label.place(relx=relx, rely=rely, anchor=anchor)
 
+def validate_and_remove_leading_space(event, entry):
+        if event.char == ' ' and entry.get() == '':
+            return "break"  # Prevent space character from being inserted
+
 def validate_length(event, entry, max):
     if len(entry.get()) >= max:
         if event.keysym in ('BackSpace', 'Left', 'Right', 'Delete', 'Tab'):
@@ -31,6 +35,14 @@ def validate_length(event, entry, max):
         else:
             return "break"
     return True
+
+def validate_char(event):
+    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
+        return True
+    elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
+        return True
+    else:
+        return "break"
 
 def validate_full_name(event):
     if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
@@ -98,6 +110,15 @@ def logout(window, btn):
     cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 #_______________________________________dyPAGEREGISTER
 
+def create_image_label(parent_frame, image_path, w, h):
+    image_size = (w, h)
+    relx = 0
+    rely = 0.1
+    image = load_image(image_path, image_size)
+    label = CTkLabel(parent_frame, image=image, text="")
+    label.place(relx=relx, rely=rely, anchor="w")
+    return label
+
 def create_standard_label(parent, text, relx=0, rely=0, anchor="nw"):
     # Standard label properties
     font = ("Inter", 18, "bold")
@@ -133,6 +154,7 @@ def create_warning_label(parent, text):
     warning_label.grid(**grid_options)
     return warning_label
 
+#---------------------------------------------------------------------VALIDATIONS
 # Ensure first letter is uppercase
 def capitalize_first_letter(event, entry):
     content = entry.get()
@@ -150,17 +172,43 @@ def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword)
 
 def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries):
     password = Epassword.get().strip()
+    confirm_password = Ecpassword.get().strip()
 
-    if len(password) >= 8:
+    if not password:
         ep_label.configure(text="", text_color="red")
-        Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
-        check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
-    else:
-        Ecpassword.delete(0, 'end')
-        Ecpassword.configure(state="disabled", show="*", border_color="#FB6B6B")
-        ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
-        ecp_label.configure(text="")
+        ecp_label.configure(text="", text_color="red")
         disable_submit_button(createbtn)
+    else:
+        if len(password) >= 8:
+            ep_label.configure(text="", text_color="red")
+            Ecpassword.configure(show='' if confirm_password_visible[0] else '*')
+            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
+        elif len(password) >= 1:
+            if len(confirm_password) >= 1:
+                ecp_label.configure(text="Password must be at least 8 characters long", text_color="red")
+                disable_submit_button(createbtn)
+            else:
+                ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+                disable_submit_button(createbtn)
+
+def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries):
+    password = Epassword.get().strip()
+    confirm_password = Ecpassword.get().strip()
+
+    if not confirm_password:
+        ep_label.configure(text="", text_color="red")
+        ecp_label.configure(text="", text_color="red")
+        disable_submit_button(createbtn)
+    else:
+        if len(password) >= 8:
+            Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
+            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
+        elif len(password) >= 1:
+            ecp_label.configure(text="Password must be at least 8 characters long", text_color="red")
+        else:
+            ecp_label.configure(text="Enter Password First!", text_color="red")
+            disable_submit_button(createbtn)
+
 
 def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn):
     password = Epassword.get().strip()

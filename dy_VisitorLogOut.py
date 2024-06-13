@@ -2,7 +2,7 @@ from customtkinter import *
 import cv2
 import os
 from face_recognition import load_face_data
-from dy_PageUtils import (configure_frame, validate_length, view_history,
+from dy_PageUtils import (configure_frame, view_history,
                           indicate, set_icon_image)
 from face_scan import start_camera
 from db_con import logout_visitor

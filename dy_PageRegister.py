@@ -3,8 +3,8 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from pathlib import Path
 from db_con import register_security_admin
-from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
-                          load_image, configure_frame, validate_length, validate_full_name,
+from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,
+                          load_image, configure_frame, validate_length, validate_char, handle_ecpassword_input,
                           toggle_password_visibility, check_entries_complete,capitalize_first_letter,
                           check_password_match, handle_password_input, display_success_and_close)
 def open_register_window(main_window):
@@ -62,23 +62,22 @@ def open_register_window(main_window):
     back_button = CTkButton(BackF, image=backimage, text='', fg_color="white", hover_color="white", command=register_window.destroy)
     back_button.grid(row=0, column=0, sticky="e", padx=18)
 
-    def create_image_label(parent_frame, image_path, w, h):
-        image_size = (w, h)# 120, 19
-        relx = 0
-        rely = 0.1
-        image = load_image(image_path, image_size)
-        label = CTkLabel(parent_frame, image=image, text="")
-        label.place(relx=relx, rely=rely, anchor="w")
-        
-        return label
-    # FULL NAME
+
+    def validate_all(event, entry_widget, length, char_val):
+        if char_val == 1:
+            validate_char(event)
+        result = validate_and_remove_leading_space(event, entry_widget)
+        if result == "break":
+            return result
+        validate_length(event, entry_widget, length)
+
+   # FULL NAME
     InputF1 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF1.grid(row=2, column=1, sticky="nsew", pady=2)
     configure_frame(InputF1, [2, 4, 2], [1])
     Efullname = create_standard_entry(InputF1, "Enter Full Name")
     Efullnameimage = create_image_label(InputF1, 'fullname_astrsk.png', 109, 16)
-    Efullname.bind("<KeyPress>", validate_full_name)
-    Efullname.bind("<KeyPress>", lambda event: validate_length(event, Efullname, 50))
+    Efullname.bind("<KeyPress>", lambda event: validate_all(event, Efullname, 50, 1))
     FnExistlabel = create_warning_label(InputF1, "")
     Efullname.bind("<KeyRelease>", lambda event: capitalize_first_letter(event, Efullname))
 
@@ -88,7 +87,7 @@ def open_register_window(main_window):
     configure_frame(InputF2, [2, 4, 2], [1])
     Eusername = create_standard_entry(InputF2, "Enter Username")
     Eusernameimage = create_image_label(InputF2, 'username_astrsk.png', 109, 16)
-    Eusername.bind("<KeyPress>", lambda event: validate_length(event, Eusername, 50))
+    Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
     UnExistlabel = create_warning_label(InputF2, "")
 
     # PASSWORD
@@ -97,7 +96,7 @@ def open_register_window(main_window):
     configure_frame(InputF3, [2, 4, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
-    Epassword.bind("<KeyPress>", lambda event: validate_length(event, Epassword, 16))
+    Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.configure(show="*")
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
     eyeopenimg = load_image('Eye_Open.png', (25, 16))
@@ -111,9 +110,9 @@ def open_register_window(main_window):
     InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
     configure_frame(InputF4, [2, 4, 2], [1])
-    Ecpassword = create_standard_entry(InputF4, "Confirm Password", state="readonly")
+    Ecpassword = create_standard_entry(InputF4, "Confirm Password")
     Ecpasswordimage = create_image_label(InputF4, 'cpassword_astrsk.png', 194, 16)
-    Ecpassword.bind("<KeyPress>", lambda event: validate_length(event, Ecpassword, 16))
+    Ecpassword.bind("<KeyPress>", lambda event: validate_all(event, Ecpassword, 16, 0))
     Ecpassword.configure(show="*")
     eyecp_button = CTkButton(InputF4, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
     eyecp_button.place(relx=0.93, rely=0.5, anchor="center")
@@ -135,7 +134,7 @@ def open_register_window(main_window):
         entry.bind("<KeyRelease>", lambda event, entries=entries, ecp_label=ecpExistlabel, createbtn=CAbtn,
                 Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword))
     Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
-    Ecpassword.bind("<KeyRelease>", lambda event: check_password_match(Epassword, Ecpassword, ecpExistlabel, CAbtn))
+    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
 
     def handle_registration():
         CAbtn.configure(state="disabled")

@@ -2,7 +2,7 @@ from customtkinter import *
 import cv2
 from face_recognition import load_face_data
 from dy_PageUtils import (configure_frame, validate_length, view_history,
-                          indicate, set_icon_image, validate_full_name)
+                          indicate, set_icon_image, validate_char)
 from face_scan import start_camera
 from db_con import insert_visitor_data, fetch_residents
 from dy_PageVisitor import Visitor_page
@@ -64,7 +64,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
     LogPurpose = CTkEntry(Purposef, placeholder_text="State Purpose", height=45,
                           corner_radius=8, border_width=2, border_color='#FB6B6B')
     LogPurpose.grid(row=1, column=0, sticky="new")
-    LogPurpose.bind("<KeyPress>", validate_full_name)
+    LogPurpose.bind("<KeyPress>", validate_char)
     LogPurpose.bind("<KeyPress>", lambda event: validate_length(event, LogPurpose, 50))
     LbPurpose = CTkLabel(Purposef, text='Purpose of Visit', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.grid(row=0, column=0, sticky="sw")

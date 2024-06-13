@@ -2,7 +2,7 @@ import tkinter as tk
 import cv2
 from customtkinter import *
 from PIL import Image, ImageTk
-from dy_PageUtils import (configure_frame, validate_length, validate_full_name,
+from dy_PageUtils import (configure_frame, validate_length, validate_char,
                           check_sign_complete)
 from face_registration import face_register
 
@@ -26,7 +26,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
         configure_frame(Entryframe, [2, 2, 1, 2,1], [1,8,1])
         Vname = CTkEntry(Entryframe, textvariable=vname_text, corner_radius=8, border_width=2, border_color='#FB6B6B')
         Vname.grid(row=1, column=1, sticky="nsew")
-        Vname.bind("<KeyPress>", validate_full_name)
+        Vname.bind("<KeyPress>", validate_char)
         Vname.bind("<KeyRelease>", lambda event: vname_text.set(Vname.get().upper()))
         Vname.bind("<KeyPress>", lambda event: validate_length(event, Vname, 50))
         LVname = CTkLabel(Entryframe, text='Enter Visitor Name:', fg_color="transparent", font=("Inter", 18, "bold"), text_color="#333333")

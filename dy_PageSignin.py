@@ -2,8 +2,7 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
                           load_image, configure_frame, validate_length,
-                          toggle_password_visibility,
-                          check_sign_complete, signin_failed)
+                          toggle_password_visibility,check_sign_complete, signin_failed)
 from db_con import validate_login_credentials
 from  dy_MainPage import open_homepage
 
