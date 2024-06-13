@@ -51,6 +51,12 @@ def validate_full_name(event):
         return True
     else:
         return "break"
+
+def create_eye_button(parent_frame, entry_widget, visible_list, close_img, open_img):
+    eye_button = CTkButton(parent_frame, image=close_img, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
+    eye_button.place(relx=0.93, rely=0.5, anchor="center")
+    eye_button.configure(command=lambda: toggle_password_visibility(entry_widget, eye_button, visible_list, close_img, open_img))
+    return eye_button
 def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye_open_img):
     if visible_flag[0]:
         inputfield.configure(show="*")
@@ -161,6 +167,10 @@ def capitalize_first_letter(event, entry):
     if content and content[0].islower():
         entry.delete(0, END)
         entry.insert(0, content.capitalize())
+
+def validate_no_space(event):
+        if event.keysym == 'space':
+            return 'break'  # Prevents space from being entered
 
 def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword):
     all_complete = all(entry.get().strip() for entry in entries)

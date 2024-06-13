@@ -5,7 +5,7 @@ from pathlib import Path
 from db_con import register_security_admin
 from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,
                           load_image, configure_frame, validate_length, validate_char, handle_ecpassword_input,
-                          toggle_password_visibility, check_entries_complete,capitalize_first_letter,
+                          create_eye_button, check_entries_complete,capitalize_first_letter, validate_no_space,
                           check_password_match, handle_password_input, display_success_and_close)
 def open_register_window(main_window):
     # register_window = CTk()
@@ -90,6 +90,7 @@ def open_register_window(main_window):
     Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
     UnExistlabel = create_warning_label(InputF2, "")
 
+
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
@@ -97,13 +98,12 @@ def open_register_window(main_window):
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
+    Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
     eyeopenimg = load_image('Eye_Open.png', (25, 16))
-    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
-    eyep_button.place(relx=0.93, rely=0.5, anchor="center")
     password_visible = [False]
-    eyep_button.configure(command=lambda: toggle_password_visibility(Epassword, eyep_button, password_visible, eyecloseimg, eyeopenimg))
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")
 
     # CONFIRM PASSWORD
@@ -114,10 +114,8 @@ def open_register_window(main_window):
     Ecpasswordimage = create_image_label(InputF4, 'cpassword_astrsk.png', 194, 16)
     Ecpassword.bind("<KeyPress>", lambda event: validate_all(event, Ecpassword, 16, 0))
     Ecpassword.configure(show="*")
-    eyecp_button = CTkButton(InputF4, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
-    eyecp_button.place(relx=0.93, rely=0.5, anchor="center")
     confirm_password_visible = [False]
-    eyecp_button.configure(command=lambda: toggle_password_visibility(Ecpassword, eyecp_button, confirm_password_visible, eyecloseimg, eyeopenimg))
+    eyecp_button = create_eye_button(InputF4, Ecpassword, confirm_password_visible, eyecloseimg, eyeopenimg)
     ecpExistlabel = create_warning_label(InputF4, "")
 
     CAFrame = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)

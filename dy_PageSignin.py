@@ -2,7 +2,7 @@ from customtkinter import *
 from PIL import Image, ImageTk
 from dy_PageUtils import (create_standard_entry, create_standard_label, create_warning_label,
                           load_image, configure_frame, validate_length, create_image_label,
-                          toggle_password_visibility,check_sign_complete, signin_failed)
+                          create_eye_button,check_sign_complete, signin_failed)
 from db_con import validate_login_credentials
 from  dy_MainPage import open_homepage
 
@@ -79,10 +79,8 @@ def open_signin_window(select_window):
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
     eyecloseimg = load_image('Eye_Close.png', (25, 20))
     eyeopenimg = load_image('Eye_Open.png', (25, 16))
-    eyep_button = CTkButton(InputF3, image=eyecloseimg, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
-    eyep_button.place(relx=0.93, rely=0.5, anchor="center")
     password_visible = [False]
-    eyep_button.configure(command=lambda: toggle_password_visibility(Epassword, eyep_button, password_visible, eyecloseimg, eyeopenimg))
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")
 
     SIFrame = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)
