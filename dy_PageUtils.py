@@ -200,7 +200,7 @@ def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_labe
         if len(confirm_password) >= 1:
             if not password:
                 ecp_label.configure(text="Enter Password First!", text_color="red")
-            elif 8 < len(password) >= 1:
+            elif len(password) < 8:
                 ecp_label.configure(text="", text_color="red")
                 ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
                 disable_submit_button(createbtn)
