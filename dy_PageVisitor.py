@@ -22,9 +22,9 @@ def create_visitor_table(visitorframe, visitor_data):
             for entry in entries:
                 entry.configure(state='disabled')
 
-def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id):
+def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn):
     current_page = 0
-
+    logout_btn.configure(state="normal")
     Visitorframe = CTkFrame(visitorpage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Visitorframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(Visitorframe, [1, 2, 2, 9, 2], [1, 7, 7, 1])

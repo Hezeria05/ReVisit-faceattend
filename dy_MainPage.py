@@ -29,19 +29,7 @@ sec_id = 24
 def mainon_resize(event):
     width = event.width
     min_width = 1500
-    # max_width = 1600
-    # if min_width <= width <= max_width:
-    #     column_weights = (1, 7)
-    #     row_weights = (1, 8, 1)
-    #     home2image = load_image('home2_icon.png', (43, 43))
-    #     home_button.configure(image=home2image)
-    #     visitor2image = load_image('visitor2_icon.png', (43, 43))
-    #     visitor_button.configure(image=visitor2image)
-    #     resident2image = load_image('list2_icon.png', (43, 43))
-    #     resident_button.configure(image=resident2image)
-    #     logout2image = load_image('userlogout_icon.png', (40, 40))
-    #     logout_btn.configure(image=logout2image, text="")
-    #     configure_frame(Sidebar, [5, 2, 2, 2, 2, 9, 5], [3, 5, 3])
+
     if width >= min_width:
         column_weights = (2, 7)
         row_weights = (1, 8, 1)
@@ -76,6 +64,13 @@ logoimage = load_image('REVISITlogosb.png', (216, 216))
 logolabel = CTkLabel(SBLogo, image=logoimage, text="")
 logolabel.grid(row=0, column=0, sticky="n")
 
+LogbtnF = CTkFrame(Sidebar, fg_color="transparent", corner_radius=0)
+LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")
+configure_frame(LogbtnF, [1], [1])
+# Add a logout button
+logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 25, "bold"),
+                text_color="#333333", command=lambda:(logout(homepage_window,logout_btn), logout_btn.configure(state='disabled')))
+logout_btn.grid(row=0, column=0, sticky="nsew", padx=50, pady=50)
 
 def create_sidebar_button(parent, row, image_path, image_size, command, indicator_color="#FEFEFE"):
     frame = CTkFrame(parent, fg_color="transparent", corner_radius=0)
@@ -91,19 +86,11 @@ def create_sidebar_button(parent, row, image_path, image_size, command, indicato
 
     return button, indicator
 
-home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (131, 36), lambda: indicate(Home_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)), "#00507E")
-visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
-resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
+home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (131, 36), lambda: indicate(Home_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)), "#00507E")
+visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
+resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
 
-Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)
-
-LogbtnF = CTkFrame(Sidebar, fg_color="transparent", corner_radius=0)
-LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")
-configure_frame(LogbtnF, [1], [1])
-# Add a logout button
-logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 25, "bold"),
-                text_color="#333333", command=lambda:(logout(homepage_window,logout_btn), logout_btn.configure(state='disabled')))
-logout_btn.grid(row=0, column=0, sticky="nsew", padx=50, pady=50)
+Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)
 
 Topbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Topbar.grid(row=0, column=1, sticky="nsew")

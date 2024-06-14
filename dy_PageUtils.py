@@ -128,10 +128,10 @@ def logout(window, btn):
     cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 #_______________________________________dyPAGEREGISTER
 
-def create_image_label(parent_frame, image_path, w, h):
+def create_image_label(parent_frame, image_path, w, h, relx=0, rely=0.1):
     image_size = (w, h)
-    relx = 0
-    rely = 0.1
+    relx = relx
+    rely = rely
     image = load_image(image_path, image_size)
     label = CTkLabel(parent_frame, image=image, text="")
     label.place(relx=relx, rely=rely, anchor="w")

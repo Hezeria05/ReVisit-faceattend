@@ -41,7 +41,8 @@ def create_section(parent, row, column, text, image_path, button_text, button_co
     
     return frame
 
-def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id):
+def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn):
+    logout_btn.configure(state="normal")
     logged_in_count = count_logged_in()
     logged_out_count = count_logged_out()
     total_count = count_total_today()
@@ -67,13 +68,6 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     # Update date and time periodically
     update_datetime(date_label, time_label)
     homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
-
-    # TotalVisitF = create_frame(Homeframe, row=2, column=1)
-    # Totallabel = CTkLabel(TotalVisitF, fg_color="transparent", text="Total Number of Visitors Today", 
-    #                       font=("Arial", 20, "bold"), text_color="#333333")
-    # Totallabel.place(relx=0.5, rely=0.125, anchor="n")
-    # TotalV = CTkLabel(TotalVisitF, text=str(total_count), font=("Arial", 30, "bold"), text_color="#00507E")
-    # TotalV.place(relx=0.5, rely=0.5, anchor="n")
 
     # Register Visitor Section
     register_command = lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)

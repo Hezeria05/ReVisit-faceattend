@@ -11,7 +11,8 @@ def validate_search_entry(event):
     else:
         return "break"
 
-def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id):
+def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn):
+    logout_btn.configure(state="normal")
     # Initialize current page state
     current_page = 0
     entries_list = []
