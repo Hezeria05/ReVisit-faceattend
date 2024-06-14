@@ -68,16 +68,24 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     update_datetime(date_label, time_label)
     homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
-    TotalVisitF = create_frame(Homeframe, row=2, column=1)
-    Totallabel = CTkLabel(TotalVisitF, fg_color="transparent", text="Total Number of Visitors Today", 
-                          font=("Arial", 20, "bold"), text_color="#333333")
-    Totallabel.place(relx=0.5, rely=0.125, anchor="n")
-    TotalV = CTkLabel(TotalVisitF, text=str(total_count), font=("Arial", 30, "bold"), text_color="#00507E")
-    TotalV.place(relx=0.5, rely=0.5, anchor="n")
+    # TotalVisitF = create_frame(Homeframe, row=2, column=1)
+    # Totallabel = CTkLabel(TotalVisitF, fg_color="transparent", text="Total Number of Visitors Today", 
+    #                       font=("Arial", 20, "bold"), text_color="#333333")
+    # Totallabel.place(relx=0.5, rely=0.125, anchor="n")
+    # TotalV = CTkLabel(TotalVisitF, text=str(total_count), font=("Arial", 30, "bold"), text_color="#00507E")
+    # TotalV.place(relx=0.5, rely=0.5, anchor="n")
 
     # Register Visitor Section
     register_command = lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
     create_section(Homeframe, row=3, column=1, text="REGISTER", image_path='register_icon.png', button_text="REGISTER", button_command=register_command)
+    TotalVisitF = create_frame(Homeframe, row=4, column=1, pady = 1)
+    configure_frame(TotalVisitF, [1], [1])
+    TVframe = create_inner_frame(TotalVisitF, row=0, column=0, padx=15, pady=15)
+    configure_frame(TVframe, [3,3], [1,1,1])
+    Totallabel = CTkLabel(TVframe, fg_color="transparent", text="Total Number of Visitors Today", font=("Arial", 18, "bold"), text_color="#333333")
+    Totallabel.grid(row=0, column=0, columnspan=2, sticky="nw", padx=7, pady=4)
+    TotalV = CTkLabel(TVframe, text=str(total_count), font=("Arial", 30, "bold"), text_color="#00507E")
+    TotalV.place(relx=0.5, rely=0.65, anchor="center")
 
     # Log in Visitor Section
     login_command = lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
