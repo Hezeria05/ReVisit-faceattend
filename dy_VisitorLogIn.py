@@ -136,6 +136,6 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap))
+        scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
 
 

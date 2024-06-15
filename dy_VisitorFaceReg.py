@@ -52,7 +52,7 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
 
     def submit_and_destroy(Entryframe, Existinglabel, scanbtn, entry):
         dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
-        if entry ==1 :
+        if entry == 1 :
             face_name = ret_vname
         else:
             face_name = Vname.get()
