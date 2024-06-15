@@ -7,13 +7,13 @@ import time
 from PIL import Image, ImageTk
 from dy_PageUtils import set_icon_image
 
-def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click):
+def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
     scanbtn.destroy()
     cap.release()
     camera_label = CTkLabel(RCameraFrame, text="", width=680, height=480)
     camera_label.place(relx=0.5, rely=0.5, anchor='center')
-    scanning_label = CTkLabel(RegVframe, text="Scanning...", font=("Inter", 30, "bold"), fg_color="transparent", text_color="#333333")
+    scanning_label = CTkLabel(RegVframe, text="Scanning...", font=("Inter", 40, "bold"), fg_color="transparent", text_color="#333333")
     scanning_label.place(relx=0.5, rely=0.85, anchor='center')
 
     cap = cv2.VideoCapture(0)
@@ -108,6 +108,6 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, Entryframe, ho
 
     def retry_registration():
         RegVframe.destroy()
-        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, visitor_name)
 
     show_frame()

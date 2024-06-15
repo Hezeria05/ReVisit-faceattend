@@ -70,7 +70,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
     # Register Visitor Section
-    register_command = lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+    register_command = lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, None)
     create_section(Homeframe, row=3, column=1, text="REGISTER", image_path='register_icon.png', button_text="REGISTER", button_command=register_command)
     TotalVisitF = create_frame(Homeframe, row=4, column=1, pady = 1)
     configure_frame(TotalVisitF, [1], [1])
