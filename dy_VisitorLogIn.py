@@ -48,7 +48,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     Residf.grid(row=2, column=1, sticky="nsew", pady=3)
     configure_frame(Residf, [1, 2], [1])
     
-    ResidID = CTkEntry(Residf, placeholder_text="Search Address...", height=45,
+    ResidID = CTkEntry(Residf, placeholder_text="Search Address..", height=45,
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     ResidID.grid(row=1, column=0, sticky="new")
     ResidID.bind("<KeyPress>", lambda event: validate_all(event, ResidID, 30, 1))
