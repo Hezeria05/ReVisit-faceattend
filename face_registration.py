@@ -104,7 +104,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
             set_icon_image(RegisScssfr, 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
             LbFail = CTkLabel(RegisScssfr, text="Please Try Again", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
             LbFail.place(relx=0.5, rely=0.65, anchor='n')
-            register_frame.after(2000, lambda: retry_registration())
+            register_frame.after(1000, lambda: retry_registration())
 
     def retry_registration():
         RegVframe.destroy()

@@ -93,7 +93,7 @@ def update_datetime(date_label, time_label):
     date_label.configure(text=formatted_date)
     time_label.configure(text=formatted_time)
 
-def view_history(sec_id, LogVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct):
+def view_history(sec_id, LogVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, prev_page):
     LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
     set_icon_image(LogSucessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
@@ -108,7 +108,7 @@ def view_history(sec_id, LogVframe, logsucess, set_icon_image, indicate, Visitor
     donebtn.place(relx=0.7, rely=0.8, anchor='center')
 
     viewbtn.configure(command=lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)))
-    donebtn.configure(command=lambda: LogVframe.destroy())
+    donebtn.configure(command=lambda: prev_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn))
 
 
 def logout(window, btn):

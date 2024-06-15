@@ -1,5 +1,5 @@
 from customtkinter import *
-from dy_PageUtils import configure_frame, load_image, indicate, logout
+from dy_PageUtils import configure_frame, load_image, logout
 from dy_PageHome import Home_page
 from dy_PageResident import Resident_page
 from dy_PageVisitor import Visitor_page
@@ -11,7 +11,22 @@ def center_window(window, width, height):
     x = int((screen_width / 2) - (width / 2))
     y = int((screen_height / 2) - (height / 2))
     window.geometry(f'{width}x{height}+{x}+{y}')
-# def open_homepage(sec_id):
+
+# Function to hide indicators
+def hide_indicators(Home_indct, Visitor_indct, Resident_indct):
+    Home_indct.configure(fg_color="#FEFEFE")
+    Visitor_indct.configure(fg_color="#FEFEFE")
+    Resident_indct.configure(fg_color="#FEFEFE")
+
+# Function to indicate the selected sidebar item and switch pages
+def indicate(selected_indicator, Home_indct, Visitor_indct, Resident_indct, new_page):
+    global current_frame
+    hide_indicators(Home_indct, Visitor_indct, Resident_indct)
+    selected_indicator.configure(fg_color="#00507E")
+    if current_frame:
+        current_frame.destroy()
+    current_frame = new_page()
+
 # Create the main window
 homepage_window = CTk()
 homepage_window.title('Main Window')
@@ -26,6 +41,8 @@ homepage_window.minsize(1500, 900)
 homepage_window.maxsize(homepage_window.winfo_screenwidth(), homepage_window.winfo_screenheight())
 homepage_window.configure(fg_color='#E9F3F2')
 sec_id = 24
+current_frame = None
+
 def mainon_resize(event):
     width = event.width
     min_width = 1500
@@ -69,7 +86,7 @@ LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")
 configure_frame(LogbtnF, [1], [1])
 # Add a logout button
 logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 25, "bold"),
-                text_color="#333333", command=lambda:(logout(homepage_window,logout_btn), logout_btn.configure(state='disabled')))
+                text_color="#333333", command=lambda:(logout(homepage_window, logout_btn), logout_btn.configure(state='disabled')))
 logout_btn.grid(row=0, column=0, sticky="nsew", padx=50, pady=50)
 
 def create_sidebar_button(parent, row, image_path, image_size, command, indicator_color="#FEFEFE"):
@@ -90,7 +107,7 @@ home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (13
 visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
 resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
 
-Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)
+current_frame = Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)
 
 Topbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Topbar.grid(row=0, column=1, sticky="nsew")

@@ -9,7 +9,7 @@ from db_con import logout_visitor
 from dy_PageVisitor import Visitor_page
 
 
-def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page):
     # Main registration frame
     LogOutVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogOutVframe.grid(row=1, column=1, sticky="nsew")
@@ -43,7 +43,7 @@ def on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident
             if os.path.exists(data_path):
                 os.remove(data_path)
             logsucess = "Logout successfully!"
-            view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+            view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, prev_page)
 
     # Now update the logout button command to use handle_logout
     logoutbtn.configure(command=handle_logout)

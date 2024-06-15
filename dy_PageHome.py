@@ -70,7 +70,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     homepage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
     # Register Visitor Section
-    register_command = lambda: on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, None)
+    register_command = lambda: on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, None, logout_btn, Home_page)
     create_section(Homeframe, row=3, column=1, text="REGISTER", image_path='register_icon.png', button_text="REGISTER", button_command=register_command)
     TotalVisitF = create_frame(Homeframe, row=4, column=1, pady = 1)
     configure_frame(TotalVisitF, [1], [1])
@@ -82,7 +82,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     TotalV.place(relx=0.5, rely=0.65, anchor="center")
 
     # Log in Visitor Section
-    login_command = lambda: on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+    login_command = lambda: on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, Home_page)
     create_section(Homeframe, row=3, column=3, text="LOGIN", image_path='login_icon.png', button_text="LOGIN", button_command=login_command)
     invisit = create_frame(Homeframe, row=4, column=3, pady = 1)
     configure_frame(invisit, [1], [1])
@@ -96,7 +96,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
 
 
     # Log out Visitor Section
-    logout_command = lambda: on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+    logout_command = lambda: on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, Home_page)
     create_section(Homeframe, row=3, column=5, text="LOGOUT", image_path='logout_icon.png', button_text="LOGOUT", button_command=logout_command)
     outvisit = create_frame(Homeframe, row=4, column=5, pady = 1)
     configure_frame(outvisit, [1], [1])

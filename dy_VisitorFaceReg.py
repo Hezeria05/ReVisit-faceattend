@@ -6,7 +6,7 @@ from dy_PageUtils import (configure_frame, create_image_label, validate_all, che
 from face_registration import face_register
 import os
 
-def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, ret_vname):
+def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, ret_vname, logout_btn, prev_page):
     RegVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     RegVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(RegVframe, [2, 8, 1, 2], [1, 4, 1])
@@ -37,7 +37,7 @@ def on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Reside
                                 hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#333333", state="disabled", command=lambda:submit_and_destroy(Entryframe, Existinglabel, scanbtn, 0))
             submitbtn.place(relx=0.48, rely=0.745, anchor="e")
             cancelbtn = CTkButton(Entryframe, text="Cancel", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
-                                hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848", command=lambda: RegVframe.destroy())
+                                hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848", command=lambda: prev_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn))
             cancelbtn.place(relx=0.52, rely=0.745, anchor="w")
 
             entries = [Vname]

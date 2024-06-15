@@ -8,7 +8,7 @@ from db_con import insert_visitor_data, fetch_residents
 from dy_PageVisitor import Visitor_page
 from dy_VisitorLogOut import on_logout_click
 
-def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct):
+def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page):
 
     # Main registration frame
     LogInVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
@@ -109,7 +109,7 @@ def on_login_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_
             if success:
                 cap.release()
                 logsucess = "Login Successfully!"
-                view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct)
+                view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, prev_page)
             else:
                 submitbtn.configure(
                     text="Logout",
