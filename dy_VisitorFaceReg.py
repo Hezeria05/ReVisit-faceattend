@@ -52,13 +52,14 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
 
     def submit_and_destroy(Entryframe, Existinglabel, scanbtn, entry):
         dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
-        if entry == 1 :
+        if entry == 1:
             face_name = ret_vname
         else:
             face_name = Vname.get()
             # Check if a file with the same name already exists
             if os.path.isfile(os.path.join(dirpath, face_name + '.npy')):
                 Existinglabel.configure(text='Already Existing!')
+                return  # Return early if the name already exists
             else:
                 Entryframe.destroy()
         Cwarnlabel = CTkLabel(RegVframe, text="* Please center the visitor's face and make sure the frame is free of obstructions.", font=("Inter", 11), text_color="red")
@@ -70,14 +71,16 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
         cap = cv2.VideoCapture(0)  # Initialize the camera
 
         attempt_counter = 0  # Counter to keep track of attempts
+        success_counter = 0  # Counter to keep track of successful frames
 
         def show_frame():
-            nonlocal attempt_counter
+            nonlocal attempt_counter, success_counter
             try:
                 ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
                 if not ret:
                     raise ValueError("Failed to capture frame")
                 print("success")
+                success_counter += 1  # Increment the success counter
 
                 # Draw the rule of thirds grid on the frame
                 height, width, _ = frame.shape
@@ -97,6 +100,12 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                 imgtk = ImageTk.PhotoImage(image=img)
                 camera_label.imgtk = imgtk  # Keep a reference, avoid garbage collection
                 camera_label.configure(image=imgtk)
+
+                if success_counter >= 100:  # Check if the counter has reached 30
+                    cap.release()  # Release the camera
+                    print("Camera released after 30 successful frames.")
+                    return  # Stop the show_frame function
+
                 camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
             except Exception as e:
                 attempt_counter += 1
@@ -104,12 +113,10 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                 if attempt_counter >= 5:
                     cap.release()  # Release the camera
                     RegVframe.destroy()
-                    on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name)
+                    on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name, logout_btn, home_page)
                 else:
                     camera_label.after(3000, show_frame)  # Try again after 3 seconds
-        homepage_window.after(8000, lambda: cap.release())
+
         show_frame()
         scanbtn.configure(state="normal")
         scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page))
-
-
