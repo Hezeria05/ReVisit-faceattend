@@ -107,7 +107,7 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                     on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name)
                 else:
                     camera_label.after(3000, show_frame)  # Try again after 3 seconds
-
+        homepage_window.after(8000, lambda: cap.release())
         show_frame()
         scanbtn.configure(state="normal")
         scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page))

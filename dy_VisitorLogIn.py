@@ -64,7 +64,6 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
                           corner_radius=8, border_width=2, border_color='#ADCBCF')
     LogPurpose.grid(row=1, column=0, sticky="new")
     LogPurpose.bind("<KeyPress>", lambda event: validate_all(event, LogPurpose, 30, 1))
-    LogPurpose.bind("<Key>", validate_no_space)
     LbPurpose = CTkLabel(Purposef, text='Purpose', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
     LbPurpose.grid(row=0, column=0, sticky="sw")
     Existinglabel = CTkLabel(Purposef, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
