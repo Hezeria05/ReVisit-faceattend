@@ -42,17 +42,16 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     LogVname.grid(row=1, column=0, sticky="new")
     LbVname = CTkLabel(Vnamef, text='Visitor Name', fg_color="transparent", font=("Inter", 17, "bold"), text_color="#333333")
     LbVname.grid(row=0, column=0, sticky="sw")
-    
+
     # Resident
     Residf = CTkFrame(LogInEframe, fg_color="transparent")
     Residf.grid(row=2, column=1, sticky="nsew", pady=3)
     configure_frame(Residf, [1, 2], [1])
-    
+
     ResidID = CTkEntry(Residf, placeholder_text="Search Address..", height=45,
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     ResidID.grid(row=1, column=0, sticky="new")
     ResidID.bind("<KeyPress>", lambda event: validate_all(event, ResidID, 30, 1))
-    ResidID.bind("<Key>", validate_no_space)
     LRname = CTkLabel(Residf, text='Resident Address', fg_color="transparent", font=("Inter", 17, "bold"), text_color="#333333")
     LRname.grid(row=0, column=0, sticky="sw")
 
@@ -93,17 +92,26 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     # Initially hide Searchf
     Searchf.place_forget()
 
-    # Create buttons using the reusable function
-    fetch1 = create_button(Searchf, 'Address 1', 0)
-    fetch2 = create_button(Searchf, 'Address 2', 1)
-    fetch3 = create_button(Searchf, 'Address 3', 2)
-    fetch4 = create_button(Searchf, 'Address 4', 3)
-    fetch5 = create_button(Searchf, 'Address 5', 4)
+    # Dynamically create buttons based on fetched resident data
+    def update_search_frame(query):
+        for widget in Searchf.winfo_children():
+            widget.destroy()  # Clear previous buttons
+
+        residents = fetch_residents()
+        filtered_residents = [res for res in residents if query.lower() in res[1].lower()]
+        if filtered_residents:
+            max_residents = min(len(filtered_residents), 5)  # Limit to the first 5 residents
+            for i in range(max_residents):
+                create_button(Searchf, filtered_residents[i][1], i)
+            Searchf.place(relx=0.13, rely=0.47, anchor="nw")
+        else:
+            Searchf.place_forget()
 
     # Function to show or hide Searchf based on ResidID content
     def toggle_search_frame(event):
-        if ResidID.get().strip():
-            Searchf.place(relx=0.13, rely=0.47, anchor="nw")
+        query = ResidID.get().strip()
+        if query:
+            update_search_frame(query)
         else:
             Searchf.place_forget()
 
