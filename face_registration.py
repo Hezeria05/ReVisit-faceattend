@@ -7,7 +7,7 @@ import time
 from PIL import Image, ImageTk
 from dy_PageUtils import set_icon_image
 
-def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click):
+def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
     scanbtn.destroy()
     cap.release()
@@ -108,6 +108,6 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
 
     def retry_registration():
         RegVframe.destroy()
-        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, visitor_name)
+        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, visitor_name, logout_btn, home_page)
 
     show_frame()

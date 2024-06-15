@@ -12,7 +12,7 @@ def load_cascade_classifier(cas_path):
     face_cascade = cv2.CascadeClassifier(cas_path)
     return face_cascade
 
-def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page, callback=None):
+def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page, callback=None):
     # Disable the scan button immediately when the camera starts
     scanbtn.configure(state="disabled")
     camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
@@ -20,7 +20,7 @@ def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name
 
     # Initialize a counter for face classifications
     face_classification_count = 0
-    classification_threshold = 50  # Threshold for number of classifications before stopping
+    classification_threshold = 25  # Threshold for number of classifications before stopping
 
     def update_frame():
         nonlocal face_classification_count  # To modify the counter inside the nested function
@@ -52,6 +52,12 @@ def start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name
 
                 if face_classification_count >= classification_threshold:
                     cap.release()
+
+                    if log_stat == 1:
+                        btn_confi.configure(width=120, height=45)
+                        scanbtn.configure(width=120, height=45)
+                        btn_confi.place(relx=0.698, rely=0.5, anchor='center')
+                        scanbtn.place(relx=0.9, rely=0.5, anchor='center')
                     scanbtn.configure(state="normal", text="Retry", command=lambda: reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
                     return
 

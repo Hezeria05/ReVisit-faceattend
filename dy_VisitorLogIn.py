@@ -8,9 +8,9 @@ from db_con import insert_visitor_data, fetch_residents
 from dy_PageVisitor import Visitor_page
 from dy_VisitorLogOut import on_logout_click
 
-def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page):
+def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page):
 
-    # Main registration frame
+    # Main login frame
     LogInVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogInVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(LogInVframe, [3, 10, 2, 1], [1, 9, 1, 8, 1])
@@ -23,7 +23,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     CameraFrame.grid(row=1, column=1,)
     BscanFrame = CTkFrame(LogInVframe, fg_color="white")
     BscanFrame.grid(row=2, column=1, sticky="nsew")
-    scanbtn = CTkButton(BscanFrame, text="SCAN", width=140, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF",
+    scanbtn = CTkButton(BscanFrame, text="Scan", width=140, height=50, corner_radius=10, fg_color="#ADCBCF", hover_color="#93ACAF",
                         font=("Inter", 18, "bold"), text_color="#333333", state="disabled")
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')
 
@@ -109,7 +109,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
             if success:
                 cap.release()
                 logsucess = "Login Successfully!"
-                view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, prev_page)
+                view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page)
             else:
                 submitbtn.configure(
                     text="Logout",
@@ -124,7 +124,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
 
     def logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe):
         LogInVframe.destroy()
-        on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page)
+        on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page)
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
@@ -136,6 +136,6 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: start_camera(CameraFrame, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
+        scanbtn.configure(command=lambda: start_camera(0, CameraFrame, None, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page))
 
 
