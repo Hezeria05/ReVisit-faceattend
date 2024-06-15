@@ -124,7 +124,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
 
     def logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe):
         LogInVframe.destroy()
-        on_logout_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct)
+        on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page)
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
