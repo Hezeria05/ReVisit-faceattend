@@ -108,6 +108,10 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
             LogPurpose.delete(0, 'end')
             Selectwarn.configure(text="Scan Visitor First!")
             submitbtn.configure(state="disabled")
+        elif LogVname.get() != "" and LogPurpose.get().strip() != "" and selected_address in resident_addresses:
+            Selectwarn.configure(text="")
+            Invalidwarn.configure(text="")
+            submitbtn.configure(state="normal")
         elif selected_address not in resident_addresses:
             Invalidwarn.configure(text="Invalid Resident Address!")
             submitbtn.configure(state="disabled")
@@ -136,8 +140,8 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
             success = insert_visitor_data(visitor_name, resident_id, purpose, sec_id)
             if success:
                 cap.release()
-                logsucess = "Login Successfully!"
-                view_history(sec_id, LogInVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page)
+                logsuccess = "Login Successfully!"
+                view_history(sec_id, LogInVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page)
             else:
                 submitbtn.configure(
                     text="Logout",
@@ -164,4 +168,4 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: start_camera(0, CameraFrame, None, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page))
+        scanbtn.configure(command=lambda: start_camera(0, CameraFrame, None, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page))

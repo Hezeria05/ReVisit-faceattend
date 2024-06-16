@@ -93,19 +93,19 @@ def update_datetime(date_label, time_label):
     date_label.configure(text=formatted_date)
     time_label.configure(text=formatted_time)
 
-def view_history(sec_id, LogVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page):
-    LogSucessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
-    LogSucessfr.place(relx=0.5, rely=0.5, anchor='center')
-    set_icon_image(LogSucessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
+def view_history(sec_id, LogVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page):
+    LogSuccessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    LogSuccessfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(LogSuccessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
 
-    LbSuccess = CTkLabel(LogSucessfr, text=logsucess, fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess = CTkLabel(LogSuccessfr, text=logsuccess, fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbSuccess.place(relx=0.5, rely=0.48, anchor='n')
 
-    viewbtn = CTkButton(LogSucessfr, text="View History", width=230, height=50, corner_radius=10, 
+    viewbtn = CTkButton(LogSuccessfr, text="View History", width=230, height=50, corner_radius=10, 
                     fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
     viewbtn.place(relx=0.3, rely=0.8, anchor='center')
 
-    donebtn = CTkButton(LogSucessfr, text="Done", width=230, height=50, corner_radius=10, 
+    donebtn = CTkButton(LogSuccessfr, text="Done", width=230, height=50, corner_radius=10, 
                     fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333")
     donebtn.place(relx=0.7, rely=0.8, anchor='center')
 
@@ -371,17 +371,17 @@ def save_edited_data(Residentframe, entries_list, id_list):
         save_success(Residentframe)
 
 def save_success(window):
-    SaveSucessfr = CTkFrame(window, fg_color="white", width=700, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
-    SaveSucessfr.place(relx=0.5, rely=0.5, anchor='center')
+    SaveSuccessfr = CTkFrame(window, fg_color="white", width=700, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    SaveSuccessfr.place(relx=0.5, rely=0.5, anchor='center')
 
     # Assuming the function set_icon_image is implemented and ASSETS_PATH is defined correctly
-    set_icon_image(SaveSucessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
+    set_icon_image(SaveSuccessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
 
-    LbSuccess = CTkLabel(SaveSucessfr, text="Saved Successfully!", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    LbSuccess = CTkLabel(SaveSuccessfr, text="Saved Successfully!", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbSuccess.place(relx=0.5, rely=0.62, anchor='n')
 
     # Automatically destroy the frame after 3000 milliseconds (3 seconds)
-    SaveSucessfr.after(2500, SaveSucessfr.destroy)
+    SaveSuccessfr.after(2500, SaveSuccessfr.destroy)
 
 # Call the Resident_page function with appropriate parameters (example usage)
 # Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)

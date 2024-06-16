@@ -12,7 +12,7 @@ def load_cascade_classifier(cas_path):
     face_cascade = cv2.CascadeClassifier(cas_path)
     return face_cascade
 
-def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page, callback=None):
+def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page, callback=None):
     # Disable the scan button immediately when the camera starts
     scanbtn.configure(state="disabled")
     camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
@@ -49,6 +49,7 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, LogVname, face_datas
                 LogVname.delete(0, tk.END)
                 LogVname.insert(0, pred_name)
                 LogVname.configure(state='disabled')
+                Selectwarn.configure(text="")
 
                 if face_classification_count >= classification_threshold:
                     cap.release()
