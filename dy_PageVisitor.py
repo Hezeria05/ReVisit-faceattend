@@ -76,8 +76,8 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
 
     for i, label in enumerate(btn_labels):
         btn = CTkButton(btnf, text=label,
-                        font=("Inter", 12, "bold"), hover_color="#93ACAF", text_color="#333333",
-                        width=100, height=30, fg_color="#93ACAF" if i == 0 else "#FEFEFE",
+                        font=("Inter", 15, "bold"), hover_color="#93ACAF", text_color="#333333",
+                        width=100, height=37.5, fg_color="#93ACAF" if i == 0 else "#FEFEFE",
                         corner_radius=25, border_width=3, border_color="#91ABAE")
         btn.grid(row=0, column=i, sticky="sew", padx=10, pady=2)
         btn.configure(command=btn_command_wrapper(fetch_functions[i], i))

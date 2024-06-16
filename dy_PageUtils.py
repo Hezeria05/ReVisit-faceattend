@@ -287,9 +287,9 @@ def signin_failed(signin_window):
 
 #_______________________________________dyMainPage
 def hide_indicators(Home_indct, Visitor_indct, Resident_indct):
-    Home_indct.configure(fg_color="#FEFEFE")
-    Visitor_indct.configure(fg_color="#FEFEFE")
-    Resident_indct.configure(fg_color="#FEFEFE")
+    Home_indct.configure(fg_color="#F6FCFC")
+    Visitor_indct.configure(fg_color="#F6FCFC")
+    Resident_indct.configure(fg_color="#F6FCFC")
 
 def indicate(selected_indicator, Home_indct, Visitor_indct, Resident_indct, new_page):
     hide_indicators(Home_indct, Visitor_indct, Resident_indct)

@@ -16,9 +16,9 @@ def center_window(window, width, height):
 
 # Function to hide indicators
 def hide_indicators(Home_indct, Visitor_indct, Resident_indct):
-    Home_indct.configure(fg_color="#FEFEFE")
-    Visitor_indct.configure(fg_color="#FEFEFE")
-    Resident_indct.configure(fg_color="#FEFEFE")
+    Home_indct.configure(fg_color="#F6FCFC")
+    Visitor_indct.configure(fg_color="#F6FCFC")
+    Resident_indct.configure(fg_color="#F6FCFC")
 
 # Function to indicate the selected sidebar item and switch pages
 def indicate(selected_indicator, Home_indct, Visitor_indct, Resident_indct, new_page):
@@ -73,11 +73,11 @@ def mainon_resize(event):
 homepage_window.bind('<Configure>', mainon_resize)
 
 # Sidebar
-Sidebar = CTkFrame(homepage_window, fg_color="#FEFEFE", corner_radius=0)
+Sidebar = CTkFrame(homepage_window, fg_color="#F6FCFC", corner_radius=0)
 Sidebar.grid(row=0, rowspan=3, column=0, columnspan=1, sticky="nsew")
 configure_frame(Sidebar, [8, 2, 2, 2, 5, 5], [1, 5, 1])
 
-SBLogo = CTkFrame(Sidebar, fg_color="#FEFEFE", corner_radius=0)
+SBLogo = CTkFrame(Sidebar, fg_color="#F6FCFC", corner_radius=0)
 SBLogo.grid(row=0, rowspan=2, column=0, columnspan=3, sticky="nsew")
 configure_frame(SBLogo, [1], [1])
 logoimage = load_image('REVISITlogosb.png', (216, 216))
@@ -88,17 +88,17 @@ LogbtnF = CTkFrame(Sidebar, fg_color="transparent", corner_radius=0)
 LogbtnF.grid(row=6, column=0, columnspan=3, sticky="nsew")
 configure_frame(LogbtnF, [1], [1])
 # Add a logout button
-logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#FEFEFE", hover_color="#FEFEFE", font=("Inter", 25, "bold"),
+logout_btn = CTkButton(LogbtnF, text="LOG OUT", fg_color="#F6FCFC", hover_color="#F6FCFC", font=("Inter", 25, "bold"),
                 text_color="#333333", command=lambda:(logout(homepage_window, logout_btn), logout_btn.configure(state='disabled')))
 logout_btn.grid(row=0, column=0, sticky="nsew", padx=50, pady=50)
 
-def create_sidebar_button(parent, row, image_path, image_size, command, indicator_color="#FEFEFE"):
+def create_sidebar_button(parent, row, image_path, image_size, command, indicator_color="#F6FCFC"):
     frame = CTkFrame(parent, fg_color="transparent", corner_radius=0)
     frame.grid(row=row, column=1, sticky="sw", pady=2)
     configure_frame(frame, [1], [1])
 
     image = load_image(image_path, image_size)
-    button = CTkButton(frame, image=image, text='', fg_color="white", hover_color="white", command=command)
+    button = CTkButton(frame, image=image, text='', fg_color="#F6FCFC", hover_color="#F6FCFC", command=command)
     button.grid(row=0, column=0, sticky="w")
 
     indicator = CTkLabel(parent, text=' ', font=("Arial", 42), fg_color=indicator_color)

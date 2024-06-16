@@ -20,7 +20,7 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, LogVname, face_datas
 
     # Initialize a counter for face classifications
     face_classification_count = 0
-    classification_threshold = 25  # Threshold for number of classifications before stopping
+    classification_threshold = 50  # Threshold for number of classifications before stopping
 
     def update_frame():
         nonlocal face_classification_count  # To modify the counter inside the nested function
