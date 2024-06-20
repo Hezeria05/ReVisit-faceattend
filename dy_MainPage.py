@@ -120,8 +120,14 @@ current_frame = Home_page(homepage_window, Home_indct, Visitor_indct, Resident_i
 
 Topbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Topbar.grid(row=0, column=1, sticky="nsew")
+configure_frame(Topbar, [1], [1, 6, 1, 6, 1, 6, 1])
+topblabel = CTkLabel(Topbar, text="REVISIT: FACIAL RECOGNITION ATTENDANCE SYSTEM",font=("Inter", 22, "bold"), fg_color="transparent",text_color="#333333")
+topblabel.grid(row=0, column=1, columnspan=3, sticky="w", padx=25)
 
 Btmbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Btmbar.grid(row=2, column=1, sticky="nsew")
+configure_frame(Btmbar, [1], [1, 6, 1, 6, 1, 6, 1])
+Btmbarlabel = CTkLabel(Btmbar, text="CELINA HOMES 5 SUBDIVISION, BRGY. TAGAPO",font=("Inter", 16, "bold"), fg_color="transparent",text_color="#333333")
+Btmbarlabel.grid(row=0, column=3, columnspan=5, sticky="e", padx=45)
 
 homepage_window.mainloop()

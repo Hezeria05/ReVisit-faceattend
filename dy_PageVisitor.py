@@ -1,16 +1,14 @@
 from customtkinter import *
 import datetime
-from dy_PageUtils import set_icon_image, update_datetime, btnind, configure_frame, load_image
+from dy_PageUtils import update_datetime, btnind, configure_frame, load_image
 from db_con import fetch_visitor_data_desc, fetch_visitor_data_asc, fetch_visitor_data_name_asc, fetch_visitor_data_name_desc, get_total_visitors
 
 def create_visitor_table(visitorframe, visitor_data):
     for i in range(15):
-        y_offset = 0 + (i * 0.065)
-
         entries = []
         for j in range(7):
-            entry = CTkEntry(visitorframe, width=150, height=35, state='normal', fg_color="white", corner_radius=0, border_width=1)
-            entry.grid(row=i, column=j, sticky="nsew", padx=0, pady=0)
+            entry = CTkEntry(visitorframe, state='normal', fg_color="white", corner_radius=0, border_width=1, border_color="#93ACAF")
+            entry.grid(row=i, column=j, sticky="nsew")
             entries.append(entry)
 
         if i < len(visitor_data):
@@ -89,7 +87,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     configure_frame(tablef, [1, 8], [1, 1, 1, 1, 1, 1, 1])
     tableheading = CTkFrame(tablef, fg_color="#93ACAF", border_width=2, border_color="#93ACAF", corner_radius=0)
     tableheading.grid(row=0, column=0, columnspan=7, sticky="nsew")
-    configure_frame(tableheading, [1], [1, 1, 1, 1, 1, 1, 1])
+    configure_frame(tableheading, [1], [2, 2, 1, 1, 3, 2, 2])
     headings = {
         "Name": 0,
         "Date": 1,
@@ -104,11 +102,11 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
         heading_label = CTkLabel(tableheading, text=heading, font=("Inter", 14, "bold"), text_color="white", fg_color="transparent")
         heading_label.grid(row=0, column=column, sticky="nsew", padx=0, pady=0)
 
-    tablebody = CTkFrame(tablef, fg_color="transparent", border_width=2, border_color="#93ACAF", corner_radius=0)
+    tablebody = CTkFrame(tablef, fg_color="transparent", border_width=1, border_color="#93ACAF", corner_radius=0)
     tablebody.grid(row=1, column=0, columnspan=7, sticky="nsew")
-    configure_frame(tablebody, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1])
+    configure_frame(tablebody, [1]*15, [2, 2, 1, 1, 3, 2, 2])
 
-    #Initiate the canvas
+    # Initiate the canvas
     pagination_frame = CTkFrame(Visitorframe, fg_color="transparent")
     pagination_frame.place(relx=0.5, rely=0.93, anchor="center")
     configure_frame(pagination_frame, [1], [1,1])
@@ -120,7 +118,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     nextimage = load_image('next.png', (30, 30))
     nextdisimage = load_image('nextdis.png', (30, 30))
 
-    #Configure Buttons
+    # Configure Buttons
     total_visitors = get_total_visitors()
     total_pages = (total_visitors + 14) // 15
     initial_back_image = previmage if current_page > 0 else prevdisimage
@@ -151,6 +149,5 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     # Update button images based on initial conditions
     back_button.grid(row=0, column=0)
     next_button.grid(row=0, column=1)
-
 
     refresh_visitor_table(fetch_visitor_data_desc)

@@ -3,6 +3,7 @@ from customtkinter import *
 import cv2
 from face_recognition import KNN
 from PIL import Image, ImageTk
+from dy_PageUtils import load_image
 
 def initialize_camera():
     cap = cv2.VideoCapture(0)
@@ -49,7 +50,8 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
                 LogVname.delete(0, tk.END)
                 LogVname.insert(0, pred_name)
                 LogVname.configure(state='disabled')
-                Selectwarn.configure(text="")
+                if Selectwarn is not None:
+                    Selectwarn.configure(text="")
 
                 if face_classification_count >= classification_threshold:
                     cap.release()
@@ -59,7 +61,8 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
                         scanbtn.configure(width=120, height=45)
                         btn_confi.place(relx=0.698, rely=0.5, anchor='center')
                         scanbtn.place(relx=0.9, rely=0.5, anchor='center')
-                    scanbtn.configure(state="normal", text="Retry", command=lambda: reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
+                    retryimage = load_image('retryscan.png', (32, 32))
+                    scanbtn.configure(state="normal", image=retryimage, text="", command=lambda: reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
                     return
 
             # Convert the image to PIL format and then to ImageTk format.
