@@ -7,7 +7,8 @@ import time
 from PIL import Image
 from dy_PageUtils import set_icon_image
 
-def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page, back_button):
+def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, 
+                  Resident_indct, cap, on_register_click, logout_btn, home_page, back_button, home_button, visitor_button, resident_button):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
     scanbtn.destroy()
     cap.release()
@@ -100,7 +101,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
             set_icon_image(RegisScssfr, 'success_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
             LbSuccess = CTkLabel(RegisScssfr, text="Registered Successfully", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
             LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
-            register_frame.after(2000, lambda: register_frame.destroy())
+            register_frame.after(2000, lambda: home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button))
         else:
             set_icon_image(RegisScssfr, 'tryagain_icon.png', relx=0.5, rely=0.14, anchor='n', size=(150, 150))
             LbFail = CTkLabel(RegisScssfr, text="Please Try Again!", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
@@ -109,6 +110,6 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
 
     def retry_registration():
         RegVframe.destroy()
-        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, visitor_name, logout_btn, home_page)
+        on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, visitor_name, logout_btn, home_page, home_button, visitor_button, resident_button)
 
     show_frame()

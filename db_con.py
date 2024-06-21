@@ -197,7 +197,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
             if log_day_new == log_day:
                 if login_time is not None and logout_time is None:
                     query_update = """
-                    UPDATE visitor_data SET logout_time = %s, log_day = %s WHERE visit_name = %s AND login_time = %s AND sec_id = %s
+                    UPDATE visitor_data SET logout_time = %s, log_day = %s, log_stat = FALSE WHERE visit_name = %s AND login_time = %s AND sec_id = %s
                     """
                     cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
                     conn.commit()
@@ -242,6 +242,7 @@ def save_data_to_csv(data):
         if not file_exists:
             writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
         writer.writerow(data)
+
 #Visitor Page_____________________________________________________________________________________________________________
 def fetch_visitor_data_desc(offset=0):
     conn = connect_to_database()

@@ -9,7 +9,11 @@ from db_con import logout_visitor
 from dy_PageVisitor import Visitor_page
 
 
-def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page):
+def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button):
+
+    home_button.configure(state="normal")
+    visitor_button.configure(state="normal")
+    resident_button.configure(state="normal")
     # Main registration frame
     LogOutVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogOutVframe.grid(row=1, column=1, sticky="nsew")
@@ -17,7 +21,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     # Heading
     backimage = load_image('Back_button.png', (35, 34))
     back_button = CTkButton(LogOutVframe, image=backimage, text='', fg_color="white", hover_color="white", 
-                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn), LogOutVframe.destroy(), cap.release()])
+                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button), LogOutVframe.destroy(), cap.release()])
     back_button.place(relx=0.001, rely=0.06, anchor="nw")
     LogOutVHeading = CTkLabel(LogOutVframe, text="Log Out Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogOutVHeading.place(relx=0.095, rely=0.06, anchor="nw")
@@ -48,7 +52,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
             if os.path.exists(data_path):
                 os.remove(data_path)
             logsucess = "Logout successfully!"
-            view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page)
+            view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page, home_button, visitor_button, resident_button)
 
     # Now update the logout button command to use handle_logout
     logoutbtn.configure(command=handle_logout)
@@ -72,4 +76,5 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
         scanbtn.configure(state="disabled")  # Disable the scan button if no data is available
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
-        scanbtn.configure(command=lambda: start_camera(1, CameraFrame, logoutbtn, scanbtn, None, LogVname, face_dataset, face_labels, name, face_cascade, cap,  on_logout_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, callback=display_fields))
+        scanbtn.configure(command=lambda: start_camera(1, CameraFrame, logoutbtn, scanbtn, None, LogVname, face_dataset, face_labels, name, face_cascade, cap,  
+                                                       on_logout_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button, callback=display_fields))

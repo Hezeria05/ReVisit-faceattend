@@ -98,7 +98,7 @@ def create_sidebar_button(parent, row, image_path, image_size, command, indicato
     configure_frame(frame, [1], [1])
 
     image = load_image(image_path, image_size)
-    button = CTkButton(frame, image=image, text='', fg_color="#F6FCFC", hover_color="#F6FCFC", command=command)
+    button = CTkButton(frame, image=image, text='', fg_color="#F6FCFC", hover_color="#F6FCFC", command=command, state="normal")
     button.grid(row=0, column=0, sticky="w")
 
     indicator = CTkLabel(parent, text=' ', font=("Arial", 42), fg_color=indicator_color)
@@ -108,15 +108,15 @@ def create_sidebar_button(parent, row, image_path, image_size, command, indicato
 
 home_button, Home_indct = create_sidebar_button(Sidebar, 2, 'home_icon.png', (131, 36), 
     lambda: indicate(Home_indct, Home_indct, Visitor_indct, Resident_indct, 
-    lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)), "#00507E")
+    lambda: Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button)), "#00507E")
 visitor_button, Visitor_indct = create_sidebar_button(Sidebar, 3, 'visitor_icon.png', (208, 40), 
     lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, 
-    lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
+    lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button)))
 resident_button, Resident_indct = create_sidebar_button(Sidebar, 4, 'list_icon.png', (220, 37), 
     lambda: indicate(Resident_indct, Home_indct, Visitor_indct, Resident_indct, 
     lambda: Resident_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
 
-current_frame = Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)
+current_frame = Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button)
 
 Topbar = CTkFrame(homepage_window, fg_color="white", corner_radius=0, border_width=1, border_color="#C1C1C1")
 Topbar.grid(row=0, column=1, sticky="nsew")

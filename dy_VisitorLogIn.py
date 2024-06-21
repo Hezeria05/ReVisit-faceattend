@@ -9,7 +9,11 @@ from dy_PageVisitor import Visitor_page
 from dy_VisitorLogOut import on_logout_click
 from Utils_VisitorLogIn import toggle_search_frame
 
-def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page):
+def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button):
+
+    home_button.configure(state="normal")
+    visitor_button.configure(state="normal")
+    resident_button.configure(state="normal")
 
     # Main login frame
     LogInVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
@@ -19,7 +23,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     # Heading
     backimage = load_image('Back_button.png', (35, 34))
     back_button = CTkButton(LogInVframe, image=backimage, text='', fg_color="white", hover_color="white", 
-                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn), LogInVframe.destroy(), cap.release()])
+                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button), LogInVframe.destroy(), cap.release()])
     back_button.place(relx=0.001, rely=0.06, anchor="nw")
     LogInVHeading = CTkLabel(LogInVframe, text="Log In Visitor", font=("Inter", 35, "bold"), text_color="#333333")
     LogInVHeading.place(relx=0.095, rely=0.06, anchor="nw")
@@ -150,7 +154,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
             if success:
                 cap.release()
                 logsuccess = "Login Successfully!"
-                view_history(sec_id, LogInVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page)
+                view_history(sec_id, LogInVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page, home_button, visitor_button, resident_button)
             else:
                 submitbtn.configure(
                     text="Logout",
@@ -165,7 +169,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
 
     def logout_and_destroy(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, LogInVframe):
         LogInVframe.destroy()
-        on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page)
+        on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button)
 
     cap = cv2.VideoCapture(0)
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
@@ -177,4 +181,5 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: start_camera(0, CameraFrame, None, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page))
+        scanbtn.configure(command=lambda: start_camera(0, CameraFrame, None, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, 
+                                                       face_cascade, cap, on_login_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button))

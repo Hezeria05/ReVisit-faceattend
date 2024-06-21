@@ -9,9 +9,14 @@ def load_cascade_classifier(cas_path):
     face_cascade = cv2.CascadeClassifier(cas_path)
     return face_cascade
 
-def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page, callback=None):
+def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname, face_dataset, face_labels, name, face_cascade, cap, reload_page, 
+                 homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button, callback=None):
     # Disable the scan button immediately when the camera starts
     scanbtn.configure(state="disabled")
+    home_button.configure(state="disabled")
+    visitor_button.configure(state="disabled")
+    resident_button.configure(state="disabled")
+    logout_btn.configure(state="disabled")
     camera_label = CTkLabel(CameraFrame, width=450, height=350, text="")
     camera_label.place(relx=0, rely=0)
 
@@ -57,7 +62,8 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
                         btn_confi.place(relx=0.698, rely=0.5, anchor='center')
                         scanbtn.place(relx=0.9, rely=0.5, anchor='center')
                     retryimage = load_image('retryscan.png', (32, 32))
-                    scanbtn.configure(state="normal", image=retryimage, text="", command=lambda: reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, prev_page))
+                    scanbtn.configure(state="normal", image=retryimage, text="", command=lambda: 
+                        reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button))
                     return
 
             # Convert the image to PIL format and then to ImageTk format.

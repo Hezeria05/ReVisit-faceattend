@@ -93,7 +93,7 @@ def update_datetime(date_label, time_label):
     date_label.configure(text=formatted_date)
     time_label.configure(text=formatted_time)
 
-def view_history(sec_id, LogVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page):
+def view_history(sec_id, LogVframe, logsuccess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page, home_button, visitor_button, resident_button):
     LogSuccessfr = CTkFrame(LogVframe, fg_color="white", width=700, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
     LogSuccessfr.place(relx=0.5, rely=0.5, anchor='center')
     set_icon_image(LogSuccessfr, 'success_icon.png', relx=0.5, rely=0.15, anchor='n', size=(95, 95))
@@ -110,8 +110,8 @@ def view_history(sec_id, LogVframe, logsuccess, set_icon_image, indicate, Visito
     donebtn.place(relx=0.7, rely=0.8, anchor='center')
 
     viewbtn.configure(command=lambda: indicate(Visitor_indct, Home_indct, Visitor_indct, Resident_indct, 
-                            lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn)))
-    donebtn.configure(command=lambda: home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn))
+                            lambda: Visitor_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button)))
+    donebtn.configure(command=lambda: home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button))
 
 
 def logout(window, btn):
@@ -382,6 +382,3 @@ def save_success(window):
 
     # Automatically destroy the frame after 3000 milliseconds (3 seconds)
     SaveSuccessfr.after(2500, SaveSuccessfr.destroy)
-
-# Call the Resident_page function with appropriate parameters (example usage)
-# Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id)
