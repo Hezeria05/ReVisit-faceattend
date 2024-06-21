@@ -130,4 +130,9 @@ configure_frame(Btmbar, [1], [1, 6, 1, 6, 1, 6, 1])
 Btmbarlabel = CTkLabel(Btmbar, text="CELINA HOMES 5 SUBDIVISION, BRGY. TAGAPO",font=("Inter", 16, "bold"), fg_color="transparent",text_color="#333333")
 Btmbarlabel.grid(row=0, column=3, columnspan=5, sticky="e", padx=45)
 
+def exit_fullscreen(event):
+    homepage_window.attributes('-fullscreen', False)
+
+homepage_window.bind('<Escape>', exit_fullscreen)
+homepage_window.attributes('-fullscreen',True)
 homepage_window.mainloop()

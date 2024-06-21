@@ -5,10 +5,6 @@ from face_recognition import KNN
 from PIL import Image, ImageTk
 from dy_PageUtils import load_image
 
-def initialize_camera():
-    cap = cv2.VideoCapture(0)
-    return cap
-
 def load_cascade_classifier(cas_path):
     face_cascade = cv2.CascadeClassifier(cas_path)
     return face_cascade
@@ -21,23 +17,22 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
 
     # Initialize a counter for face classifications
     face_classification_count = 0
-    classification_threshold = 50  # Threshold for number of classifications before stopping
-
+    classification_threshold = 100  # Threshold for number of classifications before stopping
     def update_frame():
         nonlocal face_classification_count  # To modify the counter inside the nested function
         ret, frame = cap.read()
         if not ret:
-            print("not ret")
+            # print("not ret")
             camera_label.after(10, update_frame)
             return
         else:
-            print("recognizing")
+            # print("recognizing")
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray_frame, 1.3, 5)
             faces = sorted(faces, key=lambda f: f[2]*f[3], reverse=True)
 
             for face in faces[-1:]:
-                print("face classified")
+                # print("face classified")
                 face_classification_count += 1
                 x, y, w, h = face
                 face_section = gray_frame[y:y+h, x:x+w]
@@ -68,7 +63,7 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
             # Convert the image to PIL format and then to ImageTk format.
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
             img = Image.fromarray(cv2image)
-            imgtk = ImageTk.PhotoImage(image=img)
+            imgtk = CTkImage(img, size=(680, 480))
             camera_label.imgtk = imgtk
             camera_label.configure(image=imgtk)
 

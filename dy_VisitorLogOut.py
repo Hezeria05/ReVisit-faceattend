@@ -2,7 +2,7 @@ from customtkinter import *
 import cv2
 import os
 from face_recognition import load_face_data
-from dy_PageUtils import (configure_frame, view_history,
+from dy_PageUtils import (configure_frame, view_history, load_image,
                           indicate, set_icon_image)
 from face_scan import start_camera
 from db_con import logout_visitor
@@ -15,8 +15,13 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     LogOutVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(LogOutVframe, [2,8,1,2], [1,4,1])
     # Heading
+    backimage = load_image('Back_button.png', (35, 34))
+    back_button = CTkButton(LogOutVframe, image=backimage, text='', fg_color="white", hover_color="white", 
+                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn), LogOutVframe.destroy(), cap.release()])
+    back_button.place(relx=0.001, rely=0.06, anchor="nw")
     LogOutVHeading = CTkLabel(LogOutVframe, text="Log Out Visitor", font=("Inter", 35, "bold"), text_color="#333333")
-    LogOutVHeading.place(relx=0.043, rely=0.06)
+    LogOutVHeading.place(relx=0.095, rely=0.06, anchor="nw")
+
 
     CameraFrame = CTkFrame(LogOutVframe, fg_color="white", width=640, height=480, border_color="#B9BDBD", border_width=2)
     CameraFrame.place(relx=0.5, rely=0.5, anchor='center')

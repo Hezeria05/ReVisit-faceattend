@@ -1,8 +1,8 @@
 from customtkinter import *
 import cv2
 from face_recognition import load_face_data
-from dy_PageUtils import (configure_frame, validate_all, view_history,
-                          indicate, set_icon_image, validate_no_space)
+from dy_PageUtils import (configure_frame, validate_all, view_history, create_image_label,
+                          indicate, set_icon_image, load_image)
 from face_scan import start_camera
 from db_con import insert_visitor_data, fetch_residents
 from dy_PageVisitor import Visitor_page
@@ -17,8 +17,13 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     configure_frame(LogInVframe, [3, 10, 2, 1], [1, 9, 1, 8, 1])
 
     # Heading
+    backimage = load_image('Back_button.png', (35, 34))
+    back_button = CTkButton(LogInVframe, image=backimage, text='', fg_color="white", hover_color="white", 
+                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn), LogInVframe.destroy(), cap.release()])
+    back_button.place(relx=0.001, rely=0.06, anchor="nw")
     LogInVHeading = CTkLabel(LogInVframe, text="Log In Visitor", font=("Inter", 35, "bold"), text_color="#333333")
-    LogInVHeading.place(relx=0.043, rely=0.06)
+    LogInVHeading.place(relx=0.095, rely=0.06, anchor="nw")
+
 
     CameraFrame = CTkFrame(LogInVframe, fg_color="white", width=600, height=450, border_color="#B9BDBD", border_width=2)
     CameraFrame.grid(row=1, column=1,)
@@ -39,42 +44,42 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     # VISITOR FORM
     Vnamef = CTkFrame(LogInEframe, fg_color="transparent")
     Vnamef.grid(row=1, column=1, sticky="nsew", pady=3)
-    configure_frame(Vnamef,  [1, 3, 1], [1])
-    LogVname = CTkEntry(Vnamef, placeholder_text="Enter Visitor Name", height=45,
+    configure_frame(Vnamef,  [2, 3, 1, 1], [1])
+    LogVname = CTkEntry(Vnamef, placeholder_text="Enter Visitor Name", height=55,
                         corner_radius=8, border_width=1, border_color='#DEE6EA', state='disabled')
     LogVname.grid(row=1, column=0, sticky="new")
-    LbVname = CTkLabel(Vnamef, text='Visitor Name', fg_color="transparent", font=("Inter", 17, "bold"), text_color="#333333")
+    LbVname = create_image_label(Vnamef, 'Visitor_Name.png', 134, 16)
     LbVname.grid(row=0, column=0, sticky="sw", pady=3)
     ExistingVisit = CTkLabel(Vnamef, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-    ExistingVisit.grid(row=2, column=0, sticky="sw", padx=1)
+    ExistingVisit.grid(row=2, rowspan=4, column=0, sticky="nw", padx=1)
 
     # Resident
     Residf = CTkFrame(LogInEframe, fg_color="transparent")
     Residf.grid(row=2, column=1, sticky="nsew", pady=3)
-    configure_frame(Residf,  [1, 3, 1], [1])
+    configure_frame(Residf,  [2, 3, 1, 1], [1])
 
-    ResidID = CTkEntry(Residf, placeholder_text="Search Address..", height=45,
+    ResidID = CTkEntry(Residf, placeholder_text="Search Address..", height=55,
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     ResidID.grid(row=1, column=0, sticky="new")
     ResidID.bind("<KeyPress>", lambda event: validate_all(event, ResidID, 30, 1))
-    LRname = CTkLabel(Residf, text='Resident Address', fg_color="transparent", font=("Inter", 17, "bold"), text_color="#333333")
+    LRname = create_image_label(Residf, 'Resident_Address.png', 174, 16)
     LRname.grid(row=0, column=0, sticky="sw", pady=3)
     Invalidwarn = CTkLabel(Residf, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-    Invalidwarn.grid(row=2, column=0, sticky="sw", padx=2)
+    Invalidwarn.grid(row=2, rowspan=4, column=0, sticky="nw", padx=2)
 
     # Purpose
     Purposef = CTkFrame(LogInEframe, fg_color="transparent")
     Purposef.grid(row=3, column=1, sticky="nsew", pady=3)
-    configure_frame(Purposef, [1, 3, 1], [1])
+    configure_frame(Purposef, [2, 3, 1, 1], [1])
 
-    LogPurpose = CTkEntry(Purposef, placeholder_text="State Purpose", height=45,
+    LogPurpose = CTkEntry(Purposef, placeholder_text="State Purpose", height=55,
                           corner_radius=8, border_width=2, border_color='#ADCBCF')
     LogPurpose.grid(row=1, column=0, sticky="new")
     LogPurpose.bind("<KeyPress>", lambda event: validate_all(event, LogPurpose, 30, 1))
-    LbPurpose = CTkLabel(Purposef, text='Purpose', fg_color="transparent", font=("Inter", 15, "bold"), text_color="#333333")
+    LbPurpose = create_image_label(Purposef, 'Purpose.png', 94, 19)
     LbPurpose.grid(row=0, column=0, sticky="sw", pady=3)
     Selectwarn = CTkLabel(Purposef, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-    Selectwarn.grid(row=2, column=0, sticky="sw", padx=1)
+    Selectwarn.grid(row=2, rowspan=4, column=0, sticky="nw", padx=1, pady=5)
 
     submitbtn = CTkButton(LogInEframe, text="SUBMIT", width=140, height=50, corner_radius=10, fg_color="#ADCBCF",
                           hover_color="#93ACAF", font=("Inter", 17, "bold"), text_color="#333333", state="disabled")
@@ -107,6 +112,10 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
         elif LogVname.get() == "" and LogPurpose.get().strip() != "":
             LogPurpose.delete(0, 'end')
             Selectwarn.configure(text="Scan Visitor First!")
+            submitbtn.configure(state="disabled")
+        elif LogVname.get() != "" and LogPurpose.get().strip() != "" and ResidID.get() == "" :
+            LogPurpose.delete(0, 'end')
+            Selectwarn.configure(text="Select Resident Address First!")
             submitbtn.configure(state="disabled")
         elif LogVname.get() != "" and LogPurpose.get().strip() != "" and selected_address in resident_addresses:
             Selectwarn.configure(text="")

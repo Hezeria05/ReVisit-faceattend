@@ -2,7 +2,7 @@ import tkinter as tk
 import cv2
 from customtkinter import *
 from PIL import Image, ImageTk
-from dy_PageUtils import (configure_frame, create_image_label, validate_all, check_sign_complete)
+from dy_PageUtils import (configure_frame, create_image_label, validate_all, check_sign_complete, load_image)
 from face_registration import face_register
 import os
 
@@ -10,8 +10,12 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
     RegVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     RegVframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(RegVframe, [2, 8, 1, 2], [1, 4, 1])
+    backimage = load_image('Back_button.png', (35, 34))
+    back_button = CTkButton(RegVframe, image=backimage, text='', fg_color="white", hover_color="white",
+                            command=lambda:[home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn), RegVframe.destroy(), cap.release()])
+    back_button.place(relx=0.001, rely=0.06, anchor="nw")
     RegVHeading = CTkLabel(RegVframe, text="Face Registration", font=("Inter", 35, "bold"), text_color="#333333")
-    RegVHeading.place(relx=0.043, rely=0.06)
+    RegVHeading.place(relx=0.095, rely=0.06, anchor="nw")
     RCameraFrame = CTkFrame(RegVframe, fg_color="white", border_color="#B9BDBD", border_width=2)
     RCameraFrame.grid(row=1, column=1, sticky="nsew", padx=50)
     configure_frame(RCameraFrame, [1], [1])
@@ -62,7 +66,7 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                 return  # Return early if the name already exists
             else:
                 Entryframe.destroy()
-        Cwarnlabel = CTkLabel(RegVframe, text="* Please center the visitor's face and make sure the frame is free of obstructions.", font=("Inter", 11), text_color="red")
+        Cwarnlabel = CTkLabel(RegVframe, text="* Please center the visitor's face and make sure the frame is free of obstructions.", font=("Inter", 12), text_color="red")
         Cwarnlabel.grid(row=1, column=1, sticky="sew")
         nonlocal cap
         camera_label = CTkLabel(RCameraFrame, text="")
@@ -79,7 +83,7 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                 ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
                 if not ret:
                     raise ValueError("Failed to capture frame")
-                print("success")
+                # print("success")
                 success_counter += 1  # Increment the success counter
 
                 # Draw the rule of thirds grid on the frame
@@ -97,26 +101,26 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
 
                 cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
                 img = Image.fromarray(cv2image)
-                imgtk = ImageTk.PhotoImage(image=img)
-                camera_label.imgtk = imgtk  # Keep a reference, avoid garbage collection
+                imgtk = CTkImage(img, size=(680, 480))
+                camera_label.imgtk = imgtk
                 camera_label.configure(image=imgtk)
 
-                if success_counter >= 100:  # Check if the counter has reached 30
+                if success_counter >= 300:  # Check if the counter has reached 30
                     cap.release()  # Release the camera
-                    print("Camera released after 30 successful frames.")
+                    # print("Camera released after 30 successful frames.")
                     return  # Stop the show_frame function
 
                 camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
             except Exception as e:
                 attempt_counter += 1
-                print(f"fail: {e}")
+                # print(f"fail: {e}")
                 if attempt_counter >= 5:
                     cap.release()  # Release the camera
                     RegVframe.destroy()
-                    on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name, logout_btn, home_page)
+                    # on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name, logout_btn, home_page)
                 else:
                     camera_label.after(3000, show_frame)  # Try again after 3 seconds
 
         show_frame()
         scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page))
+        scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page, back_button))

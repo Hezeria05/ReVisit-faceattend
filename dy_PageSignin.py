@@ -1,5 +1,4 @@
 from customtkinter import *
-from PIL import Image, ImageTk
 from dy_PageUtils import (create_standard_entry, validate_all, create_warning_label,
                           load_image, configure_frame, validate_length, create_image_label,
                           create_eye_button,check_sign_complete, signin_failed, validate_no_space)

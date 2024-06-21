@@ -1,6 +1,5 @@
 #Page Register
 from customtkinter import *
-from PIL import Image, ImageTk
 from pathlib import Path
 from db_con import register_security_admin
 from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,

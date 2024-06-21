@@ -4,10 +4,10 @@ import cv2
 import numpy as np
 import os
 import time
-from PIL import Image, ImageTk
+from PIL import Image
 from dy_PageUtils import set_icon_image
 
-def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page):
+def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page, back_button):
     dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
     scanbtn.destroy()
     cap.release()
@@ -17,6 +17,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
     scanning_label.place(relx=0.5, rely=0.85, anchor='center')
 
     cap = cv2.VideoCapture(0)
+    back_button.configure(state="disabled")
     cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
     face_cascade = cv2.CascadeClassifier(cas_path)
     face_data = []
@@ -66,7 +67,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
 
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
             img = Image.fromarray(cv2image)
-            imgtk = ImageTk.PhotoImage(image=img)
+            imgtk = CTkImage(img, size=(680, 480))
             camera_label.imgtk = imgtk
             camera_label.configure(image=imgtk)
 
@@ -74,7 +75,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
                 try:
                     face_data.append(face_section)
                 except Exception as e:
-                    print(f"Error appending face data: {e}")
+                    # print(f"Error appending face data: {e}")
                     error_count += 1
                     if error_count >= 4:
                         cap.release()

@@ -116,7 +116,7 @@ def view_history(sec_id, LogVframe, logsuccess, set_icon_image, indicate, Visito
 
 def logout(window, btn):
     LogoutModal = CTkFrame(window, fg_color="white", width=650, height=350, border_color="#B9BDBD", border_width=2, corner_radius=10)
-    LogoutModal.place(relx=0.634, rely=0.5, anchor='center')
+    LogoutModal.place(relx=0.6125, rely=0.5, anchor='center')
     set_icon_image(LogoutModal,'question_icon.png', relx=0.5, rely=0.13, anchor='n', size=(110, 110))
     LbOut = CTkLabel(LogoutModal, text="Continue to Logout?", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbOut.place(relx=0.5, rely=0.5, anchor='n')

@@ -183,50 +183,51 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
     try:
         # Check for the most recent login without a logout
         query_check = """
-        SELECT login_time, logout_time FROM visitor_data WHERE visit_name = %s AND sec_id = %s ORDER BY log_day DESC, login_time DESC LIMIT 1
+        SELECT login_time, logout_time, log_day FROM visitor_data WHERE visit_name = %s AND sec_id = %s ORDER BY log_day DESC, login_time DESC LIMIT 1
         """
         cursor.execute(query_check, (visit_name, sec_id))
         result = cursor.fetchone()
 
         if result:
-            login_time, logout_time = result
-            if login_time is not None and logout_time is None:
-                current_datetime = datetime.now()
-                logout_time = current_datetime.strftime('%H:%M:%S')
-                log_day = current_datetime.date()
+            login_time, logout_time, log_day = result
+            current_datetime = datetime.now()
+            logout_time_new = current_datetime.strftime('%H:%M:%S')
+            log_day_new = current_datetime.date()
 
-                query_update = """
-                UPDATE visitor_data SET logout_time = %s, log_stat = %s, log_day = %s WHERE visit_name = %s AND login_time = %s AND sec_id = %s
-                """
-                cursor.execute(query_update, (logout_time, False, log_day, visit_name, login_time, sec_id))
-                conn.commit()
+            if log_day_new == log_day:
+                if login_time is not None and logout_time is None:
+                    query_update = """
+                    UPDATE visitor_data SET logout_time = %s, log_day = %s WHERE visit_name = %s AND login_time = %s AND sec_id = %s
+                    """
+                    cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
+                    conn.commit()
 
-                # Fetch the updated data with JOINs
-                query_fetch = """
-                SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
-                FROM visitor_data vd
-                JOIN resident_data rd ON vd.res_id = rd.res_id
-                JOIN security_admin sa ON vd.sec_id = sa.sec_id
-                WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
-                """
-                cursor.execute(query_fetch, (visit_name, sec_id, login_time))
-                visitor_data = cursor.fetchone()
+                    # Fetch the updated data with JOINs
+                    query_fetch = """
+                    SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+                    FROM visitor_data vd
+                    JOIN resident_data rd ON vd.res_id = rd.res_id
+                    JOIN security_admin sa ON vd.sec_id = sa.sec_id
+                    WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
+                    """
+                    cursor.execute(query_fetch, (visit_name, sec_id, login_time))
+                    visitor_data = cursor.fetchone()
 
-                if visitor_data:
-                    save_data_to_csv(visitor_data)
-                return True  # Logout was successful
+                    if visitor_data:
+                        save_data_to_csv(visitor_data)
+                    return True  # Logout was successful
+
+                elif login_time is not None and logout_time is not None:
+                    Existinglabel.configure(text='Log in First!')
             else:
-                if logout_time is not None:
-                    Existinglabel.configure(text='Logged out already.')
-                else:
-                    Existinglabel.configure(text='Log in first.')
-        else:
-            Existinglabel.configure(text='Visitor not found or never logged in.')
-        return False # Logout was not successful
+                Existinglabel.configure(text='No logins today. Log in first!')
 
-    except mysql.connector.Error as err:
-        Existinglabel.configure(text=f"Failed to update visitor data: {err}")
-        return False  # Logout failed due to an error
+        else:
+            Existinglabel.configure(text='No logins today. Log in first!')
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        Existinglabel.configure(text='An error occurred while processing your request.')
     finally:
         cursor.close()
         conn.close()
