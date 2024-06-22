@@ -177,13 +177,16 @@ def fetch_residents():
 
 
 #Log out Visitor Page_____________________________________________________________________________________________________________
+import os
+import csv
+from datetime import datetime
+
 def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        # Check for the most recent login without a logout
         query_check = """
-        SELECT login_time, logout_time, log_day FROM visitor_data WHERE visit_name = %s AND sec_id = %s ORDER BY log_day DESC, login_time DESC LIMIT 1
+        SELECT login_time, logout_time, log_day FROM visitor_data WHERE visit_name = %s AND sec_id = %s AND log_stat = TRUE ORDER BY log_day DESC, login_time DESC LIMIT 1
         """
         cursor.execute(query_check, (visit_name, sec_id))
         result = cursor.fetchone()
@@ -194,36 +197,30 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
             logout_time_new = current_datetime.strftime('%H:%M:%S')
             log_day_new = current_datetime.date()
 
-            if log_day_new == log_day:
-                if login_time is not None and logout_time is None:
-                    query_update = """
-                    UPDATE visitor_data SET logout_time = %s, log_day = %s, log_stat = FALSE WHERE visit_name = %s AND login_time = %s AND sec_id = %s
-                    """
-                    cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
-                    conn.commit()
+            if login_time and logout_time is None:
+                query_update = """
+                UPDATE visitor_data SET logout_time = %s, log_day = %s, log_stat = FALSE WHERE visit_name = %s AND login_time = %s AND sec_id = %s AND log_stat = TRUE
+                """
+                cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
+                conn.commit()
 
-                    # Fetch the updated data with JOINs
-                    query_fetch = """
-                    SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
-                    FROM visitor_data vd
-                    JOIN resident_data rd ON vd.res_id = rd.res_id
-                    JOIN security_admin sa ON vd.sec_id = sa.sec_id
-                    WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
-                    """
-                    cursor.execute(query_fetch, (visit_name, sec_id, login_time))
-                    visitor_data = cursor.fetchone()
+                query_fetch = """
+                SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
+                FROM visitor_data vd
+                JOIN resident_data rd ON vd.res_id = rd.res_id
+                JOIN security_admin sa ON vd.sec_id = sa.sec_id
+                WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
+                """
+                cursor.execute(query_fetch, (visit_name, sec_id, login_time))
+                visitor_data = cursor.fetchone()
 
-                    if visitor_data:
-                        save_data_to_csv(visitor_data)
-                    return True  # Logout was successful
-
-                elif login_time is not None and logout_time is not None:
-                    Existinglabel.configure(text='Log in First!')
+                if visitor_data:
+                    save_data_to_csv(visitor_data)
+                return True  # Logout was successful
             else:
-                Existinglabel.configure(text='No logins today. Log in first!')
-
+                Existinglabel.configure(text='Log in First!')
         else:
-            Existinglabel.configure(text='No logins today. Log in first!')
+            Existinglabel.configure(text='No results today. Log in first!')
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -234,14 +231,29 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
 
 def save_data_to_csv(data):
     COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
-    file_path = f"C:\\Users\\grace\\Desktop\\Visitor_Attendance\\{data[1]}_VAttendance.csv"
 
+    # Get the user's desktop path
+    desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+
+    # Define the folder path
+    folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
+
+    # Create the folder if it doesn't exist
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+    # Define the file path
+    file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.csv")
+
+    # Check if the file exists to determine if the header should be written
     file_exists = os.path.isfile(file_path)
+
     with open(file_path, 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         if not file_exists:
             writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
         writer.writerow(data)
+
 
 #Visitor Page_____________________________________________________________________________________________________________
 def fetch_visitor_data_desc(offset=0):

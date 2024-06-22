@@ -1,6 +1,7 @@
 import tkinter as tk
 from customtkinter import *
 import cv2
+import os
 from face_recognition import KNN
 from PIL import Image, ImageTk
 from dy_PageUtils import load_image

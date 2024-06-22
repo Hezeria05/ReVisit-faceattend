@@ -1,5 +1,6 @@
 from customtkinter import *
 import cv2
+import os
 from face_recognition import load_face_data
 from dy_PageUtils import (configure_frame, validate_all, view_history, create_image_label,
                           indicate, set_icon_image, load_image)
@@ -172,9 +173,12 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
         on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button)
 
     cap = cv2.VideoCapture(0)
-    cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
-    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
-    face_dataset, face_labels, name = load_face_data(dirpath)
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, 'data')
+    # Construct the path to the haarcascade file
+    cas_path = os.path.join(data_dir, 'haarcascade_frontalface_default.xml')
+    face_dataset, face_labels, name = load_face_data(data_dir)
 
     if face_dataset is None or face_labels is None:
         scanbtn.configure(state="disabled")

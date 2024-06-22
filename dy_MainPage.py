@@ -98,7 +98,8 @@ def create_sidebar_button(parent, row, image_path, image_size, command, indicato
     configure_frame(frame, [1], [1])
 
     image = load_image(image_path, image_size)
-    button = CTkButton(frame, image=image, text='', fg_color="#F6FCFC", hover_color="#F6FCFC", command=command, state="normal")
+    button = CTkButton(frame, image=image, text='', fg_color="#F6FCFC", hover=False, 
+                       command=command, state="normal")
     button.grid(row=0, column=0, sticky="w")
 
     indicator = CTkLabel(parent, text=' ', font=("Arial", 42), fg_color=indicator_color)

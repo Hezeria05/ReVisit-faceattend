@@ -1,5 +1,6 @@
 import tkinter as tk
 import cv2
+import os
 from customtkinter import *
 from PIL import Image, ImageTk
 from dy_PageUtils import (configure_frame, create_image_label, validate_all, check_sign_complete, load_image)
@@ -55,13 +56,16 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
     homepage_window.after(300, setup_entry_frame)
 
     def submit_and_destroy(Entryframe, Existinglabel, scanbtn, entry):
-        dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+        # Get the directory of the current script
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        # Construct the path to the 'data' folder
+        data_dir = os.path.join(script_dir, 'data')
         if entry == 1:
             face_name = ret_vname
         else:
             face_name = Vname.get()
             # Check if a file with the same name already exists
-            if os.path.isfile(os.path.join(dirpath, face_name + '.npy')):
+            if os.path.isfile(os.path.join(data_dir, face_name + '.npy')):
                 Existinglabel.configure(text='Already Existing!')
                 return  # Return early if the name already exists
             else:

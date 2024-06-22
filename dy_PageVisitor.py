@@ -86,7 +86,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
         btns.append(btn)
 
     tablef = CTkFrame(Visitorframe, fg_color="transparent")
-    tablef.grid(row=3, column=1, columnspan=2, sticky="nsew")
+    tablef.grid(row=3, column=1, columnspan=2, sticky="nsew", padx=20, pady=20)
     configure_frame(tablef, [1, 8], [1, 1, 1, 1, 1, 1, 1])
     tableheading = CTkFrame(tablef, fg_color="#93ACAF", border_width=2, border_color="#93ACAF", corner_radius=0)
     tableheading.grid(row=0, column=0, columnspan=7, sticky="nsew")

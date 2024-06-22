@@ -9,7 +9,9 @@ from dy_PageUtils import set_icon_image
 
 def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, 
                   Resident_indct, cap, on_register_click, logout_btn, home_page, back_button, home_button, visitor_button, resident_button):
-    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
+    # Construct the path to the 'data' folder
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, 'data')
     scanbtn.destroy()
     cap.release()
     camera_label = CTkLabel(RCameraFrame, text="", width=680, height=480)
@@ -19,7 +21,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
 
     cap = cv2.VideoCapture(0)
     back_button.configure(state="disabled")
-    cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
+    cas_path = os.path.join(data_dir, 'haarcascade_frontalface_default.xml')
     face_cascade = cv2.CascadeClassifier(cas_path)
     face_data = []
     skip = 0
@@ -89,7 +91,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
         if face_data:
             face_data_np = np.asarray(face_data)
             face_data_np = face_data_np.reshape((face_data_np.shape[0], -1))
-            np.save(os.path.join(dirpath, visitor_name + '.npy'), face_data_np)
+            np.save(os.path.join(data_dir, visitor_name + '.npy'), face_data_np)
         cap.release()
         cv2.destroyAllWindows()
         display_success_and_close(RegVframe, 1)

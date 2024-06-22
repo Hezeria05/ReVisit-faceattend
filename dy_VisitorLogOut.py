@@ -48,7 +48,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
         success = logout_visitor(visitor_name, sec_id, Existinglabel)
         if success:
             cap.release()
-            data_path = os.path.join(dirpath, f"{visitor_name}.npy")
+            data_path = os.path.join(data_dir, f"{visitor_name}.npy")
             if os.path.exists(data_path):
                 os.remove(data_path)
             logsucess = "Logout successfully!"
@@ -69,9 +69,12 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     scanbtn.place(relx=0.5, rely=0.5, anchor='center')
 
     cap = cv2.VideoCapture(0)
-    cas_path = r"C:\Users\grace\Desktop\ReVisit-faceattend\data\haarcascade_frontalface_default.xml"
-    dirpath = r"C:\Users\grace\Desktop\ReVisit-faceattend\data"
-    face_dataset, face_labels, name = load_face_data(dirpath)
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, 'data')
+    # Construct the path to the haarcascade file
+    cas_path = os.path.join(data_dir, 'haarcascade_frontalface_default.xml')
+    face_dataset, face_labels, name = load_face_data(data_dir)
     if face_dataset is None or face_labels is None:
         scanbtn.configure(state="disabled")  # Disable the scan button if no data is available
     else:
