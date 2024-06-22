@@ -189,8 +189,9 @@ def validate_no_space(event):
 
 def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword):
     all_complete = all(entry.get().strip() for entry in entries)
+    password = Epassword.get().strip()
 
-    if all_complete:
+    if all_complete and len(password) >= 8:
         check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
     else:
         disable_submit_button(createbtn)

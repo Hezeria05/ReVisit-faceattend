@@ -119,8 +119,7 @@ def open_register_window(main_window):
 
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event, entries=entries, ecp_label=ecpExistlabel, createbtn=CAbtn,
-                Epassword=Epassword, Ecpassword=Ecpassword: check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword))
+        entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword))
     Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
     Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
 

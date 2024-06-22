@@ -37,7 +37,12 @@ configure_frame(SelectFrame, [4,3], [1,10,1])
 
 LogoFrame = CTkFrame(SelectFrame, fg_color="transparent", corner_radius=10)
 LogoFrame.grid(row=0, column=1, sticky="nsew")
-configure_frame(LogoFrame, [1,10], [1])
+configure_frame(LogoFrame, [3,8], [1])
+
+clientimage = load_image('client_logo.png', (556, 21))
+clientlabel = CTkLabel(LogoFrame, image=clientimage, text="")
+clientlabel.grid(row=0, column=0, sticky="ns")
+
 
 # Load and display the logo image
 
