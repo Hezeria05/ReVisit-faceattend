@@ -146,5 +146,6 @@ def open_register_window(main_window):
     def clear_error_labels():
         FnExistlabel.configure(text='')
         UnExistlabel.configure(text='')
+        ecpExistlabel.configure(text='')
 
     CAbtn.configure(command=handle_registration)

@@ -97,14 +97,6 @@ def open_signin_window(select_window):
                     text_color="#333333", state="disabled")
     SIbtn.grid(row=0, column=0, padx=20, sticky="se")
 
-
-
-
-
-
-
-
-
     entries = [Eusername, Epassword]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, SIbtn))

@@ -67,6 +67,35 @@ def validate_login_credentials(username, password):
         # Handle the case when the query returns None (no result found)
         return False, None
 
+#Set New Password_____________________________________________________
+def validate_and_update_password(username, new_password):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # Validate username
+    query_validate = "SELECT sec_id FROM security_admin WHERE BINARY sec_username = %s"
+    cursor.execute(query_validate, (username,))
+    result = cursor.fetchone()
+
+    if result is None:
+        cursor.close()
+        conn.close()
+        return False, "Invalid Username"
+
+    # Update password
+    query_update = "UPDATE security_admin SET sec_password = %s WHERE BINARY sec_username = %s"
+    cursor.execute(query_update, (new_password, username))
+    conn.commit()
+
+    updated = cursor.rowcount > 0
+
+    cursor.close()
+    conn.close()
+
+    if updated:
+        return True, "Password Updated Successfully"
+    else:
+        return False, "Password update failed"
 #Home Page_____________________________________________________________________________________________________________
 def count_logged_in():
     conn = connect_to_database()
