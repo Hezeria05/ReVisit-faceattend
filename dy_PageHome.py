@@ -23,22 +23,22 @@ def create_inner_frame(parent, row, column, columnspan=1, rowspan=1, fg_color="w
 def create_section(parent, row, column, text, image_path, button_text, button_command):
     frame = create_frame(parent, row=row, column=column)
     configure_frame(frame, [1, 2, 8, 2, 3, 1], [1, 1, 6, 1, 1])
-    
+
     heading_frame = create_inner_frame(frame, row=1, column=2, fg_color="transparent")
-    label = CTkLabel(heading_frame, fg_color="transparent", text=text, font=("Arial", 20, "bold"), text_color="#333333")
+    label = CTkLabel(heading_frame, fg_color="transparent", text=text, font=("Arial", 28, "bold"), text_color="#333333")
     label.place(relx=0.5, rely=0.5, anchor="center")
-    
+
     icon_frame = create_inner_frame(frame, row=2, column=2, padx=0, pady=0)
     image = load_image(image_path, (135, 135))
     icon_label = CTkLabel(icon_frame, image=image, text="")
     icon_label.place(relx=0.5, rely=0.5, anchor='center')
-    
+
     button_frame = create_inner_frame(frame, row=4, column=1, columnspan=3, padx=20, pady=0, fg_color="transparent")
     configure_frame(button_frame, [1], [1])
     button = CTkButton(button_frame, text=button_text, font=("Inter", 25, "bold"), hover_color="#93ACAF", text_color="#333333", 
                        width=220, height=40, fg_color="#ADCBCF", corner_radius=5, command=button_command)
     button.grid(row=0, column=0, sticky="nsew")
-    
+
     return frame
 
 def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button):
@@ -51,14 +51,14 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     total_count = count_total_today()
     Homeframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Homeframe.grid(row=1, column=1, sticky="nsew")
-    configure_frame(Homeframe, [1, 3, 3, 9, 3, 1], [1, 6, 1, 6, 1, 6, 1])
+    configure_frame(Homeframe, [1, 4, 12, 3, 1], [1, 6, 1, 6, 1, 6, 1])
 
     HeadingF = create_frame(Homeframe, row=1, column=1, columnspan=3, fg_color="transparent", height=60)
     configure_frame(HeadingF, [1], [1])
-    HomeHeading = CTkLabel(HeadingF, text="Welcome to Home Page!", font=("Inter", 35, "bold"), fg_color="transparent",text_color="#333333" )
+    HomeHeading = CTkLabel(HeadingF, text="Welcome to Home Page!", font=("Inter", 45, "bold"), fg_color="transparent",text_color="#333333" )
     HomeHeading.grid(row=0, column=0, sticky="nw")
-    DateTimeF = create_frame(Homeframe, row=1, column=5, padx=10, corner_radius=10)
-    
+    DateTimeF = create_frame(Homeframe, row=1, column=5, corner_radius=5)
+
     # Configure date and time display
     time_label = CTkLabel(DateTimeF, fg_color="transparent", text="", font=("Arial", 30, "bold"), text_color="#333333")
     time_label.place(relx=0.3, rely=0.22, anchor="n")
@@ -66,7 +66,7 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
     date_label.place(relx=0.265, rely=0.55, anchor="n")
     calimage = load_image('calendar_icon.png', (75, 75))
     calendar = CTkLabel(DateTimeF, image=calimage, text="")
-    calendar.place(relx=0.75, rely=0.09, anchor='n')
+    calendar.place(relx=0.75, rely=0.5, anchor='center')
 
     # Update date and time periodically
     update_datetime(date_label, time_label)
@@ -74,8 +74,8 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
 
     # Register Visitor Section
     register_command = lambda: on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, None, logout_btn, Home_page, home_button, visitor_button, resident_button)
-    create_section(Homeframe, row=3, column=1, text="REGISTER", image_path='register_icon.png', button_text="REGISTER", button_command=register_command)
-    TotalVisitF = create_frame(Homeframe, row=4, column=1, pady = 1)
+    create_section(Homeframe, row=2, column=1, text="REGISTER", image_path='register_icon.png', button_text="REGISTER", button_command=register_command)
+    TotalVisitF = create_frame(Homeframe, row=3, column=1, pady = 1)
     configure_frame(TotalVisitF, [1], [1])
     TVframe = create_inner_frame(TotalVisitF, row=0, column=0, padx=15, pady=15)
     configure_frame(TVframe, [3,3], [1,1,1])
@@ -86,8 +86,8 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
 
     # Log in Visitor Section
     login_command = lambda: on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, Home_page, home_button, visitor_button, resident_button)
-    create_section(Homeframe, row=3, column=3, text="LOGIN", image_path='login_icon.png', button_text="LOGIN", button_command=login_command)
-    invisit = create_frame(Homeframe, row=4, column=3, pady = 1)
+    create_section(Homeframe, row=2, column=3, text="LOGIN", image_path='login_icon.png', button_text="LOGIN", button_command=login_command)
+    invisit = create_frame(Homeframe, row=3, column=3, pady = 1)
     configure_frame(invisit, [1], [1])
     invframe = create_inner_frame(invisit, row=0, column=0, padx=15, pady=15)
     configure_frame(invframe, [3,3], [1,1,1])
@@ -100,8 +100,8 @@ def Home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id
 
     # Log out Visitor Section
     logout_command = lambda: on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, Home_page, home_button, visitor_button, resident_button)
-    create_section(Homeframe, row=3, column=5, text="LOGOUT", image_path='logout_icon.png', button_text="LOGOUT", button_command=logout_command)
-    outvisit = create_frame(Homeframe, row=4, column=5, pady = 1)
+    create_section(Homeframe, row=2, column=5, text="LOGOUT", image_path='logout_icon.png', button_text="LOGOUT", button_command=logout_command)
+    outvisit = create_frame(Homeframe, row=3, column=5, pady = 1)
     configure_frame(outvisit, [1], [1])
     outvframe = create_inner_frame(outvisit, row=0, column=0, padx=15, pady=15)
     configure_frame(outvframe, [3,3], [1,1,1])

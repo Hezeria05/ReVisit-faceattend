@@ -6,3 +6,4 @@ seaborn
 matplotlib
 pillow
 mysql-connector-python
+openpyxl

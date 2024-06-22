@@ -27,8 +27,8 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
     headingf = CTkFrame(Residentframe, fg_color="transparent")
     headingf.grid(row=1, column=1, columnspan=3, sticky="nsew")
     configure_frame(headingf, [1], [6, 1, 6, 2, 6])
-    ResidentHeading = CTkLabel(headingf, text="Residents List", font=("Inter", 35, "bold"), fg_color="transparent", text_color="#333333")
-    ResidentHeading.grid(row=0, column=0, columnspan=3, sticky="nw", padx=40)
+    ResidentHeading = CTkLabel(headingf, text="Residents List", font=("Inter", 45, "bold"), fg_color="transparent", text_color="#333333")
+    ResidentHeading.grid(row=0, column=0, columnspan=3, sticky="nw", padx=20)
     searchf = CTkFrame(headingf, fg_color="white", width=450, height=100, border_width=2, border_color="#BFC3C3", corner_radius=10)
     searchf.place(relx=0.85, rely=0.3, anchor="center")
 

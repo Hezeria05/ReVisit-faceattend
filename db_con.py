@@ -1,6 +1,9 @@
 import mysql.connector
 from datetime import datetime
 import csv
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill
+from openpyxl.utils import get_column_letter
 import os
 
 def connect_to_database():
@@ -123,9 +126,9 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
         # Check if the visitor with the same name is already logged in
         query_check_existing = """
         SELECT * FROM visitor_data 
-        WHERE visit_name = %s AND log_stat = TRUE AND logout_time IS NULL
+        WHERE visit_name = %s AND sec_id = %s AND log_stat = TRUE AND logout_time IS NULL
         """
-        cursor.execute(query_check_existing, (visit_name,))
+        cursor.execute(query_check_existing, (visit_name, sec_id))
         existing_visitor = cursor.fetchone()
 
         if existing_visitor:
@@ -197,7 +200,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
             logout_time_new = current_datetime.strftime('%H:%M:%S')
             log_day_new = current_datetime.date()
 
-            if login_time and logout_time is None:
+            if login_time is not None and logout_time is None:
                 query_update = """
                 UPDATE visitor_data SET logout_time = %s, log_day = %s, log_stat = FALSE WHERE visit_name = %s AND login_time = %s AND sec_id = %s AND log_stat = TRUE
                 """
@@ -215,7 +218,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
                 visitor_data = cursor.fetchone()
 
                 if visitor_data:
-                    save_data_to_csv(visitor_data)
+                    save_data_to_excel(visitor_data)
                 return True  # Logout was successful
             else:
                 Existinglabel.configure(text='Log in First!')
@@ -229,9 +232,8 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
         cursor.close()
         conn.close()
 
-def save_data_to_csv(data):
+def save_data_to_excel(data):
     COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
-
     # Get the user's desktop path
     desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
     # Define the folder path
@@ -240,14 +242,27 @@ def save_data_to_csv(data):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     # Define the file path
-    file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.csv")
-    # Check if the file exists to determine if the header should be written
-    file_exists = os.path.isfile(file_path)
-    with open(file_path, 'a', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        if not file_exists:
-            writer.writerow(COL_NAMES)  # Write header only if file doesn't exist
-        writer.writerow(data)
+    file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.xlsx")
+
+    workbook = Workbook()
+    sheet = workbook.active
+
+    # Add the header row with custom spacing and color
+    fill = PatternFill(start_color="00ADCBCF", end_color="00ADCBCF", fill_type="solid")  # color palette fill
+    for col_num, col_name in enumerate(COL_NAMES, 1):
+        cell = sheet.cell(row=1, column=col_num, value=f" {col_name} ")
+        cell.fill = fill
+
+    # Add the data row with custom spacing
+    formatted_data = [f" {item} " for item in data]
+    sheet.append(formatted_data)
+
+    # Adjust the width of the columns to fit the contents
+    for col_num, col_name in enumerate(COL_NAMES, 1):
+        column_letter = get_column_letter(col_num)
+        sheet.column_dimensions[column_letter].width = len(col_name) + 2
+
+    workbook.save(file_path)
 
 
 #Visitor Page_____________________________________________________________________________________________________________
