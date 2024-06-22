@@ -28,7 +28,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     logout_btn.configure(state="normal")
     Visitorframe = CTkFrame(visitorpage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Visitorframe.grid(row=1, column=1, sticky="nsew")
-    configure_frame(Visitorframe, [1, 2, 2, 9, 2], [1, 7, 7, 1])
+    configure_frame(Visitorframe, [1, 2, 1, 9, 2], [1, 7, 7, 1])
 
     headingf = CTkFrame(Visitorframe, fg_color="transparent")
     headingf.grid(row=1, column=1, columnspan=2, sticky="nsew")
@@ -64,7 +64,7 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     btns = []
 
     btnf = CTkFrame(Visitorframe, fg_color="transparent")
-    btnf.grid(row=2, column=1, sticky="nsew", pady=10)
+    btnf.grid(row=1, rowspan=2, column=1, sticky="sew", pady=10, padx=20)
     configure_frame(btnf, [1], [1, 1, 1, 1])
 
     def btn_command_wrapper(fetch_func, btn_index):
@@ -78,15 +78,15 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     for i, label in enumerate(btn_labels):
         btn = CTkButton(btnf, text=label,
                         font=("Inter", 15, "bold"), hover_color="#93ACAF", text_color="#333333",
-                        width=100, height=37.5, fg_color="#93ACAF" if i == 0 else "#FEFEFE",
+                        width=100, height=40, fg_color="#93ACAF" if i == 0 else "#FEFEFE",
                         corner_radius=25, border_width=3, border_color="#91ABAE")
-        btn.grid(row=0, column=i, sticky="sew", padx=10, pady=2)
+        btn.grid(row=0, column=i, sticky="sew", padx=10, pady=17)
         btn.configure(command=btn_command_wrapper(fetch_functions[i], i))
 
         btns.append(btn)
 
     tablef = CTkFrame(Visitorframe, fg_color="transparent")
-    tablef.grid(row=3, column=1, columnspan=2, sticky="nsew", padx=20, pady=20)
+    tablef.grid(row=3, column=1, columnspan=2, sticky="nsew", padx=20)
     configure_frame(tablef, [1, 8], [1, 1, 1, 1, 1, 1, 1])
     tableheading = CTkFrame(tablef, fg_color="#93ACAF", border_width=2, border_color="#93ACAF", corner_radius=0)
     tableheading.grid(row=0, column=0, columnspan=7, sticky="nsew")
