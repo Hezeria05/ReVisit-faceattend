@@ -186,23 +186,33 @@ from datetime import datetime
 
 def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
+    if conn is None:
+        Existinglabel.configure(text='Failed to connect to the database.')
+        return
+
     cursor = conn.cursor()
     try:
         query_check = """
-        SELECT login_time, logout_time, log_day FROM visitor_data WHERE visit_name = %s AND sec_id = %s AND log_stat = TRUE ORDER BY log_day DESC, login_time DESC LIMIT 1
+        SELECT login_time, logout_time, log_day, log_stat 
+        FROM visitor_data 
+        WHERE visit_name = %s AND sec_id = %s 
+        ORDER BY log_day DESC, login_time DESC 
+        LIMIT 1
         """
         cursor.execute(query_check, (visit_name, sec_id))
         result = cursor.fetchone()
 
         if result:
-            login_time, logout_time, log_day = result
+            login_time, logout_time, log_day, log_stat = result
             current_datetime = datetime.now()
             logout_time_new = current_datetime.strftime('%H:%M:%S')
             log_day_new = current_datetime.date()
 
-            if login_time is not None and logout_time is None:
+            if login_time is not None and logout_time is None and log_stat:
                 query_update = """
-                UPDATE visitor_data SET logout_time = %s, log_day = %s, log_stat = FALSE WHERE visit_name = %s AND login_time = %s AND sec_id = %s AND log_stat = TRUE
+                UPDATE visitor_data 
+                SET logout_time = %s, log_day = %s, log_stat = FALSE 
+                WHERE visit_name = %s AND login_time = %s AND sec_id = %s AND log_stat = TRUE
                 """
                 cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
                 conn.commit()
@@ -223,7 +233,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
             else:
                 Existinglabel.configure(text='Log in First!')
         else:
-            Existinglabel.configure(text='No results today. Log in first!')
+            Existinglabel.configure(text='Log in first!')
 
     except Exception as e:
         print(f"An error occurred: {e}")

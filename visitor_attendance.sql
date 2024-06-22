@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 03:19 PM
+-- Generation Time: Jun 22, 2024 at 08:18 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -83,8 +83,7 @@ INSERT INTO `resident_data` (`res_id`, `res_name`, `res_address`, `res_phonenumb
 (73, 'Sofia Wright', 'Block 3 Lot 14 Phase 1 Helium', '09123456821'),
 (74, 'William Robinson', 'Block 3 Lot 15 Phase 1 Lithium', '09123456822'),
 (75, 'Grace Mitchell', 'Block 3 Lot 16 Phase 1 Beryllium', '09123456823'),
-(76, 'James Harris', 'Block 3 Lot 17 Phase 1 Boron', '09123456824'),
-(77, 'Olivia Carter', 'Block 3 Lot 18 Phase 1 Carbon', '09123456825');
+(76, 'James Harris', 'Block 3 Lot 17 Phase 1 Boron', '09123456824');
 
 -- --------------------------------------------------------
 
@@ -98,15 +97,6 @@ CREATE TABLE `security_admin` (
   `sec_name` varchar(75) NOT NULL,
   `sec_password` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `security_admin`
---
-
-INSERT INTO `security_admin` (`sec_id`, `sec_username`, `sec_name`, `sec_password`) VALUES
-(24, 'Security1', 'Juan Dela Cruz', '12345678'),
-(26, 'Security2', 'Mike Reyes', '12345678'),
-(31, 'Security3', 'Hannah Grace', '12345678');
 
 -- --------------------------------------------------------
 
@@ -164,13 +154,13 @@ ALTER TABLE `resident_data`
 -- AUTO_INCREMENT for table `security_admin`
 --
 ALTER TABLE `security_admin`
-  MODIFY `sec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `sec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `visitor_data`
 --
 ALTER TABLE `visitor_data`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
 
 --
 -- Constraints for dumped tables
