@@ -1,4 +1,4 @@
-import mysql.connector
+import sqlite3
 from datetime import datetime
 import csv
 from openpyxl import Workbook
@@ -7,47 +7,44 @@ from openpyxl.utils import get_column_letter
 import os
 
 def connect_to_database():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="",
-        database="visitor_attendance"
-    )
-#Registration of Account Page_____________________________________________________________________________________________________________
+    db_path = os.path.join(os.path.dirname(__file__), 'visitor_attendance.db')  # Path to your SQLite database file
+    return sqlite3.connect(db_path)
+
+# Registration of Account Page___________________________________________________________________________________________
 def register_security_admin(name, username, password, register_window, FnExistlabel, UnExistlabel):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
         # Check if the full name already exists in the database
-        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_name) = LOWER(%s)", (name,))
+        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_name) = LOWER(?)", (name,))
         if cursor.fetchone()[0] > 0:
             FnExistlabel.configure(text='Name is already taken.')
             return False  # Early exit if the name exists
 
         # Check if the username already exists in the database
-        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_username) = LOWER(%s)", (username,))
+        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_username) = LOWER(?)", (username,))
         if cursor.fetchone()[0] > 0:
             UnExistlabel.configure(text='Username is already taken.')
             return False  # Early exit if the username exists
 
         # If neither name nor username is taken, proceed to insert
-        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (%s, %s, %s)"
+        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (?, ?, ?)"
         cursor.execute(query_insert, (name, username, password))
         conn.commit()
         return True
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to insert into security_admin: {err}")
         return False
     finally:
         cursor.close()
         conn.close()
 
-#Sign In Page_____________________________________________________________________________________________________________
+# Sign In Page___________________________________________________________________________________________
 def validate_login_credentials(username, password):
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    query = "SELECT sec_id FROM security_admin WHERE BINARY sec_username = %s AND BINARY sec_password = %s"
+    query = "SELECT sec_id FROM security_admin WHERE sec_username = ? AND sec_password = ?"
     cursor.execute(query, (username, password))
 
     # Fetch the result of the query
@@ -67,13 +64,13 @@ def validate_login_credentials(username, password):
         # Handle the case when the query returns None (no result found)
         return False, None
 
-#Set New Password_____________________________________________________
+# Set New Password___________________________________________________________________________________________
 def validate_and_update_password(username, new_password):
     conn = connect_to_database()
     cursor = conn.cursor()
 
     # Validate username
-    query_validate = "SELECT sec_id FROM security_admin WHERE BINARY sec_username = %s"
+    query_validate = "SELECT sec_id FROM security_admin WHERE sec_username = ?"
     cursor.execute(query_validate, (username,))
     result = cursor.fetchone()
 
@@ -83,7 +80,7 @@ def validate_and_update_password(username, new_password):
         return False, "Invalid Username"
 
     # Update password
-    query_update = "UPDATE security_admin SET sec_password = %s WHERE BINARY sec_username = %s"
+    query_update = "UPDATE security_admin SET sec_password = ? WHERE sec_username = ?"
     cursor.execute(query_update, (new_password, username))
     conn.commit()
 
@@ -96,16 +93,17 @@ def validate_and_update_password(username, new_password):
         return True, "Password Updated Successfully"
     else:
         return False, "Password update failed"
-#Home Page_____________________________________________________________________________________________________________
+
+# Home Page___________________________________________________________________________________________
 def count_logged_in():
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
         today = datetime.now().date()
-        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 1 AND log_day = %s", (today,))
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 1 AND log_day = ?", (today,))
         count = cursor.fetchone()[0]
         return count
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to count logged in visitors: {err}")
         return 0
     finally:
@@ -117,10 +115,10 @@ def count_logged_out():
     cursor = conn.cursor()
     try:
         today = datetime.now().date()
-        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 0 AND log_day = %s", (today,))
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_stat = 0 AND log_day = ?", (today,))
         count = cursor.fetchone()[0]
         return count
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to count logged out visitors: {err}")
         return 0
     finally:
@@ -132,17 +130,17 @@ def count_total_today():
     cursor = conn.cursor()
     try:
         today = datetime.now().date()
-        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_day = %s", (today,))
+        cursor.execute("SELECT COUNT(*) FROM visitor_data WHERE log_day = ?", (today,))
         count = cursor.fetchone()[0]
         return count
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to count total visitors today: {err}")
         return 0
     finally:
         cursor.close()
         conn.close()
 
-#Log in Visitor Page_____________________________________________________________________________________________________________
+# Log in Visitor Page___________________________________________________________________________________________
 def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -155,7 +153,7 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
         # Check if the visitor with the same name is already logged in
         query_check_existing = """
         SELECT * FROM visitor_data 
-        WHERE visit_name = %s AND sec_id = %s AND log_stat = TRUE AND logout_time IS NULL
+        WHERE visit_name = ? AND sec_id = ? AND log_stat = TRUE AND logout_time IS NULL
         """
         cursor.execute(query_check_existing, (visit_name, sec_id))
         existing_visitor = cursor.fetchone()
@@ -174,7 +172,7 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
                 login_time,
                 log_stat,
                 sec_id
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """
             # Values to be inserted
             data_tuple = (visit_name, res_id, log_purpose, log_day, login_time, True, sec_id)
@@ -185,7 +183,7 @@ def insert_visitor_data(visit_name, res_id, log_purpose, sec_id):
             # Commit changes
             conn.commit()
             success = True
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to insert visitor data: {err}")
         success = False
     finally:
@@ -200,19 +198,14 @@ def fetch_residents():
         cursor.execute("SELECT res_id, res_address FROM resident_data")
         residents = cursor.fetchall()  # Fetch all rows
         return residents
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch resident data: {err}")
         return []
     finally:
         cursor.close()
         conn.close()
 
-
-#Log out Visitor Page_____________________________________________________________________________________________________________
-import os
-import csv
-from datetime import datetime
-
+# Log out Visitor Page___________________________________________________________________________________________
 def logout_visitor(visit_name, sec_id, Existinglabel):
     conn = connect_to_database()
     if conn is None:
@@ -224,7 +217,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
         query_check = """
         SELECT login_time, logout_time, log_day, log_stat 
         FROM visitor_data 
-        WHERE visit_name = %s AND sec_id = %s 
+        WHERE visit_name = ? AND sec_id = ? 
         ORDER BY log_day DESC, login_time DESC 
         LIMIT 1
         """
@@ -240,8 +233,8 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
             if login_time is not None and logout_time is None and log_stat:
                 query_update = """
                 UPDATE visitor_data 
-                SET logout_time = %s, log_day = %s, log_stat = FALSE 
-                WHERE visit_name = %s AND login_time = %s AND sec_id = %s AND log_stat = TRUE
+                SET logout_time = ?, log_day = ?, log_stat = FALSE 
+                WHERE visit_name = ? AND login_time = ? AND sec_id = ? AND log_stat = TRUE
                 """
                 cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
                 conn.commit()
@@ -251,7 +244,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel):
                 FROM visitor_data vd
                 JOIN resident_data rd ON vd.res_id = rd.res_id
                 JOIN security_admin sa ON vd.sec_id = sa.sec_id
-                WHERE vd.visit_name = %s AND vd.sec_id = %s AND vd.login_time = %s
+                WHERE vd.visit_name = ? AND vd.sec_id = ? AND vd.login_time = ?
                 """
                 cursor.execute(query_fetch, (visit_name, sec_id, login_time))
                 visitor_data = cursor.fetchone()
@@ -303,8 +296,7 @@ def save_data_to_excel(data):
 
     workbook.save(file_path)
 
-
-#Visitor Page_____________________________________________________________________________________________________________
+# Visitor Page___________________________________________________________________________________________
 def fetch_visitor_data_desc(offset=0):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -315,12 +307,12 @@ def fetch_visitor_data_desc(offset=0):
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.log_day DESC, vd.login_time DESC
-        LIMIT 15 OFFSET %s
+        LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch visitor data: {err}")
         return []
     finally:
@@ -337,12 +329,12 @@ def fetch_visitor_data_asc(offset=0):
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.log_day ASC, vd.login_time ASC
-        LIMIT 15 OFFSET %s
+        LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch visitor data: {err}")
         return []
     finally:
@@ -359,12 +351,12 @@ def fetch_visitor_data_name_asc(offset=0):
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.visit_name ASC
-        LIMIT 15 OFFSET %s
+        LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch visitor data: {err}")
         return []
     finally:
@@ -381,12 +373,12 @@ def fetch_visitor_data_name_desc(offset=0):
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
         ORDER BY vd.visit_name DESC
-        LIMIT 15 OFFSET %s
+        LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
         data = cursor.fetchall()
         return data
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch visitor data: {err}")
         return []
     finally:
@@ -401,43 +393,42 @@ def get_total_visitors():
         result = cursor.fetchone()
         total_visitors = result[0] if result else 0
         return total_visitors
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to count total visitors: {err}")
         return 0
     finally:
         cursor.close()
         conn.close()
-#Resident Page_____________________________________________________________________________________________________________
 
+# Resident Page___________________________________________________________________________________________
 def fetch_resident_data(offset=0, search_query=""):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
         if search_query:
             query = """
-            SELECT SQL_CALC_FOUND_ROWS res_id, res_name, res_address, res_phonenumber 
+            SELECT res_id, res_name, res_address, res_phonenumber 
             FROM resident_data 
-            WHERE res_name LIKE %s OR res_address LIKE %s OR res_phonenumber LIKE %s 
-            LIMIT 15 OFFSET %s
+            WHERE res_name LIKE ? OR res_address LIKE ? OR res_phonenumber LIKE ? 
+            LIMIT 15 OFFSET ?
             """
             cursor.execute(query, ('%' + search_query + '%', '%' + search_query + '%', '%' + search_query + '%', offset))
         else:
-            query = "SELECT SQL_CALC_FOUND_ROWS res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15 OFFSET %s"
+            query = "SELECT res_id, res_name, res_address, res_phonenumber FROM resident_data LIMIT 15 OFFSET ?"
             cursor.execute(query, (offset,))
 
         data = cursor.fetchall()
-        
-        cursor.execute("SELECT FOUND_ROWS()")
+
+        cursor.execute("SELECT COUNT(*) FROM resident_data")
         total_results = cursor.fetchone()[0]
 
         return data, total_results
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to fetch resident data: {err}")
         return [], 0
     finally:
         cursor.close()
         conn.close()
-
 
 def get_total_residents():
     conn = connect_to_database()
@@ -447,7 +438,7 @@ def get_total_residents():
         result = cursor.fetchone()
         total_residents = result[0] if result else 0
         return total_residents
-    except mysql.connector.Error as err:
+    except sqlite3.Error as err:
         print(f"Failed to count total residents: {err}")
         return 0
     finally:
@@ -458,7 +449,7 @@ def update_resident_data(window, res_id, name, address, phone):
     try:
         conn = connect_to_database()  # Ensure this function returns a valid connection
         cursor = conn.cursor()
-        query = "UPDATE resident_data SET res_name = %s, res_address = %s, res_phonenumber = %s WHERE res_id = %s"
+        query = "UPDATE resident_data SET res_name = ?, res_address = ?, res_phonenumber = ? WHERE res_id = ?"
         cursor.execute(query, (name, address, phone, res_id))
         conn.commit()
     except Exception as e:  # Broad exception handling for any database-related errors
