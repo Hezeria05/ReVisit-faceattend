@@ -40,10 +40,10 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
             Existinglabel.grid(row=2, column=1, sticky="nw", pady=2)
             submitbtn = CTkButton(Entryframe, text="Submit", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                                 hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#333333", state="disabled", command=lambda:submit_and_destroy(Entryframe, Existinglabel, scanbtn, 0))
-            submitbtn.place(relx=0.48, rely=0.745, anchor="e")
+            submitbtn.place(relx=0.52, rely=0.745, anchor="w")
             cancelbtn = CTkButton(Entryframe, text="Cancel", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                                 hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848", command=lambda: home_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button))
-            cancelbtn.place(relx=0.52, rely=0.745, anchor="w")
+            cancelbtn.place(relx=0.48, rely=0.745, anchor="e")
 
             entries = [Vname]
             for entry in entries:

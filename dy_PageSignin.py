@@ -3,13 +3,14 @@ from dy_PageUtils import (create_standard_entry, validate_all, create_warning_la
                           load_image, configure_frame, validate_length, create_image_label,
                           create_eye_button,check_sign_complete, signin_failed, validate_no_space)
 from db_con import validate_login_credentials
+from dy_NewPass import new_password
 from  dy_MainPage import open_homepage
 
 def open_signin_window(select_window):
 # signin_window = CTk()
     signin_window = CTkToplevel(select_window)
     signin_window.grab_set()
-    signin_window.geometry('1200x800+400+75')
+    signin_window.geometry('1200x800+400+45')
     signin_window.title('Sign In')
     signin_window.minsize(1000, 900)
     signin_window.configure(fg_color='white')
@@ -41,8 +42,8 @@ def open_signin_window(select_window):
     SignFrame.grid(row=1, column=3, sticky="nsew", padx=10)
     configure_frame(SignFrame, [1, 4, 2, 4, 4, 4, 4], [1, 10, 1])
 
-    LabelFrame = CTkLabel(SignFrame, fg_color="transparent", text="Sign In", font=("Inter", 40, "bold"), text_color="#333333")
-    LabelFrame.grid(row=1, column=1, sticky="s")
+    SigninLabel = CTkLabel(SignFrame, fg_color="transparent", text="Sign In", font=("Inter", 40, "bold"), text_color="#333333")
+    SigninLabel.grid(row=1, column=1, sticky="s")
 
     LogoF = CTkFrame(signin_window, fg_color="transparent", corner_radius=10, width=660, height=470)
     LogoF.grid(row=1, column=1)
@@ -82,6 +83,10 @@ def open_signin_window(select_window):
     password_visible = [False]
     eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")
+    FPbtn = CTkButton(InputF3, text="Forgot Password?", width=100, height=75, corner_radius=0,
+                    fg_color="transparent", hover=FALSE, font=("Inter", 13, "bold"),
+                    text_color="#0E6283", command=lambda:new_password(signin_window, back_button))
+    FPbtn.grid(row=2, column=0, sticky="e")
 
     SIFrame = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)
     SIFrame.grid(row=5, column=1, sticky="nsew")
@@ -90,7 +95,15 @@ def open_signin_window(select_window):
     SIbtn = CTkButton(SIFrame, text="Sign In", width=180, height=50, corner_radius=10,
                     fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"),
                     text_color="#333333", state="disabled")
-    SIbtn.grid(row=0, column=0, padx=20)
+    SIbtn.grid(row=0, column=0, padx=20, sticky="se")
+
+
+
+
+
+
+
+
 
     entries = [Eusername, Epassword]
     for entry in entries:

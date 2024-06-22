@@ -10,7 +10,7 @@ def open_register_window(main_window):
     # register_window = CTk()
     register_window = CTkToplevel(main_window)
     register_window.grab_set()
-    register_window.geometry('1200x800+400+75')
+    register_window.geometry('1200x800+400+45')
     register_window.title('Register Account')
     register_window.minsize(1000, 900)
     register_window.configure(fg_color='white')

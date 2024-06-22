@@ -14,11 +14,15 @@ select_window.configure(fg_color='#E9F3F2')
 # Bind the resize event
 def on_resize(event):
     width = event.width
+    height = event.height
 
-    if width >= 1000 and width < 1300:
+    if width <= 1000 and width < 1300 and height <= 700 and height < 1000:
         column_weights = (1, 5, 1)
         row_weights = (1, 5, 1)
-    elif width > 1300:
+    elif width > 1300 and height > 1000:
+        column_weights = (2, 4, 2)
+        row_weights = (1, 4, 1)
+    else:
         column_weights = (2, 4, 2)
         row_weights = (1, 4, 1)
 
@@ -58,10 +62,10 @@ configure_frame(ButtonFrame, [1,3,3,1], [1,3,1])
 #Buttons
 signinbtn = CTkButton(ButtonFrame, text="SIGN IN", width=50, height=80, corner_radius=10, fg_color="#ADCBCF", 
                       hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333", command=lambda: open_signin_window(select_window))
-signinbtn.grid(row=1, column=1, sticky="ew", padx=50, pady=15)
+signinbtn.grid(row=1, column=1, sticky="ew", padx=85, pady=15)
 registerbtn = CTkButton(ButtonFrame, text="REGISTER", width=50, height=80, corner_radius=10, fg_color="#ADCBCF", 
                         hover_color="#93ACAF", font=("Inter", 25, "bold"), text_color="#333333", command=lambda: open_register_window(select_window))
-registerbtn.grid(row=2, column=1, sticky="ew", padx=50, pady=15)
+registerbtn.grid(row=2, column=1, sticky="ew", padx=85, pady=15)
 
 
 # Start the application loop
