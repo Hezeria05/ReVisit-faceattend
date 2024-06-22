@@ -72,6 +72,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(script_dir, 'data')
+
     # Construct the path to the haarcascade file
     cas_path = os.path.join(data_dir, 'haarcascade_frontalface_default.xml')
     face_dataset, face_labels, name = load_face_data(data_dir)
@@ -80,4 +81,5 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     else:
         face_cascade = cv2.CascadeClassifier(cas_path)
         scanbtn.configure(command=lambda: start_camera(1, CameraFrame, logoutbtn, scanbtn, None, LogVname, face_dataset, face_labels, name, face_cascade, cap,  
-                                                       on_logout_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button, callback=display_fields))
+        on_logout_click, homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button, 
+        callback=display_fields))

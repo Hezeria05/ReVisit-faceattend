@@ -56,9 +56,8 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
     homepage_window.after(300, setup_entry_frame)
 
     def submit_and_destroy(Entryframe, Existinglabel, scanbtn, entry):
-        # Get the directory of the current script
+        # Get the directory of the current script and data fodler
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        # Construct the path to the 'data' folder
         data_dir = os.path.join(script_dir, 'data')
         if entry == 1:
             face_name = ret_vname
@@ -115,17 +114,14 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
 
                 if success_counter >= 300:  # Check if the counter has reached 30
                     cap.release()  # Release the camera
-                    # print("Camera released after 30 successful frames.")
                     return  # Stop the show_frame function
 
                 camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
             except Exception as e:
                 attempt_counter += 1
-                # print(f"fail: {e}")
                 if attempt_counter >= 5:
                     cap.release()  # Release the camera
                     RegVframe.destroy()
-                    # on_register_click(homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, face_name, logout_btn, home_page)
                 else:
                     camera_label.after(3000, show_frame)  # Try again after 3 seconds
 

@@ -234,20 +234,15 @@ def save_data_to_csv(data):
 
     # Get the user's desktop path
     desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-
     # Define the folder path
     folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
-
     # Create the folder if it doesn't exist
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-
     # Define the file path
     file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.csv")
-
     # Check if the file exists to determine if the header should be written
     file_exists = os.path.isfile(file_path)
-
     with open(file_path, 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         if not file_exists:
