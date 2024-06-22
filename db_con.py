@@ -292,7 +292,8 @@ def save_data_to_excel(data):
     # Adjust the width of the columns to fit the contents
     for col_num, col_name in enumerate(COL_NAMES, 1):
         column_letter = get_column_letter(col_num)
-        sheet.column_dimensions[column_letter].width = len(col_name) + 2
+        max_length = max(len(str(item)) for item in [col_name] + [formatted_data[col_num-1]]) + 2
+        sheet.column_dimensions[column_letter].width = max_length
 
     workbook.save(file_path)
 
