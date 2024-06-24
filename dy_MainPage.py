@@ -5,7 +5,6 @@ from dy_PageResident import Resident_page
 from dy_PageVisitor import Visitor_page
 
 def open_homepage(sec_id):
-    # sec_id = 34
     # Function to center the window on the screen
     def center_window(window, width, height):
         screen_width = window.winfo_screenwidth()

@@ -5,8 +5,8 @@ from dy_PageUtils import load_image, configure_frame
 
 # Setup the main application window
 select_window = CTk()
-select_window.geometry('1200x800+400+100')
-select_window.minsize(1000, 700)
+select_window.geometry('1200x850+400+100')
+select_window.minsize(1000, 850)
 select_window.maxsize(select_window.winfo_screenwidth(), select_window.winfo_screenheight())
 select_window.title('Select Page')
 select_window.configure(fg_color='#E9F3F2')

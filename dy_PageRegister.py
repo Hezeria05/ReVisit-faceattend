@@ -67,7 +67,7 @@ def open_register_window(main_window):
    # FULL NAME
     InputF1 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF1.grid(row=2, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF1, [2, 4, 2], [1])
+    configure_frame(InputF1, [2, 5, 2], [1])
     Efullname = create_standard_entry(InputF1, "Enter Full Name")
     Efullnameimage = create_image_label(InputF1, 'fullname_astrsk.png', 109, 16)
     Efullname.bind("<KeyPress>", lambda event: validate_all(event, Efullname, 50, 1))
@@ -77,7 +77,7 @@ def open_register_window(main_window):
     # USERNAME 
     InputF2 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF2.grid(row=3, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF2, [2, 4, 2], [1])
+    configure_frame(InputF2, [2, 5, 2], [1])
     Eusername = create_standard_entry(InputF2, "Enter Username")
     Eusernameimage = create_image_label(InputF2, 'username_astrsk.png', 109, 16)
     Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
@@ -86,7 +86,7 @@ def open_register_window(main_window):
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 4, 2], [1])
+    configure_frame(InputF3, [2, 5, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
@@ -99,7 +99,7 @@ def open_register_window(main_window):
     # CONFIRM PASSWORD
     InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF4, [2, 4, 2], [1])
+    configure_frame(InputF4, [2, 5, 2], [1])
     Ecpassword = create_standard_entry(InputF4, "Confirm Password")
     Ecpasswordimage = create_image_label(InputF4, 'cpassword_astrsk.png', 194, 16)
     Ecpassword.bind("<KeyPress>", lambda event: validate_all(event, Ecpassword, 16, 0))

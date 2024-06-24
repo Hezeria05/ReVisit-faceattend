@@ -74,7 +74,7 @@ def open_signin_window(select_window):
     # PASSWORD
     InputF3 = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 4, 2], [1])
+    configure_frame(InputF3, [2, 5, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)

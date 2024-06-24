@@ -206,13 +206,14 @@ def fetch_residents():
         conn.close()
 
 # Log out Visitor Page___________________________________________________________________________________________
-def logout_visitor(visit_name, sec_id, Existinglabel):
+def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
     conn = connect_to_database()
     if conn is None:
         Existinglabel.configure(text='Failed to connect to the database.')
         return
 
     cursor = conn.cursor()
+    logoutbtn.configure(state="disabled")
     try:
         query_check = """
         SELECT login_time, logout_time, log_day, log_stat 

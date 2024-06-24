@@ -15,6 +15,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     home_button.configure(state="normal")
     visitor_button.configure(state="normal")
     resident_button.configure(state="normal")
+    logout_btn.configure(state="normal")
 
     # Main login frame
     LogInVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
@@ -49,7 +50,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     # VISITOR FORM
     Vnamef = CTkFrame(LogInEframe, fg_color="transparent")
     Vnamef.grid(row=1, column=1, sticky="nsew", pady=3)
-    configure_frame(Vnamef,  [2, 3, 1, 1], [1])
+    configure_frame(Vnamef,  [2, 4, 1, 1], [1])
     LogVname = CTkEntry(Vnamef, placeholder_text="Enter Visitor Name", height=55,
                         corner_radius=8, border_width=1, border_color='#DEE6EA', state='disabled')
     LogVname.grid(row=1, column=0, sticky="new")
@@ -61,7 +62,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     # Resident
     Residf = CTkFrame(LogInEframe, fg_color="transparent")
     Residf.grid(row=2, column=1, sticky="nsew", pady=3)
-    configure_frame(Residf,  [2, 3, 1, 1], [1])
+    configure_frame(Residf,  [2, 4, 1, 1], [1])
 
     ResidID = CTkEntry(Residf, placeholder_text="Search Address..", height=55,
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
@@ -70,15 +71,15 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
     LRname = create_image_label(Residf, 'Resident_Address.png', 174, 16)
     LRname.grid(row=0, column=0, sticky="sw", pady=3)
     Invalidwarn = CTkLabel(Residf, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
-    Invalidwarn.grid(row=2, rowspan=4, column=0, sticky="nw", padx=2)
+    Invalidwarn.grid(row=2, rowspan=4, column=0, sticky="nw", padx=4)
 
     # Purpose
     Purposef = CTkFrame(LogInEframe, fg_color="transparent")
     Purposef.grid(row=3, column=1, sticky="nsew", pady=3)
-    configure_frame(Purposef, [2, 3, 1, 1], [1])
+    configure_frame(Purposef, [2, 4, 1, 1], [1])
 
     LogPurpose = CTkEntry(Purposef, placeholder_text="State Purpose", height=55,
-                          corner_radius=8, border_width=2, border_color='#ADCBCF')
+                          corner_radius=8, border_width=1, border_color='#DEE6EA')
     LogPurpose.grid(row=1, column=0, sticky="new")
     LogPurpose.bind("<KeyPress>", lambda event: validate_all(event, LogPurpose, 30, 1))
     LbPurpose = create_image_label(Purposef, 'Purpose.png', 94, 19)
@@ -108,29 +109,35 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
         selected_address = ResidID.get().strip()
 
         if ResidID.get() == "" and LogPurpose.get().strip() != "":
-            LogPurpose.delete(0, 'end')
             Selectwarn.configure(text="Select Resident Address First!")
-            submitbtn.configure(state="disabled")
-        elif ResidID.get() == "" and LogPurpose.get().strip() == "":
             Invalidwarn.configure(text="")
             submitbtn.configure(state="disabled")
-        elif LogVname.get() == "" and LogPurpose.get().strip() != "":
-            LogPurpose.delete(0, 'end')
-            Selectwarn.configure(text="Scan Visitor First!")
+        elif ResidID.get() == "" and LogPurpose.get().strip() == "":
+            Selectwarn.configure(text="")
+            Invalidwarn.configure(text="")
             submitbtn.configure(state="disabled")
-        elif LogVname.get() != "" and LogPurpose.get().strip() != "" and ResidID.get() == "" :
-            LogPurpose.delete(0, 'end')
+        elif selected_address not in resident_addresses:
+            Selectwarn.configure(text="")
+            Invalidwarn.configure(text="Invalid Resident Address!")
+            submitbtn.configure(state="disabled")
+        elif LogVname.get() == "" and LogPurpose.get().strip() != "":
+            Selectwarn.configure(text="Scan Visitor First!")
+            Invalidwarn.configure(text="")
+            submitbtn.configure(state="disabled")
+        elif LogVname.get() == "" and LogPurpose.get().strip() == "":
+            Selectwarn.configure(text="")
+            Invalidwarn.configure(text="")
+            submitbtn.configure(state="disabled")
+        elif LogVname.get() != "" and LogPurpose.get().strip() != "" and ResidID.get() == "":
             Selectwarn.configure(text="Select Resident Address First!")
+            Invalidwarn.configure(text="")
             submitbtn.configure(state="disabled")
         elif LogVname.get() != "" and LogPurpose.get().strip() != "" and selected_address in resident_addresses:
             Selectwarn.configure(text="")
             Invalidwarn.configure(text="")
             submitbtn.configure(state="normal")
-        elif selected_address not in resident_addresses:
-            Invalidwarn.configure(text="Invalid Resident Address!")
-            submitbtn.configure(state="disabled")
         else:
-            if all(entry.get().strip() != '' for entry in entries)and selected_address in resident_addresses:
+            if all(entry.get().strip() != '' for entry in entries) and selected_address in resident_addresses:
                 Selectwarn.configure(text="")
                 Invalidwarn.configure(text="")
                 submitbtn.configure(state="normal")

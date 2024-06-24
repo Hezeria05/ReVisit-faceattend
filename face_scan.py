@@ -66,6 +66,18 @@ def start_camera(log_stat, CameraFrame, btn_confi, scanbtn, Selectwarn, LogVname
                     scanbtn.configure(state="normal", image=retryimage, text="", command=lambda: 
                         reload_page(homepage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_page, home_button, visitor_button, resident_button))
                     return
+            # Draw the rule of thirds grid on the frame
+            height, width, _ = frame.shape
+            color = (207, 203, 173)  # Color of the grid lines
+            thickness = 1  # Thickness of the grid lines
+
+            # Draw vertical lines
+            cv2.line(frame, (width // 3, 0), (width // 3, height), color, thickness)
+            cv2.line(frame, (2 * width // 3, 0), (2 * width // 3, height), color, thickness)
+
+            # Draw horizontal lines
+            cv2.line(frame, (0, height // 3), (width, height // 3), color, thickness)
+            cv2.line(frame, (0, 2 * height // 3), (width, 2 * height // 3), color, thickness)
 
             # Convert the image to PIL format and then to ImageTk format.
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)

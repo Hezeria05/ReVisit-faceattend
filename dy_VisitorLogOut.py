@@ -14,6 +14,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
     home_button.configure(state="normal")
     visitor_button.configure(state="normal")
     resident_button.configure(state="normal")
+    logout_btn.configure(state="normal")
     # Main registration frame
     LogOutVframe = CTkFrame(homepage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     LogOutVframe.grid(row=1, column=1, sticky="nsew")
@@ -45,7 +46,7 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
 
     def handle_logout():
         visitor_name = LogVname.get()
-        success = logout_visitor(visitor_name, sec_id, Existinglabel)
+        success = logout_visitor(visitor_name, sec_id, Existinglabel, logoutbtn)
         if success:
             cap.release()
             data_path = os.path.join(data_dir, f"{visitor_name}.npy")
