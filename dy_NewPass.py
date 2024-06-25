@@ -18,7 +18,7 @@ def new_password(forgot_frame, back_button):
     # Create the NewPLabel with specified properties
     NewPLabel = CTkLabel(ForgotPfr, fg_color="transparent", text="New Password", font=("Inter", 40, "bold"), text_color="#333333")
     NewPLabel.grid(row=0, column=1, sticky="s")
-    NewpassF = CTkFrame(ForgotPfr, fg_color="white", corner_radius=10, width=660, height=780)
+    NewpassF = CTkFrame(ForgotPfr, fg_color="transparent", corner_radius=10, width=660, height=780)
     NewpassF.grid(row=1, column=1, sticky="nsew", padx=10, pady=15)
     configure_frame(NewpassF, [1, 4, 4, 4, 1], [1, 10, 1])
 
