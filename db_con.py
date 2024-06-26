@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 import csv
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill
 from openpyxl.utils import get_column_letter
 import os
@@ -267,30 +267,27 @@ def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
 
 def save_data_to_excel(data):
     COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
-    # Get the user's desktop path
     desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-    # Define the folder path
     folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
-    # Create the folder if it doesn't exist
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-    # Define the file path
+    
     file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.xlsx")
+    
+    # Check if file exists
+    if os.path.exists(file_path):
+        workbook = load_workbook(file_path)
+        sheet = workbook.active
+    else:
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.append(COL_NAMES)  # Add header if the file is newly created
 
-    workbook = Workbook()
-    sheet = workbook.active
-
-    # Add the header row with custom spacing and color
-    fill = PatternFill(start_color="00ADCBCF", end_color="00ADCBCF", fill_type="solid")  # color palette fill
-    for col_num, col_name in enumerate(COL_NAMES, 1):
-        cell = sheet.cell(row=1, column=col_num, value=f" {col_name} ")
-        cell.fill = fill
-
-    # Add the data row with custom spacing
-    formatted_data = [f" {item} " for item in data]
+    # Add data row
+    formatted_data = [item for item in data]
     sheet.append(formatted_data)
 
-    # Adjust the width of the columns to fit the contents
+    # Adjust column widths
     for col_num, col_name in enumerate(COL_NAMES, 1):
         column_letter = get_column_letter(col_num)
         max_length = max(len(str(item)) for item in [col_name] + [formatted_data[col_num-1]]) + 2
