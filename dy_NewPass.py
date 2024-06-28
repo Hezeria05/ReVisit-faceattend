@@ -1,8 +1,9 @@
 from customtkinter import *
 from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,
-                          load_image, configure_frame, validate_all, handle_ecpassword_input,
-                          create_eye_button, check_entries_complete, capitalize_first_letter, validate_no_space,
-                          set_icon_image, handle_password_input, display_success_and_close)
+                          load_image, configure_frame, validate_all,
+                          create_eye_button,validate_no_space,
+                          set_icon_image, display_success_and_close)
+from Utils_PageRegister import check_entries_complete, handle_password_input, handle_ecpassword_input
 from db_con import validate_and_update_password
 
 def new_password(forgot_frame, back_button):

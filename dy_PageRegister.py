@@ -3,9 +3,9 @@ from customtkinter import *
 from pathlib import Path
 from db_con import register_security_admin
 from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, check_leading_space,
-                          load_image, configure_frame, validate_all, handle_ecpassword_input,
-                          create_eye_button, check_entries_complete,capitalize_first_letter, validate_no_space,
-                          check_password_match, handle_password_input, display_success_and_close)
+                          load_image, configure_frame, validate_all,create_eye_button,capitalize_first_letter, validate_no_space,
+                          display_success_and_close)
+from Utils_PageRegister import check_entries_complete, handle_password_input, handle_ecpassword_input
 def open_register_window(main_window):
     # register_window = CTk()
     register_window = CTkToplevel(main_window)
@@ -97,29 +97,28 @@ def open_register_window(main_window):
     Epassword.configure(show="*")
     password_visible = [False]
     eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.425)
-    epExistlabel = create_warning_label(InputF3, "")
 
     pass1_policy = CTkFrame (InputF3, fg_color= "transparent")
     pass1_policy.grid(row=2, column=0, sticky="nswe")
     configure_frame(pass1_policy, [1], [2,3])
-    ep8charlabel = CTkLabel(pass1_policy, text="* At least 8 characters", fg_color="transparent", font=("Inter", 12), text_color="red")
+    ep8charlabel = CTkLabel(pass1_policy, text="* At least 8 characters.", fg_color="transparent", font=("Inter", 12), text_color="red")
     ep8charlabel.grid(row=0, column=0, sticky="w")
-    epnumberlabel = CTkLabel(pass1_policy, text="* At least one number", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epnumberlabel = CTkLabel(pass1_policy, text="* At least one number.", fg_color="transparent", font=("Inter", 12), text_color="red")
     epnumberlabel.grid(row=0, column=1, sticky="w")
 
     pass2_policy = CTkFrame (InputF3, fg_color= "transparent")
     pass2_policy.grid(row=3, column=0, sticky="nswe")
     configure_frame(pass2_policy, [1], [2,3])
-    epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
     epupperlabel.grid(row=0, column=0, sticky="w")
-    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character !@#$%^&*(),.?", fg_color="transparent", font=("Inter", 12, "overstrike"), text_color="red")
+    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character. !@#$%^&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
     epspeclabel.grid(row=0, column=1, sticky="w")
 
 
     pass3_policy = CTkFrame (InputF3, fg_color= "transparent")
     pass3_policy.grid(row=4, column=0, sticky="nswe")
     configure_frame(pass3_policy, [1], [2,1])
-    eplowerlabel = CTkLabel(pass3_policy, text="* At least one lowercase letter", fg_color="transparent", font=("Inter", 12), text_color="red")
+    eplowerlabel = CTkLabel(pass3_policy, text="* At least one lowercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
     eplowerlabel.grid(row=0, column=0, sticky="w")
 
 
@@ -148,8 +147,8 @@ def open_register_window(main_window):
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
         entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel))
-    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
-    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel,confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
+    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel,confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
 
     def handle_registration():
         CAbtn.configure(state="disabled")
