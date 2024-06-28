@@ -3,6 +3,7 @@ from PIL import Image
 import os
 from datetime import datetime
 from db_con import update_resident_data
+import re
 
 
 #_______________________________________GENERAL
@@ -70,9 +71,9 @@ def validate_full_name(event):
     else:
         return "break"
 
-def create_eye_button(parent_frame, entry_widget, visible_list, close_img, open_img):
+def create_eye_button(parent_frame, entry_widget, visible_list, close_img, open_img, relx=0.93, rely=0.5):
     eye_button = CTkButton(parent_frame, image=close_img, text='', width=50, fg_color='#F9F9FA', hover_color="#F9F9FA", corner_radius=0, border_width=0)
-    eye_button.place(relx=0.93, rely=0.5, anchor="center")
+    eye_button.place(relx=relx, rely=rely, anchor="center")
     eye_button.configure(command=lambda: toggle_password_visibility(entry_widget, eye_button, visible_list, close_img, open_img))
     return eye_button
 def toggle_password_visibility(inputfield, btn, visible_flag, eye_close_img, eye_open_img):
@@ -211,13 +212,13 @@ def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label,
         if len(confirm_password) >= 1:
             ecp_label.configure(text="Enter Password First!", text_color="red")
     else:
-        if len(password) >= 8:
+        if len(password) >= 8 and validate_password_policy(password):
             ep_label.configure(text="", text_color="red")
             Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
-            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
+            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
         else:
             ecp_label.configure(text="", text_color="red")
-            ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+            ep_label.configure(text="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.", text_color="red")
             disable_submit_button(createbtn)
 
 def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel):
@@ -232,13 +233,12 @@ def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_labe
         if len(confirm_password) >= 1:
             if not password:
                 ecp_label.configure(text="Enter Password First!", text_color="red")
-            elif len(password) < 8:
+            elif len(password) < 8 or not validate_password_policy(password):
                 ecp_label.configure(text="", text_color="red")
-                ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
+                ep_label.configure(text="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.", text_color="red")
                 disable_submit_button(createbtn)
             else:
                 check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
-
 
 def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel):
     password = Epassword.get().strip()
@@ -265,6 +265,14 @@ def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, E
     else:
         ecp_label.configure(text="")
         disable_submit_button(createbtn)
+
+def validate_password_policy(password):
+    if (re.search(r'[A-Z]', password) and
+        re.search(r'[a-z]', password) and
+        re.search(r'[0-9]', password) and
+        re.search(r'[!@#$%^&*(),.?]', password)):
+        return True
+    return False
 
 def enable_submit_button(button):
     button.configure(state="normal")

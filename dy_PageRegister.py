@@ -10,7 +10,7 @@ def open_register_window(main_window):
     # register_window = CTk()
     register_window = CTkToplevel(main_window)
     register_window.grab_set()
-    register_window.geometry('1200x800+400+45')
+    register_window.geometry('1400x800+300+50')
     register_window.title('Register Account')
     register_window.minsize(1000, 900)
     register_window.configure(fg_color='white')
@@ -19,7 +19,7 @@ def open_register_window(main_window):
     def registeron_resize(event):
         width = event.width
         min_width = 1000
-        max_width = 1200
+        max_width = 1400
         if min_width <= width < max_width:
             column_weights = (1, 1, 1, 10, 3)
             row_weights = (1, 10, 1)
@@ -41,7 +41,7 @@ def open_register_window(main_window):
 
     CreateF = CTkFrame(register_window, fg_color="#D1DDE2", corner_radius=10, width=660, height=780)
     CreateF.grid(row=1, column=3, sticky="nsew", padx=10)
-    configure_frame(CreateF, [1, 4, 4, 4, 4, 4, 4], [1, 10, 1])
+    configure_frame(CreateF, [1, 4, 4, 4, 6, 4, 4], [1, 10, 1])
 
     LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 48, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)
@@ -89,15 +89,39 @@ def open_register_window(main_window):
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 5, 2], [1])
+    configure_frame(InputF3, [2, 3, 1, 1, 1], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18)
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     password_visible = [False]
-    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.425)
     epExistlabel = create_warning_label(InputF3, "")
+
+    pass1_policy = CTkFrame (InputF3, fg_color= "transparent")
+    pass1_policy.grid(row=2, column=0, sticky="nswe")
+    configure_frame(pass1_policy, [1], [2,3])
+    ep8charlabel = CTkLabel(pass1_policy, text="* At least 8 characters", fg_color="transparent", font=("Inter", 12), text_color="red")
+    ep8charlabel.grid(row=0, column=0, sticky="w")
+    epnumberlabel = CTkLabel(pass1_policy, text="* At least one number", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epnumberlabel.grid(row=0, column=1, sticky="w")
+
+    pass2_policy = CTkFrame (InputF3, fg_color= "transparent")
+    pass2_policy.grid(row=3, column=0, sticky="nswe")
+    configure_frame(pass2_policy, [1], [2,3])
+    epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epupperlabel.grid(row=0, column=0, sticky="w")
+    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character !@#$%^&*(),.?", fg_color="transparent", font=("Inter", 12, "overstrike"), text_color="red")
+    epspeclabel.grid(row=0, column=1, sticky="w")
+
+
+    pass3_policy = CTkFrame (InputF3, fg_color= "transparent")
+    pass3_policy.grid(row=4, column=0, sticky="nswe")
+    configure_frame(pass3_policy, [1], [2,1])
+    eplowerlabel = CTkLabel(pass3_policy, text="* At least one lowercase letter", fg_color="transparent", font=("Inter", 12), text_color="red")
+    eplowerlabel.grid(row=0, column=0, sticky="w")
+
 
     # CONFIRM PASSWORD
     InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
