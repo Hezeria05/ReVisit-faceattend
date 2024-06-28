@@ -36,6 +36,12 @@ def validate_all(event, entry_widget, length, char_val):
         if lgresult == "break":
             return lgresult
 
+def check_leading_space(event, entry, label):
+    if entry.get().startswith(' '):
+        label.configure(text="Invalid Format!")
+    else:
+        label.configure(text="")
+
 def validate_and_remove_leading_space(event, entry):
         if event.char == ' ' and entry.get() == '':
             return "break"  # Prevent space character from being inserted
@@ -187,16 +193,16 @@ def validate_no_space(event):
         if event.keysym == 'space':
             return 'break'  # Prevents space from being entered
 
-def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword):
+def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel):
     all_complete = all(entry.get().strip() for entry in entries)
     password = Epassword.get().strip()
 
     if all_complete and len(password) >= 8:
-        check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
+        check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
     else:
         disable_submit_button(createbtn)
 
-def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries):
+def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
@@ -214,7 +220,7 @@ def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label,
             ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
             disable_submit_button(createbtn)
 
-def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries):
+def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_label, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
@@ -231,18 +237,28 @@ def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep_labe
                 ep_label.configure(text="Password must be at least 8 characters long", text_color="red")
                 disable_submit_button(createbtn)
             else:
-                check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn)
+                check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
 
 
-def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn):
+def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
+    full_name = Efullname.get()
+    user_name = Eusername.get()
+
+    # Check for leading spaces in full name and username
+    if full_name.startswith(' ') or user_name.startswith(' '):
+        ecp_label.configure(text="")
+        disable_submit_button(createbtn)
+        return
 
     if password and confirm_password:
         if password == confirm_password:
             ecp_label.configure(text="Passwords match", text_color="green")
             if all(entry.get().strip() for entry in entries):
                 enable_submit_button(createbtn)
+            else:
+                disable_submit_button(createbtn)
         else:
             ecp_label.configure(text="Passwords do not match", text_color="red")
             disable_submit_button(createbtn)

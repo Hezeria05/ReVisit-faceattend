@@ -2,7 +2,7 @@
 from customtkinter import *
 from pathlib import Path
 from db_con import register_security_admin
-from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, validate_and_remove_leading_space,
+from dy_PageUtils import (create_standard_entry, create_image_label, create_warning_label, check_leading_space,
                           load_image, configure_frame, validate_all, handle_ecpassword_input,
                           create_eye_button, check_entries_complete,capitalize_first_letter, validate_no_space,
                           check_password_match, handle_password_input, display_success_and_close)
@@ -43,7 +43,7 @@ def open_register_window(main_window):
     CreateF.grid(row=1, column=3, sticky="nsew", padx=10)
     configure_frame(CreateF, [1, 4, 4, 4, 4, 4, 4], [1, 10, 1])
 
-    LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 40, "bold"), text_color="#333333")
+    LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 48, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)
 
     LogoF = CTkFrame(register_window, fg_color="transparent", corner_radius=10, width=660, height=470)
@@ -69,26 +69,29 @@ def open_register_window(main_window):
     InputF1.grid(row=2, column=1, sticky="nsew", pady=2)
     configure_frame(InputF1, [2, 5, 2], [1])
     Efullname = create_standard_entry(InputF1, "Enter Full Name")
-    Efullnameimage = create_image_label(InputF1, 'fullname_astrsk.png', 109, 16)
+    Efullnameimage = create_image_label(InputF1, 'fullname_astrsk.png', 124, 18)
     Efullname.bind("<KeyPress>", lambda event: validate_all(event, Efullname, 50, 1))
     FnExistlabel = create_warning_label(InputF1, "")
     Efullname.bind("<KeyRelease>", lambda event: capitalize_first_letter(event, Efullname))
+    Efullname.bind("<KeyRelease>", lambda event: check_leading_space(event, Efullname, FnExistlabel))
+
 
     # USERNAME 
     InputF2 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF2.grid(row=3, column=1, sticky="nsew", pady=2)
     configure_frame(InputF2, [2, 5, 2], [1])
     Eusername = create_standard_entry(InputF2, "Enter Username")
-    Eusernameimage = create_image_label(InputF2, 'username_astrsk.png', 109, 16)
-    Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
     UnExistlabel = create_warning_label(InputF2, "")
+    Eusernameimage = create_image_label(InputF2, 'username_astrsk.png', 124, 18)
+    Eusername.bind("<KeyPress>", lambda event: validate_all(event, Eusername, 50, 0))
+    Eusername.bind("<KeyRelease>", lambda event: check_leading_space(event, Eusername, UnExistlabel))
 
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
     configure_frame(InputF3, [2, 5, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
-    Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 109, 16)
+    Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18)
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
@@ -101,8 +104,9 @@ def open_register_window(main_window):
     InputF4.grid(row=5, column=1, sticky="nsew", pady=2)
     configure_frame(InputF4, [2, 5, 2], [1])
     Ecpassword = create_standard_entry(InputF4, "Confirm Password")
-    Ecpasswordimage = create_image_label(InputF4, 'cpassword_astrsk.png', 194, 16)
+    Ecpasswordimage = create_image_label(InputF4, 'cpassword_astrsk.png', 209, 18)
     Ecpassword.bind("<KeyPress>", lambda event: validate_all(event, Ecpassword, 16, 0))
+    Ecpassword.bind("<Key>", validate_no_space)
     Ecpassword.configure(show="*")
     confirm_password_visible = [False]
     eyecp_button = create_eye_button(InputF4, Ecpassword, confirm_password_visible, eyecloseimg, eyeopenimg)
@@ -119,9 +123,9 @@ def open_register_window(main_window):
 
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword))
-    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
-    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries))
+        entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel))
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
+    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, epExistlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
 
     def handle_registration():
         CAbtn.configure(state="disabled")
