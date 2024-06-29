@@ -68,7 +68,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
                         corner_radius=8, border_width=1, border_color='#DEE6EA')
     ResidID.grid(row=1, column=0, sticky="new")
     ResidID.bind("<KeyPress>", lambda event: validate_all(event, ResidID, 30, 1))
-    LRname = create_image_label(Residf, 'Resident_Address.png', 174, 16)
+    LRname = create_image_label(Residf, 'Resident_Address.png', 104, 16.5)
     LRname.grid(row=0, column=0, sticky="sw", pady=3)
     Invalidwarn = CTkLabel(Residf, text='', fg_color="transparent", font=("Inter", 11), text_color="red")
     Invalidwarn.grid(row=2, rowspan=4, column=0, sticky="nw", padx=4)

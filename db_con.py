@@ -260,7 +260,7 @@ def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        Existinglabel.configure(text='An error occurred while processing your request.')
+        Existinglabel.configure(text='An error occurred while processing your request. Please make sure that any associated file is closed.')
     finally:
         cursor.close()
         conn.close()

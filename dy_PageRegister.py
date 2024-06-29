@@ -96,7 +96,7 @@ def open_register_window(main_window):
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     password_visible = [False]
-    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.425)
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.435)
 
     pass1_policy = CTkFrame (InputF3, fg_color= "transparent")
     pass1_policy.grid(row=2, column=0, sticky="nswe")
@@ -111,7 +111,7 @@ def open_register_window(main_window):
     configure_frame(pass2_policy, [1], [2,3])
     epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
     epupperlabel.grid(row=0, column=0, sticky="w")
-    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character. !@#$%^&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character. !@#$%_&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
     epspeclabel.grid(row=0, column=1, sticky="w")
 
 
@@ -149,6 +149,43 @@ def open_register_window(main_window):
         entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel))
     Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel,confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
     Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel,confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
+
+    # Define the security questions
+    security_questions = [
+    "What was the name of your best childhood friend?",
+    "What was your first pet's name?",
+    "What is the name of the hospital where you were born?",
+    "What is your all-time favorite movie?",
+    "What is the name of your favorite sports team?"
+    ]
+
+
+    # Define the frame and other components
+    sec_frame = CTkFrame(register_window, fg_color="#F6FCFC", width=700, height=450, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    sec_frame.place(relx=0.5, rely=0.5, anchor='center')
+
+    sec_label = CTkLabel(sec_frame, fg_color="transparent", text="Security Question", font=("Inter", 38, "bold"), text_color="#333333")
+    sec_label.place(relx=0.5, rely=0.15, anchor='center')
+
+    # Create the combobox for security questions
+    secombo_f = CTkFrame(sec_frame, fg_color="transparent", width=480, height=125, corner_radius=0)
+    secombo_f.place(relx=0.5, rely=0.4, anchor='center')
+    comboimage = load_image("question_astrsk.png", (114, 21))
+    combolabel = CTkLabel(secombo_f, image=comboimage, text="")
+    combolabel.place(relx=0, rely=0.05, anchor="nw")
+    sec_combobox = CTkComboBox(secombo_f ,values=security_questions, width=480, height=55, button_color ="#ADCBCF", button_hover_color = "#93ACAF",
+                               dropdown_hover_color="#ADCBCF", border_color ='#ADCBCF', border_width = 1.5, corner_radius=8)
+    sec_combobox.place(relx=0.5, rely=0.5, anchor='center')
+
+    # Create the entry widget for the answer
+    secans_f = CTkFrame(sec_frame, fg_color="transparent", width=480, height=125, corner_radius=0)
+    secans_f.place(relx=0.5, rely=0.63, anchor='center')
+    ansimage = load_image("answer_astrsk.png", (94, 17))
+    anslabel = CTkLabel(secans_f, image=ansimage, text="")
+    anslabel.place(relx=0, rely=0.05, anchor="nw")
+    sec_answer = CTkEntry(secans_f, width=480, height=55, font=("Inter", 14), placeholder_text="Your Answer",
+                                border_color ='#ADCBCF', border_width = 1.5, corner_radius=8)
+    sec_answer.place(relx=0.5, rely=0.5, anchor='center')
 
     def handle_registration():
         CAbtn.configure(state="disabled")

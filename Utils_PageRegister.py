@@ -103,7 +103,7 @@ def validate_password_policy(password, ep8charlabel, epnumberlabel, epupperlabel
     else:
         epnumberlabel.configure(text_color="red")
 
-    if re.search(r'[!@#$%^&*(),.?]', password):
+    if re.search(r'[!@#$%_&*(),.?]', password):
         epspeclabel.configure(text_color="green")
     else:
         epspeclabel.configure(text_color="red")

@@ -15,6 +15,10 @@ def create_database():
         )
         ''')
 
+        # Add new columns sec_quest and sec_answer if they do not exist
+        cursor.execute("ALTER TABLE security_admin ADD COLUMN sec_quest TEXT")
+        cursor.execute("ALTER TABLE security_admin ADD COLUMN sec_answer TEXT")
+
         # Create visitor_data table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS visitor_data (
