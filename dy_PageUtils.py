@@ -139,13 +139,13 @@ def logout(window, btn):
     cancelbtn.place(relx=0.275, rely=0.8, anchor='center')
 #_______________________________________dyPAGEREGISTER
 
-def create_image_label(parent_frame, image_path, w, h, relx=0, rely=0.1):
+def create_image_label(parent_frame, image_path, w, h, relx=0, rely=0.1, anchor="w"):
     image_size = (w, h)
     relx = relx
     rely = rely
     image = load_image(image_path, image_size)
     label = CTkLabel(parent_frame, image=image, text="")
-    label.place(relx=relx, rely=rely, anchor="w")
+    label.place(relx=relx, rely=rely, anchor=anchor)
     return label
 
 def create_standard_label(parent, text, relx=0, rely=0, anchor="nw"):
@@ -201,11 +201,11 @@ def enable_submit_button(button):
 def disable_submit_button(button):
     button.configure(state="disabled")
 
-def display_success_and_close(register_window):
+def display_success_and_close(register_window, path='success_icon.png', text="Registered Successfully"):
     RegisScssfr = CTkFrame(register_window, fg_color="white", width=650, height=280, border_color="#B9BDBD", border_width=2, corner_radius=10)
     RegisScssfr.place(relx=0.5, rely=0.5, anchor='center')
-    set_icon_image(RegisScssfr,'success_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
-    LbSuccess = CTkLabel(RegisScssfr, text="Registered Successfully", fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
+    set_icon_image(RegisScssfr, path, relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+    LbSuccess = CTkLabel(RegisScssfr, text=text, fg_color="transparent", font=("Inter", 35, "bold"), text_color="#333333")
     LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
     register_window.after(2000, register_window.destroy)
 

@@ -6,6 +6,7 @@ from dy_PageUtils import (create_standard_entry, create_image_label, create_warn
                           load_image, configure_frame, validate_all, create_eye_button, capitalize_first_letter, validate_no_space,
                           display_success_and_close)
 from Utils_PageRegister import check_entries_complete, handle_password_input, handle_ecpassword_input
+from dy_TermsandService import submit_registration
 
 def open_register_window(main_window):
     register_window = CTkToplevel(main_window)
@@ -40,7 +41,7 @@ def open_register_window(main_window):
 
     CreateF = CTkFrame(register_window, fg_color="#D1DDE2", corner_radius=10, width=660, height=780)
     CreateF.grid(row=1, column=3, sticky="nsew", padx=10)
-    configure_frame(CreateF, [1, 4, 4, 4, 6, 4, 4], [1, 10, 1])
+    configure_frame(CreateF, [1, 4, 4, 4, 5, 4, 4], [1, 10, 1])
 
     LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 48, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)
@@ -87,9 +88,9 @@ def open_register_window(main_window):
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 3, 1, 1, 1], [1])
+    configure_frame(InputF3, [2, 4, 1, 1, 1], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
-    Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18)
+    Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18, anchor="w")
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
@@ -169,17 +170,21 @@ def open_register_window(main_window):
 
 
     def handle_registration():
-        CAbtn.configure(state="disabled")
-        Efullname.configure(state="disabled")
-        Eusername.configure(state="disabled")
-        Epassword.configure(state="disabled")
-        Ecpassword.configure(state="disabled")
         full_name = Efullname.get()
         username = Eusername.get()
         password = Ecpassword.get()
         try:
             success = check_security_admin(full_name, username, password, register_window, FnExistlabel, UnExistlabel)
             if success:
+                clear_error_labels()
+                eyep_button.configure(state="disabled")
+                eyecp_button.configure(state="disabled")
+                CAbtn.configure(state="disabled")
+                back_button.configure(state="disabled")
+                Efullname.configure(state="disabled")
+                Eusername.configure(state="disabled")
+                Epassword.configure(state="disabled")
+                Ecpassword.configure(state="disabled")
                 # Define the frame and other components
                 sec_frame = CTkFrame(register_window, fg_color="#F6FCFC", width=700, height=450, border_color="#B9BDBD", border_width=2, corner_radius=10)
                 sec_frame.place(relx=0.5, rely=0.5, anchor='center')
@@ -215,8 +220,8 @@ def open_register_window(main_window):
 
                 submitbtn = CTkButton(sec_frame, text="Submit", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                                     hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#333333", state="disabled",
-                                    command=lambda: submit_registration(full_name, username, password, sec_combobox.get(), sec_answer.get()))
-                submitbtn.place(relx=0.52, rely=0.825, anchor="w")
+                                    command=lambda: submit_registration(register_window, sec_frame, full_name, username, password, sec_combobox.get(), sec_answer.get()))
+                submitbtn.place(relx=0.52, rely=0.845, anchor="w")
 
                 cancelbtn = CTkButton(sec_frame, text="Cancel", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                                     hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848",
@@ -224,8 +229,11 @@ def open_register_window(main_window):
                                                     Efullname.configure(state="normal"),
                                                     Eusername.configure(state="normal"),
                                                     Epassword.configure(state="normal"),
-                                                    Ecpassword.configure(state="normal")])
-                cancelbtn.place(relx=0.48, rely=0.825, anchor="e")
+                                                    Ecpassword.configure(state="normal"),
+                                                    back_button.configure(state="normal"),
+                                                    eyep_button.configure(state="disabled"),
+                                                    eyecp_button.configure(state="disabled")])
+                cancelbtn.place(relx=0.48, rely=0.845, anchor="e")
             else:
                 register_window.after(3000, clear_error_labels)
                 CAbtn.configure(state="normal")
@@ -239,13 +247,6 @@ def open_register_window(main_window):
         FnExistlabel.configure(text='')
         UnExistlabel.configure(text='')
         ecpExistlabel.configure(text='')
-
-    def submit_registration(full_name, username, password, security_question, security_answer):
-        print(f"Full Name: {full_name}")
-        print(f"Username: {username}")
-        print(f"Password: {password}")
-        print(f"Security Question: {security_question}")
-        print(f"Security Answer: {security_answer}")
 
     CAbtn.configure(command=handle_registration)
 

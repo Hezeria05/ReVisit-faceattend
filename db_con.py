@@ -26,11 +26,6 @@ def check_security_admin(name, username, password, register_window, FnExistlabel
         if cursor.fetchone()[0] > 0:
             UnExistlabel.configure(text='Username is already taken.')
             return False  # Early exit if the username exists
-
-        # # If neither name nor username is taken, proceed to insert
-        # query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (?, ?, ?)"
-        # cursor.execute(query_insert, (name, username, password))
-        # conn.commit()
         return True
     except sqlite3.Error as err:
         print(f"Failed to insert into security_admin: {err}")
@@ -39,25 +34,13 @@ def check_security_admin(name, username, password, register_window, FnExistlabel
         cursor.close()
         conn.close()
 
-def register_security_admin(name, username, password, register_window, FnExistlabel, UnExistlabel):
+def register_security_admin(name, username, password, security_question, security_answer, window):
     conn = connect_to_database()
     cursor = conn.cursor()
     try:
-        # Check if the full name already exists in the database
-        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_name) = LOWER(?)", (name,))
-        if cursor.fetchone()[0] > 0:
-            FnExistlabel.configure(text='Name is already taken.')
-            return False  # Early exit if the name exists
-
-        # Check if the username already exists in the database
-        cursor.execute("SELECT COUNT(*) FROM security_admin WHERE LOWER(sec_username) = LOWER(?)", (username,))
-        if cursor.fetchone()[0] > 0:
-            UnExistlabel.configure(text='Username is already taken.')
-            return False  # Early exit if the username exists
-
         # If neither name nor username is taken, proceed to insert
-        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password) VALUES (?, ?, ?)"
-        cursor.execute(query_insert, (name, username, password))
+        query_insert = "INSERT INTO security_admin (sec_name, sec_username, sec_password, sec_quest, sec_answer) VALUES (?, ?, ?, ?, ?)"
+        cursor.execute(query_insert, (name, username, password, security_question, security_answer))
         conn.commit()
         return True
     except sqlite3.Error as err:
