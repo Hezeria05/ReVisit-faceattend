@@ -201,7 +201,10 @@ def open_register_window(main_window):
                 sec_combobox = CTkComboBox(secombo_f, values=security_questions, width=480, height=55, button_color="#ADCBCF", button_hover_color="#93ACAF",
                                         dropdown_hover_color="#ADCBCF", border_color='#ADCBCF', border_width=1.5, corner_radius=8)
                 sec_combobox.place(relx=0.5, rely=0.5, anchor='center')
-
+                def to_lowercase(event):
+                    current_text = sec_answer.get()
+                    sec_answer.delete(0, 'end')
+                    sec_answer.insert(0, current_text.lower())
                 # Create the entry widget for the answer
                 secans_f = CTkFrame(sec_frame, fg_color="transparent", width=480, height=125, corner_radius=0)
                 secans_f.place(relx=0.5, rely=0.63, anchor='center')
@@ -211,7 +214,7 @@ def open_register_window(main_window):
                 sec_answer = CTkEntry(secans_f, width=480, height=55, font=("Inter", 14), placeholder_text="Your Answer",
                                     border_color='#ADCBCF', border_width=1.5, corner_radius=8)
                 sec_answer.place(relx=0.5, rely=0.5, anchor='center')
-
+                sec_answer.bind('<KeyRelease>', to_lowercase)
                 warnswerlabel = CTkLabel(secans_f, text="* Remember your password and answer to your security question.", fg_color="transparent", font=("Inter", 12), text_color="red")
                 warnswerlabel.place(relx=0, rely=0.83, anchor="w")
 
