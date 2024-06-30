@@ -37,9 +37,10 @@ def validate_all(event, entry_widget, length, char_val):
         if lgresult == "break":
             return lgresult
 
-def check_leading_space(event, entry, label):
+def check_leading_space(event, entry, label, btn):
     if entry.get().startswith(' '):
-        label.configure(text="Invalid Format!")
+        label.configure(text="Invalid format!")
+        btn.configure(state="disabled")
     else:
         label.configure(text="")
 
