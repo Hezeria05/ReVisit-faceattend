@@ -6,7 +6,6 @@ from db_con import fetch_visitor_data_desc, fetch_visitor_data_asc, fetch_visito
 # Store the current fetch function
 current_fetch_func = fetch_visitor_data_desc
 
-
 def create_visitor_table(visitorframe, visitor_data):
     for i in range(15):
         entries = []
@@ -25,11 +24,53 @@ def create_visitor_table(visitorframe, visitor_data):
                 entry.configure(state='disabled')
 
 def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, sec_id, logout_btn, home_button, visitor_button, resident_button):
+    global current_fetch_func
     home_button.configure(state="normal")
     visitor_button.configure(state="normal")
     resident_button.configure(state="normal")
-    current_page = 0
     logout_btn.configure(state="normal")
+
+    current_page = 0
+
+    def refresh_visitor_table():
+        offset = current_page * 15
+        visitor_data = current_fetch_func(offset)
+        for widget in tablebody.winfo_children():
+            widget.destroy()
+        create_visitor_table(tablebody, visitor_data)
+
+        # Disable buttons if necessary
+        back_button.configure(state='normal' if current_page > 0 else 'disabled')
+        next_button.configure(state='normal' if current_page < total_pages - 1 else 'disabled')
+        update_pagination_labels()
+
+    def update_pagination_labels():
+        start_page = (current_page // 3) * 3
+        currentpage_button.configure(text=str(start_page + 1), text_color="#00507E" if current_page == start_page else "#B9B9B9")
+        nextpage_button.configure(text=str(start_page + 2), text_color="#00507E" if current_page == start_page + 1 else "#B9B9B9")
+        nnxpage_button.configure(text=str(start_page + 3), text_color="#00507E" if current_page == start_page + 2 else "#B9B9B9")
+
+    def create_pagination_buttons():
+        nonlocal current_page
+        currentpage_button.configure(command=lambda: go_to_page((current_page // 3) * 3))
+        nextpage_button.configure(command=lambda: go_to_page((current_page // 3) * 3 + 1))
+        nnxpage_button.configure(command=lambda: go_to_page((current_page // 3) * 3 + 2))
+
+    def go_to_page(page):
+        nonlocal current_page
+        if 0 <= page < total_pages:
+            current_page = page
+            refresh_visitor_table()
+            highlight_current_page()
+
+    def highlight_current_page():
+        start_page = (current_page // 3) * 3
+        currentpage_button.configure(text=str(start_page + 1), text_color="#00507E" if current_page == start_page else "#B9B9B9")
+        nextpage_button.configure(text=str(start_page + 2), text_color="#00507E" if current_page == start_page + 1 else "#B9B9B9")
+        nnxpage_button.configure(text=str(start_page + 3), text_color="#00507E" if current_page == start_page + 2 else "#B9B9B9")
+        back_button.configure(image=previmage if current_page > 0 else prevdisimage)
+        next_button.configure(image=nextimage if current_page < total_pages - 1 else nextdisimage)
+
     Visitorframe = CTkFrame(visitorpage_window, fg_color="white", border_width=1, border_color="#C1C1C1", corner_radius=0)
     Visitorframe.grid(row=1, column=1, sticky="nsew")
     configure_frame(Visitorframe, [1, 2, 1, 9, 2], [1, 7, 7, 1])
@@ -53,17 +94,6 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     update_datetime(date_label, time_label)
     visitorpage_window.after(1000, lambda: update_datetime(date_label, time_label))
 
-    def refresh_visitor_table(fetch_data_func):
-        offset = current_page * 15
-        visitor_data = fetch_data_func(offset)
-        for widget in tablebody.winfo_children():
-            widget.destroy()
-        create_visitor_table(tablebody, visitor_data)
-
-        # Disable buttons if necessary
-        back_button.configure(state='normal' if current_page > 0 else 'disabled')
-        next_button.configure(state='normal' if len(visitor_data) == 15 and current_page < total_pages - 1 else 'disabled')
-
     btn_labels = ["Recent", "Oldest", "A - Z", "Z - A"]
     btns = []
 
@@ -73,7 +103,9 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
 
     def btn_command_wrapper(fetch_func, btn_index):
         def command():
-            refresh_visitor_table(fetch_func)
+            global current_fetch_func
+            current_fetch_func = fetch_func
+            refresh_visitor_table()
             btnind(btns[btn_index], *btns)
         return command
 
@@ -114,12 +146,10 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     configure_frame(tablebody, [1]*15, [2, 2, 1, 1, 3, 2, 2])
 
     # Initiate the canvas
-    pagination_frame = CTkFrame(Visitorframe, fg_color="transparent")
+    pagination_frame = CTkFrame(Visitorframe, fg_color="transparent", width=250, height=60)
     pagination_frame.place(relx=0.5, rely=0.93, anchor="center")
-    configure_frame(pagination_frame, [1], [1,1])
-    pageimage = load_image('paginationframe.png', (144, 54))
-    pagelabel = CTkLabel(pagination_frame, image=pageimage, text="")
-    pagelabel.grid(row=0, column=0, columnspan=2, sticky="nsew")
+    configure_frame(pagination_frame, [1], [1,1,1,1,1])
+    pagination_frame.grid_propagate(False)
     previmage = load_image('prev.png', (30, 30))
     prevdisimage = load_image('prevdis.png', (30, 30))
     nextimage = load_image('next.png', (30, 30))
@@ -128,33 +158,37 @@ def Visitor_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct, 
     # Configure Buttons
     total_visitors = get_total_visitors()
     total_pages = (total_visitors + 14) // 15
-    initial_back_image = previmage if current_page > 0 else prevdisimage
-    initial_next_image = nextimage if current_page < total_pages - 1 else nextdisimage
 
     # Create back button with initial image
-    back_button = CTkButton(pagination_frame, image=initial_back_image, text='', width=35,
-                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(-1))
+    back_button = CTkButton(pagination_frame, image=prevdisimage, text='', width=35,
+                            fg_color="transparent", hover_color="white", state='disabled', command=lambda: navigate_page(-1))
+    back_button.grid(row=0, column=0)
+
+    currentpage_button = CTkButton(pagination_frame, text=str(1), width=35, font=("Inter", 18, "bold"), text_color="#00507E",
+                                   fg_color="transparent", hover_color="white", command=lambda: go_to_page(0))
+    currentpage_button.grid(row=0, column=1)
+
+    nextpage_button = CTkButton(pagination_frame, text=str(2), width=35, font=("Inter", 18, "bold"), text_color="#B9B9B9",
+                                fg_color="transparent", hover_color="white", command=lambda: go_to_page(1))
+    nextpage_button.grid(row=0, column=2)
+
+    nnxpage_button = CTkButton(pagination_frame, text=str(3), width=35, font=("Inter", 18, "bold"), text_color="#B9B9B9",
+                               fg_color="transparent", hover_color="white", command=lambda: go_to_page(2))
+    nnxpage_button.grid(row=0, column=3)
 
     # Create next button with initial image
-    next_button = CTkButton(pagination_frame, image=initial_next_image, text='', width=35,
-                            fg_color="transparent", hover_color="white", command=lambda: navigate_page(1))
+    next_button = CTkButton(pagination_frame, image=nextimage if total_pages > 1 else nextdisimage, text='', width=35,
+                            fg_color="transparent", hover_color="white", state='normal' if total_pages > 1 else 'disabled', command=lambda: navigate_page(1))
+    next_button.grid(row=0, column=4)
 
     # Function to navigate pages
     def navigate_page(direction):
         nonlocal current_page
-        current_page += direction
-        refresh_visitor_table(fetch_visitor_data_desc)
-        if current_page > 0:
-            back_button.configure(state='normal', image=previmage)
-        else:
-            back_button.configure(state='disabled', image=prevdisimage)
-        if current_page < total_pages - 1:
-            next_button.configure(state='normal', image=nextimage)
-        else:
-            next_button.configure(state='disabled', image=nextdisimage)
+        if 0 <= current_page + direction < total_pages:
+            current_page += direction
+            refresh_visitor_table()
+            highlight_current_page()
 
-    # Update button images based on initial conditions
-    back_button.grid(row=0, column=0)
-    next_button.grid(row=0, column=1)
-
-    refresh_visitor_table(fetch_visitor_data_desc)
+    create_pagination_buttons()
+    refresh_visitor_table()
+    highlight_current_page()
