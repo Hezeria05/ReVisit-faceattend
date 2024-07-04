@@ -29,7 +29,7 @@ def submit_registration(window, sec_frame, full_name, username, password, securi
             display_success_and_close(window, path='warning_icon.png', text="Please Try Again.")
 
     def toggle_submit_button():
-        if terms_var.get() == 1:
+        if terms_var1.get() == 1 and terms_var2.get() == 1:
             submitbtn.configure(state=NORMAL)
         else:
             submitbtn.configure(state=DISABLED)
@@ -39,12 +39,12 @@ def submit_registration(window, sec_frame, full_name, username, password, securi
     terms_frame.place(relx=0.5, rely=0.5, anchor='center')
     
     # Creating a frame within the terms frame for agreement content
-    agree_f = CTkFrame(terms_frame, fg_color="transparent", width=750, height=650, corner_radius=0)
+    agree_f = CTkFrame(terms_frame, fg_color="transparent", width=750, height=600, corner_radius=0)
     agree_f.place(relx=0.5, rely=0.03, anchor='n')
 
     # Creating the scrollable frame inside the agree_f
-    scrollable_frame = CTkScrollableFrame(agree_f, width=700, height=620, corner_radius=0, fg_color="white",
-                                          border_color="#D1DDE2", border_width=1,scrollbar_button_color= "#D1DDE2",
+    scrollable_frame = CTkScrollableFrame(agree_f, width=700, height=570, corner_radius=0, fg_color="white",
+                                          border_color="#D1DDE2", border_width=1, scrollbar_button_color="#D1DDE2",
                                           scrollbar_button_hover_color="#0E6283")
     scrollable_frame.place(relx=0.5, rely=0.5, anchor='center')
 
@@ -58,7 +58,7 @@ def submit_registration(window, sec_frame, full_name, username, password, securi
          "1.1. Welcome to ReVisit: Facial Recognition Attendance System, a facial recognition attendance system for non-resident visitors of Celina Homes 5 Subdivision, Brgy. Tagapo, Sta. Rosa City, Laguna. Please read these Terms of Service carefully before using this System or creating an account so that you are aware of your legal rights and obligations.\n"
          "1.2. The 'Services' provided include (a) the System, (b) the services provided by the System, and (c) all information, features, data, text, images, photographs, graphics, and other materials made available through the System. Any new features added to or augmenting the Services are also subject to these Terms of Service.\n"
          "1.3. By creating an Account, you give your irrevocable acceptance of and consent to the terms of this Agreement. If you do not agree to these terms, please do not use our Services or access the System."),
-        ("2. Privacy",
+        ("2. Privacy Policy",
          "2.1. Your privacy is very important to us. Our Privacy Policy explains how we collect, use, disclose, and protect your personal data. By using the Services or providing information on the System, you consent to the processing of your personal data as described in the Privacy Policy.\n"
          "2.2. Users in possession of another entity’s personal data agree to (a) comply with all applicable personal data protection laws, and (b) allow the User to review what information has been collected about them."),
         ("3. Accounts and Security",
@@ -97,22 +97,27 @@ def submit_registration(window, sec_frame, full_name, username, password, securi
         text_label = CTkLabel(master=scrollable_frame, text=section_text, wraplength=650, anchor="w", justify="left")
         text_label.pack(fill="x", anchor="w", padx=20, pady=(0, 0))
 
-    # Checkbox for terms and conditions
-    terms_var = IntVar()
-    checkbox_frame = CTkFrame(terms_frame, fg_color="transparent", width=750, height=50,)
-    checkbox_frame.place(relx=0.5, rely=0.83, anchor='n')
+    # Checkboxes for terms and conditions and privacy policy
+    terms_var1 = IntVar()
+    terms_var2 = IntVar()
+    checkbox_frame = CTkFrame(terms_frame, fg_color="transparent", width=750, height=80,)
+    checkbox_frame.place(relx=0.5, rely=0.78, anchor='n')
     
-    checkbox = CTkCheckBox(checkbox_frame, text="By clicking, you are confirming that you have read, understood and agree to \nReVisit: Facial Recognition Attendance System Terms and Conditions.",
-                           border_width= 1, hover_color="#D1DDE2", fg_color="#0E6283",variable=terms_var, onvalue=1, offvalue=0, command=toggle_submit_button)
-    checkbox.place(relx=0.03, rely=0.5, anchor='w')
+    checkbox1 = CTkCheckBox(checkbox_frame, text="I accept the general Terms and Conditions of Use.",
+                           border_width= 2, hover_color="#D1DDE2", fg_color="#0E6283", corner_radius=3, variable=terms_var1, onvalue=1, offvalue=0, command=toggle_submit_button)
+    checkbox1.place(relx=0.03, rely=0.25, anchor='w')
+    checkbox2 = CTkCheckBox(checkbox_frame, text="I accept the Privacy Policy.",
+                           border_width= 2, hover_color="#D1DDE2", fg_color="#0E6283", corner_radius=3, variable=terms_var2, onvalue=1, offvalue=0, command=toggle_submit_button)
+    checkbox2.place(relx=0.03, rely=0.62, anchor='w')
 
     # Buttons for submit and cancel
-    submitbtn = CTkButton(terms_frame, text="Submit", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
+    submitbtn = CTkButton(terms_frame, text="Agree", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                                     hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#333333", state=DISABLED,
                                     command=lambda: agree_registration(full_name, username, password, security_question, security_answer, window, sec_frame))
-    submitbtn.place(relx=0.52, rely=0.939, anchor="w")
+    submitbtn.place(relx=0.52, rely=0.922, anchor="w")
 
     cancelbtn = CTkButton(terms_frame, text="Cancel", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                         hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848",
                         command=lambda: terms_frame.destroy())
-    cancelbtn.place(relx=0.48, rely=0.939, anchor="e")
+    cancelbtn.place(relx=0.48, rely=0.922, anchor="e")
+

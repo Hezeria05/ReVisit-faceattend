@@ -41,7 +41,7 @@ def open_register_window(main_window):
 
     CreateF = CTkFrame(register_window, fg_color="#D1DDE2", corner_radius=10, width=660, height=780)
     CreateF.grid(row=1, column=3, sticky="nsew", padx=10)
-    configure_frame(CreateF, [1, 4, 4, 4, 5, 4, 4], [1, 10, 1])
+    configure_frame(CreateF, [1, 4, 4, 4, 6, 4, 4], [1, 10, 1])
 
     LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 48, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)

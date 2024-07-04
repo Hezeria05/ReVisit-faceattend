@@ -1,40 +1,39 @@
 from customtkinter import *
 from dy_PageUtils import (create_standard_entry, validate_all, create_warning_label,
                           load_image, configure_frame, validate_length, create_image_label,
-                          create_eye_button,check_sign_complete, signin_failed, validate_no_space)
+                          create_eye_button, check_sign_complete, signin_failed, validate_no_space)
 from db_con import validate_login_credentials
 from dy_NewPass import new_password
-from  dy_MainPage import open_homepage
+from dy_MainPage import open_homepage
 
 def open_signin_window(select_window):
-# signin_window = CTk()
     signin_window = CTkToplevel(select_window)
     signin_window.grab_set()
-    signin_window.geometry('1200x800+400+45')
+    signin_window.geometry('1400x800+300+50')
     signin_window.title('Sign In')
     signin_window.minsize(1000, 900)
     signin_window.configure(fg_color='white')
     signin_window.maxsize(signin_window.winfo_screenwidth(), signin_window.winfo_screenheight())
 
     def signinon_resize(event):
-            width = event.width
-            min_width = 1000
-            max_width = 1200
-            if min_width <= width < max_width:
-                column_weights = (1, 1, 1, 10, 3)
-                row_weights = (1, 10, 1, 1)
-                LogoF.grid_forget()
-                BackF.grid(row=3, column=0, columnspan=1, sticky="nsew")
-            elif width >= max_width:
-                column_weights = (2, 5, 2, 7, 1)
-                row_weights = (1, 10, 1, 1)
-                LogoF.grid(row=1, column=1)
-                BackF.grid(row=3, column=0, sticky="nsew")
+        width = event.width
+        min_width = 1000
+        max_width = 1200
+        if min_width <= width < max_width:
+            column_weights = (1, 1, 1, 10, 3)
+            row_weights = (1, 10, 1, 1)
+            LogoF.grid_forget()
+            BackF.grid(row=3, column=0, columnspan=1, sticky="nsew")
+        elif width >= max_width:
+            column_weights = (2, 5, 2, 7, 1)
+            row_weights = (1, 10, 1, 1)
+            LogoF.grid(row=1, column=1)
+            BackF.grid(row=3, column=0, sticky="nsew")
 
-            for i, weight in enumerate(column_weights):
-                signin_window.columnconfigure(i, weight=weight, uniform='a')
-            for i, weight in enumerate(row_weights):
-                signin_window.rowconfigure(i, weight=weight, uniform='a')
+        for i, weight in enumerate(column_weights):
+            signin_window.columnconfigure(i, weight=weight, uniform='a')
+        for i, weight in enumerate(row_weights):
+            signin_window.rowconfigure(i, weight=weight, uniform='a')
 
     signin_window.bind('<Configure>', signinon_resize)
 
@@ -84,8 +83,8 @@ def open_signin_window(select_window):
     eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
     epExistlabel = create_warning_label(InputF3, "")
     FPbtn = CTkButton(InputF3, text="Forgot Password?", width=100, height=75, corner_radius=0,
-                    fg_color="transparent", hover=FALSE, font=("Inter", 13, "bold"),
-                    text_color="#0E6283", command=lambda:new_password(signin_window, back_button))
+                      fg_color="transparent", hover=False, font=("Inter", 13, "bold"),
+                      text_color="#0E6283", command=lambda: new_password(signin_window, back_button))
     FPbtn.grid(row=2, column=0, sticky="e")
 
     SIFrame = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)
@@ -93,8 +92,8 @@ def open_signin_window(select_window):
     configure_frame(SIFrame, [1], [1])
 
     SIbtn = CTkButton(SIFrame, text="Sign In", width=180, height=50, corner_radius=10,
-                    fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"),
-                    text_color="#333333", state="disabled")
+                      fg_color="#ADCBCF", hover_color="#93ACAF", font=("Inter", 20, "bold"),
+                      text_color="#333333", state="disabled")
     SIbtn.grid(row=0, column=0, padx=20, sticky="se")
 
     entries = [Eusername, Epassword]
@@ -102,7 +101,7 @@ def open_signin_window(select_window):
         entry.bind("<KeyRelease>", lambda event, entries=entries: check_sign_complete(entries, SIbtn))
 
     def validate_and_open_homepage():
-        username = Eusername.get()
+        username = Eusername.get().strip()  # Trim whitespace from username
         password = Epassword.get()
         success, sec_id = validate_login_credentials(username, password)
         if success:
@@ -113,7 +112,3 @@ def open_signin_window(select_window):
             signin_failed(signin_window)
 
     SIbtn.configure(command=validate_and_open_homepage)
-
-
-
-    #signin_window.mainloop()
