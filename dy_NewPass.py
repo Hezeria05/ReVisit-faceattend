@@ -7,7 +7,7 @@ from Utils_PageRegister import check_entries_complete, handle_password_input, ha
 from db_con import validate_and_update_password
 import re
 
-def forgot_password(forgot_frame, back_button, eyep_button, SIbtn, secquestion, sec_id):
+def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_id):
     def validate_password_policy(password, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel):
         if len(password) >= 8:
             ep8charlabel.configure(text_color="green")
@@ -178,7 +178,7 @@ def forgot_password(forgot_frame, back_button, eyep_button, SIbtn, secquestion, 
 
     cancelbtn = CTkButton(BtnNPF, text="Cancel", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
                         hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#484848", 
-                        command=lambda: [ForgotPfr.destroy(), back_button.configure(state="normal"), eyep_button.configure(state="normal")])
+                        command=lambda: [ForgotPfr.destroy(), back_button.configure(state="normal"), si_eye.configure(state="normal")])
     cancelbtn.place(relx=0.48, rely=0.42, anchor="e")
 
 
@@ -191,7 +191,7 @@ def forgot_password(forgot_frame, back_button, eyep_button, SIbtn, secquestion, 
         success, message = validate_and_update_password(sec_id, answer, newpassword)
         if success:
             back_button.configure(state="normal")
-            eyep_button.configure(state="normal")
+            si_eye.configure(state="normal")
             ForgotPfr.destroy()  # Destroy the select window first
             forgot_frame.after(100, lambda: display_success_and_close(forgot_frame, message))  # Display success message with a slight delay
         else:

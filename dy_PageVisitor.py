@@ -3,6 +3,10 @@ import datetime
 from dy_PageUtils import update_datetime, btnind, configure_frame, load_image
 from db_con import fetch_visitor_data_desc, fetch_visitor_data_asc, fetch_visitor_data_name_asc, fetch_visitor_data_name_desc, get_total_visitors
 
+# Store the current fetch function
+current_fetch_func = fetch_visitor_data_desc
+
+
 def create_visitor_table(visitorframe, visitor_data):
     for i in range(15):
         entries = []
