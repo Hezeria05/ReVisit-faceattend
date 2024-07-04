@@ -1,5 +1,5 @@
 from customtkinter import *
-import datetime 
+import datetime
 from dy_PageUtils import set_icon_image, toggle_edit_save, validate_length, configure_frame, load_image, validate_char, validate_phone_number
 from db_con import fetch_resident_data, get_total_residents
 
@@ -101,6 +101,9 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
         nonlocal entries_list, id_list, search_query, total_results
         offset = current_page * 15
         resident_data, total_results = fetch_resident_data(offset, search_query)
+        if not resident_data:
+            display_fail_and_close(Residentframe)
+            return
         for widget in tablebody.winfo_children():
             widget.destroy()
         entries_list, id_list = create_resident_table(tablebody, resident_data)
@@ -145,3 +148,11 @@ def Resident_page(visitorpage_window, Home_indct, Visitor_indct, Resident_indct,
         refresh_resident_table()
 
     refresh_resident_table()
+    
+def display_fail_and_close(Residentframe):
+    SetnpScssfr = CTkFrame(Residentframe, fg_color="white", width=600, height=300, border_color="#B9BDBD", border_width=2, corner_radius=10)
+    SetnpScssfr.place(relx=0.5, rely=0.5, anchor='center')
+    set_icon_image(SetnpScssfr, 'warning_icon.png', relx=0.5, rely=0.195, anchor='n', size=(110, 110))
+    LbSuccess = CTkLabel(SetnpScssfr, text="No Data Found", fg_color="transparent", font=("Inter", 30, "bold"), text_color="#333333")
+    LbSuccess.place(relx=0.5, rely=0.65, anchor='n')
+    Residentframe.after(3500, SetnpScssfr.destroy)
