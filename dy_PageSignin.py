@@ -3,7 +3,7 @@ from dy_PageUtils import (create_standard_entry, validate_all, create_warning_la
                           load_image, configure_frame, validate_length, create_image_label,
                           create_eye_button, check_sign_complete, signin_failed, validate_no_space)
 from db_con import validate_login_credentials
-from dy_NewPass import new_password
+from dy_EmailNP import new_password
 from dy_MainPage import open_homepage
 
 def open_signin_window(select_window):
@@ -84,7 +84,7 @@ def open_signin_window(select_window):
     epExistlabel = create_warning_label(InputF3, "")
     FPbtn = CTkButton(InputF3, text="Forgot Password?", width=100, height=75, corner_radius=0,
                       fg_color="transparent", hover=False, font=("Inter", 13, "bold"),
-                      text_color="#0E6283", command=lambda: new_password(signin_window, back_button))
+                      text_color="#0E6283", command=lambda: new_password(signin_window, back_button, eyep_button, SIbtn))
     FPbtn.grid(row=2, column=0, sticky="e")
 
     SIFrame = CTkFrame(SignFrame, fg_color="transparent", corner_radius=10)

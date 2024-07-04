@@ -77,23 +77,43 @@ def validate_login_credentials(username, password):
         return False, None
 
 # Set New Password___________________________________________________________________________________________
-def validate_and_update_password(username, new_password):
+def validate_uname(username):
     conn = connect_to_database()
     cursor = conn.cursor()
 
     # Validate username
-    query_validate = "SELECT sec_id FROM security_admin WHERE sec_username = ?"
+    query_validate = "SELECT sec_id, sec_quest FROM security_admin WHERE sec_username = ?"
     cursor.execute(query_validate, (username,))
     result = cursor.fetchone()
 
     if result is None:
         cursor.close()
         conn.close()
-        return False, "Invalid Username"
+        return False, "Invalid Username!", None, None
+    else:
+        sec_id, sec_question = result
+        cursor.close()
+        conn.close()
+        return True, "Username valid", sec_question, sec_id
+
+
+def validate_and_update_password(sec_id, sec_answ, new_password):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    # Validate security answer
+    query_validate = "SELECT sec_id FROM security_admin WHERE sec_id = ? AND sec_answer = ?"
+    cursor.execute(query_validate, (sec_id, sec_answ))
+    result = cursor.fetchone()
+
+    if result is None:
+        cursor.close()
+        conn.close()
+        return False, "Incorrect Answer"
 
     # Update password
-    query_update = "UPDATE security_admin SET sec_password = ? WHERE sec_username = ?"
-    cursor.execute(query_update, (new_password, username))
+    query_update = "UPDATE security_admin SET sec_password = ? WHERE sec_id = ?"
+    cursor.execute(query_update, (new_password, sec_id))
     conn.commit()
 
     updated = cursor.rowcount > 0
