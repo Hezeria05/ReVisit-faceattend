@@ -111,19 +111,14 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
                 imgtk = CTkImage(img, size=(680, 480))
                 camera_label.imgtk = imgtk
                 camera_label.configure(image=imgtk)
-
-                if success_counter >= 300:  # Check if the counter has reached 30
-                    cap.release()  # Release the camera
-                    return  # Stop the show_frame function
-
                 camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
             except Exception as e:
                 attempt_counter += 1
-                if attempt_counter >= 5:
+                if attempt_counter >= 10:
                     cap.release()  # Release the camera
                     RegVframe.destroy()
                 else:
-                    camera_label.after(3000, show_frame)  # Try again after 3 seconds
+                    Cwarnlabel.configure(text="Make sure the frame is free of obstructions.")
 
         show_frame()
         scanbtn.configure(state="normal")

@@ -4,6 +4,9 @@ def insert_resident_data():
     conn = sqlite3.connect('visitor_attendance.db')
     cursor = conn.cursor()
 
+    # Delete the current data in resident_data table
+    cursor.execute("DELETE FROM resident_data")
+
     # List of resident data to be inserted
     resident_data = [
         (32, 'John Doe', 'B1 L1 Phase 1 Hydrogen', '09123456780'),
