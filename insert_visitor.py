@@ -24,7 +24,7 @@ def generate_random_data(num_records):
     ]
 
     start_date = datetime(2023, 1, 1)
-    end_date = datetime(2024, 12, 31)
+    end_date = datetime(2024, 7, 5)  # Latest date is July 05, 2024
 
     random_data = []
     for _ in range(num_records):
@@ -41,13 +41,15 @@ def generate_random_data(num_records):
 
     return random_data
 
-def insert_random_data(num_records):
+def update_visitor_data(num_records):
     conn = sqlite3.connect('visitor_attendance.db')
     cursor = conn.cursor()
 
-    data_to_insert = generate_random_data(num_records)
+    cursor.execute("DELETE FROM visitor_data")
 
-    for data in data_to_insert:
+    new_data = generate_random_data(num_records)
+
+    for data in new_data:
         cursor.execute("""
             INSERT INTO visitor_data (visit_name, res_id, log_purpose, log_day, login_time, logout_time, log_stat, sec_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -56,5 +58,4 @@ def insert_random_data(num_records):
     conn.commit()
     conn.close()
 
-# Call insert_random_data with the number of records you want to insert
-insert_random_data(100)
+update_visitor_data(100)

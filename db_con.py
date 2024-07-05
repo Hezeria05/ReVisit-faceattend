@@ -238,6 +238,52 @@ def fetch_residents():
         conn.close()
 
 # Log out Visitor Page___________________________________________________________________________________________
+def save_data_to_excel(data):
+    COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
+    desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+    folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    
+    file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.xlsx")
+
+    try:
+        if os.path.exists(file_path):
+            workbook = load_workbook(file_path)
+            sheet = workbook.active
+        else:
+            workbook = Workbook()
+            sheet = workbook.active
+            sheet.append(COL_NAMES)  # Add header if the file is newly created
+
+        formatted_data = [item for item in data]
+
+        # Check if the entry already exists
+        entry_exists = False
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            if row[0] == data[0] and row[2] == data[2]:  # Matching on visitor name and login time
+                entry_exists = True
+                for cell in sheet[row[0].row]:
+                    if cell.value == 'LOGOUT TIME':
+                        cell.value = data[3]
+                break
+
+        if not entry_exists:
+            sheet.append(formatted_data)
+
+        # Adjust column widths
+        for col_num, col_name in enumerate(COL_NAMES, 1):
+            column_letter = get_column_letter(col_num)
+            max_length = max(len(str(item)) for item in [col_name] + [formatted_data[col_num-1]]) + 2
+            sheet.column_dimensions[column_letter].width = max_length
+
+        workbook.save(file_path)
+        return True
+
+    except Exception as e:
+        print(f"An error occurred while saving to Excel: {e}")
+        return False
+
 def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
     conn = connect_to_database()
     if conn is None:
@@ -264,14 +310,6 @@ def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
             log_day_new = current_datetime.date()
 
             if login_time is not None and logout_time is None and log_stat:
-                query_update = """
-                UPDATE visitor_data 
-                SET logout_time = ?, log_day = ?, log_stat = FALSE 
-                WHERE visit_name = ? AND login_time = ? AND sec_id = ? AND log_stat = TRUE
-                """
-                cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
-                conn.commit()
-
                 query_fetch = """
                 SELECT vd.visit_name, vd.log_day, vd.login_time, vd.logout_time, rd.res_address, sa.sec_name, vd.log_purpose
                 FROM visitor_data vd
@@ -283,8 +321,26 @@ def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
                 visitor_data = cursor.fetchone()
 
                 if visitor_data:
-                    save_data_to_excel(visitor_data)
-                return True  # Logout was successful
+                    # Update the logout time in the fetched data
+                    visitor_data = list(visitor_data)
+                    visitor_data[3] = logout_time_new  # Update logout time
+
+                    save_success = save_data_to_excel(visitor_data)
+                    if save_success:
+                        query_update = """
+                        UPDATE visitor_data 
+                        SET logout_time = ?, log_day = ?, log_stat = FALSE 
+                        WHERE visit_name = ? AND login_time = ? AND sec_id = ? AND log_stat = TRUE
+                        """
+                        cursor.execute(query_update, (logout_time_new, log_day_new, visit_name, login_time, sec_id))
+                        conn.commit()
+                        Existinglabel.configure(text='Logout successful.')
+                        return True  # Logout was successful
+                    else:
+                        Existinglabel.configure(text='An error occurred while processing your request. Please make sure that your Excel file is closed.')
+                else:
+                    Existinglabel.configure(text='Visitor data not found for logout.')
+
             else:
                 Existinglabel.configure(text='Log in First!')
         else:
@@ -292,40 +348,11 @@ def logout_visitor(visit_name, sec_id, Existinglabel, logoutbtn):
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        Existinglabel.configure(text='An error occurred while processing your request. Please make sure that any associated file is closed.')
+        Existinglabel.configure(text='Please make sure that your Excel file is closed and restart the application.')
     finally:
+        logoutbtn.configure(state="normal")
         cursor.close()
         conn.close()
-
-def save_data_to_excel(data):
-    COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
-    desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-    folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    
-    file_path = os.path.join(folder_path, f"{data[1]}_VAttendance.xlsx")
-    
-    # Check if file exists
-    if os.path.exists(file_path):
-        workbook = load_workbook(file_path)
-        sheet = workbook.active
-    else:
-        workbook = Workbook()
-        sheet = workbook.active
-        sheet.append(COL_NAMES)  # Add header if the file is newly created
-
-    # Add data row
-    formatted_data = [item for item in data]
-    sheet.append(formatted_data)
-
-    # Adjust column widths
-    for col_num, col_name in enumerate(COL_NAMES, 1):
-        column_letter = get_column_letter(col_num)
-        max_length = max(len(str(item)) for item in [col_name] + [formatted_data[col_num-1]]) + 2
-        sheet.column_dimensions[column_letter].width = max_length
-
-    workbook.save(file_path)
 
 # Visitor Page___________________________________________________________________________________________
 def fetch_visitor_data_desc(offset=0):
@@ -381,7 +408,7 @@ def fetch_visitor_data_name_asc(offset=0):
         FROM visitor_data vd
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
-        ORDER BY vd.visit_name ASC
+        ORDER BY vd.visit_name ASC, vd.log_day DESC, vd.login_time DESC
         LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
@@ -403,7 +430,7 @@ def fetch_visitor_data_name_desc(offset=0):
         FROM visitor_data vd
         JOIN resident_data rd ON vd.res_id = rd.res_id
         JOIN security_admin sa ON vd.sec_id = sa.sec_id
-        ORDER BY vd.visit_name DESC
+        ORDER BY vd.visit_name DESC, vd.log_day DESC, vd.login_time DESC
         LIMIT 15 OFFSET ?
         """
         cursor.execute(query, (offset,))
