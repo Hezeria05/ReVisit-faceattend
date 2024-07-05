@@ -240,7 +240,10 @@ def fetch_residents():
 # Log out Visitor Page___________________________________________________________________________________________
 def save_data_to_excel(data):
     COL_NAMES = ['VISITOR NAME', 'DATE', 'LOGIN TIME', 'LOGOUT TIME', 'RESIDENT', 'SECURITY', 'PURPOSE']
-    desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+    # Get the home directory of the current user
+    home_directory = os.path.expanduser('~')
+    # Set the desktop path for the current user
+    desktop_path = os.path.join(home_directory, 'Desktop')
     folder_path = os.path.join(desktop_path, 'Visitor_Attendance')
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
