@@ -118,7 +118,7 @@ def on_login_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, s
             submitbtn.configure(state="disabled")
         elif selected_address not in resident_addresses:
             Selectwarn.configure(text="")
-            Invalidwarn.configure(text="Invalid Resident Address!")
+            Invalidwarn.configure(text="Resident Address Not Found!")
             submitbtn.configure(state="disabled")
         elif LogVname.get() == "" and LogPurpose.get().strip() != "":
             Selectwarn.configure(text="Scan Visitor First!")

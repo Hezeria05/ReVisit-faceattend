@@ -56,70 +56,80 @@ def on_register_click(homepage_window, Home_indct, Visitor_indct, Resident_indct
     homepage_window.after(300, setup_entry_frame)
 
     def submit_and_destroy(Entryframe, Existinglabel, scanbtn, entry):
-        # Get the directory of the current script and data fodler
+        # Get the directory of the current script and data folder
         script_dir = os.path.dirname(os.path.abspath(__file__))
         data_dir = os.path.join(script_dir, 'data')
+        
+        def proceed_with_registration():
+            Entryframe.destroy()
+            Cwarnlabel = CTkLabel(RegVframe, text="* Please center the visitor's face and make sure the frame is free of obstructions.", font=("Inter", 12), text_color="red")
+            Cwarnlabel.grid(row=1, column=1, sticky="sew")
+            nonlocal cap
+            camera_label = CTkLabel(RCameraFrame, text="")
+            camera_label.grid(row=0, column=0, sticky="nsew")
+
+            cap = cv2.VideoCapture(0)  # Initialize the camera
+            home_button.configure(state="disabled")
+            visitor_button.configure(state="disabled")
+            resident_button.configure(state="disabled")
+            logout_btn.configure(state="disabled")
+
+            attempt_counter = 0  # Counter to keep track of attempts
+            success_counter = 0  # Counter to keep track of successful frames
+
+            def show_frame():
+                nonlocal attempt_counter, success_counter
+                try:
+                    ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
+                    if not ret:
+                        raise ValueError("Failed to capture frame")
+                    # print("success")
+                    success_counter += 1  # Increment the success counter
+
+                    # Draw the rule of thirds grid on the frame
+                    height, width, _ = frame.shape
+                    color = (207, 203, 173)  # Color of the grid lines
+                    thickness = 1  # Thickness of the grid lines
+
+                    # Draw vertical lines
+                    cv2.line(frame, (width // 3, 0), (width // 3, height), color, thickness)
+                    cv2.line(frame, (2 * width // 3, 0), (2 * width // 3, height), color, thickness)
+
+                    # Draw horizontal lines
+                    cv2.line(frame, (0, height // 3), (width, height // 3), color, thickness)
+                    cv2.line(frame, (0, 2 * height // 3), (width, 2 * height // 3), color, thickness)
+
+                    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+                    img = Image.fromarray(cv2image)
+                    imgtk = CTkImage(img, size=(680, 480))
+                    camera_label.imgtk = imgtk
+                    camera_label.configure(image=imgtk)
+                    camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
+                except Exception as e:
+                    attempt_counter += 1
+                    if attempt_counter >= 10:
+                        cap.release()  # Release the camera
+                        RegVframe.destroy()
+                    else:
+                        Cwarnlabel.configure(text="Make sure the frame is free of obstructions.")
+
+            show_frame()
+            scanbtn.configure(state="normal")
+            scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page, back_button, home_button, visitor_button, resident_button))
+
         if entry == 1:
             face_name = ret_vname
         else:
             face_name = Vname.get()
             # Check if a file with the same name already exists
             if os.path.isfile(os.path.join(data_dir, face_name + '.npy')):
-                Existinglabel.configure(text='Already Existing!')
-                return  # Return early if the name already exists
+                Existinglabel.configure(text=f'Replace the Existing Face Data of {face_name}?')
+
+                # Create Confirm button
+                confirm_button = CTkButton(Entryframe, text="Confirm", width=120, height=48, corner_radius=10, fg_color="#ADCBCF",
+                                        hover_color="#93ACAF", font=("Inter", 19, "bold"), text_color="#333333",
+                                        command=lambda: [os.remove(os.path.join(data_dir, face_name + '.npy')), proceed_with_registration()])
+                confirm_button.place(relx=0.52, rely=0.745, anchor="w")
+                return  # Wait for the user to confirm before proceeding
             else:
-                Entryframe.destroy()
-        Cwarnlabel = CTkLabel(RegVframe, text="* Please center the visitor's face and make sure the frame is free of obstructions.", font=("Inter", 12), text_color="red")
-        Cwarnlabel.grid(row=1, column=1, sticky="sew")
-        nonlocal cap
-        camera_label = CTkLabel(RCameraFrame, text="")
-        camera_label.grid(row=0, column=0, sticky="nsew")
-
-        cap = cv2.VideoCapture(0)  # Initialize the camera
-        home_button.configure(state="disabled")
-        visitor_button.configure(state="disabled")
-        resident_button.configure(state="disabled")
-        logout_btn.configure(state="disabled")
-
-        attempt_counter = 0  # Counter to keep track of attempts
-        success_counter = 0  # Counter to keep track of successful frames
-
-        def show_frame():
-            nonlocal attempt_counter, success_counter
-            try:
-                ret, frame = cap.read()  # Assuming 'cap' is your cv2.VideoCapture object
-                if not ret:
-                    raise ValueError("Failed to capture frame")
-                # print("success")
-                success_counter += 1  # Increment the success counter
-
-                # Draw the rule of thirds grid on the frame
-                height, width, _ = frame.shape
-                color = (207, 203, 173)  # Color of the grid lines
-                thickness = 1  # Thickness of the grid lines
-
-                # Draw vertical lines
-                cv2.line(frame, (width // 3, 0), (width // 3, height), color, thickness)
-                cv2.line(frame, (2 * width // 3, 0), (2 * width // 3, height), color, thickness)
-
-                # Draw horizontal lines
-                cv2.line(frame, (0, height // 3), (width, height // 3), color, thickness)
-                cv2.line(frame, (0, 2 * height // 3), (width, 2 * height // 3), color, thickness)
-
-                cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-                img = Image.fromarray(cv2image)
-                imgtk = CTkImage(img, size=(680, 480))
-                camera_label.imgtk = imgtk
-                camera_label.configure(image=imgtk)
-                camera_label.after(10, show_frame)  # Refresh the frame on the label every 10 ms
-            except Exception as e:
-                attempt_counter += 1
-                if attempt_counter >= 10:
-                    cap.release()  # Release the camera
-                    RegVframe.destroy()
-                else:
-                    Cwarnlabel.configure(text="Make sure the frame is free of obstructions.")
-
-        show_frame()
-        scanbtn.configure(state="normal")
-        scanbtn.configure(command=lambda: face_register(face_name, scanbtn, RegVframe, RCameraFrame, homepage_window, sec_id, Home_indct, Visitor_indct, Resident_indct, cap, on_register_click, logout_btn, home_page, back_button, home_button, visitor_button, resident_button))
+                proceed_with_registration()
