@@ -31,7 +31,7 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
 
     def show_frame():
         nonlocal skip, error_count
-        remaining_time = 10 - int(time.time() - start_time)
+        remaining_time = 20 - int(time.time() - start_time)
 
         if remaining_time <= 0:
             save_and_exit()
@@ -54,6 +54,18 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 1)
 
             cv2.putText(frame, "Time left: " + str(remaining_time), (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+            # Display prompts based on remaining time
+            if 15 >= remaining_time > 10:
+                prompt_text = "Turn right"
+            elif 10 >= remaining_time > 5:
+                prompt_text = "Turn left"
+            elif 5 >= remaining_time >= 0:
+                prompt_text = "Turn up and down"
+            else:
+                prompt_text = ""
+            
+            cv2.putText(frame, prompt_text, (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
             # Draw the rule of thirds grid on the frame
             height, width, _ = frame.shape
@@ -78,7 +90,6 @@ def face_register(visitor_name, scanbtn, RegVframe, RCameraFrame, homepage_windo
                 try:
                     face_data.append(face_section)
                 except Exception as e:
-                    # print(f"Error appending face data: {e}")
                     error_count += 1
                     if error_count >= 4:
                         cap.release()

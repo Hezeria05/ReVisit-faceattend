@@ -49,9 +49,6 @@ def on_logout_click(homepage_window, Home_indct, Visitor_indct, Resident_indct, 
         success = logout_visitor(visitor_name, sec_id, Existinglabel, logoutbtn)
         if success:
             cap.release()
-            data_path = os.path.join(data_dir, f"{visitor_name}.npy")
-            if os.path.exists(data_path):
-                os.remove(data_path)
             logsucess = "Logout successfully!"
             view_history(sec_id, LogOutVframe, logsucess, set_icon_image, indicate, Visitor_page, homepage_window, Home_indct, Visitor_indct, Resident_indct, logout_btn, home_page, home_button, visitor_button, resident_button)
 

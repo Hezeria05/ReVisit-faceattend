@@ -6,37 +6,41 @@ from db_con import update_resident_data
 import re
 from dy_PageUtils import disable_submit_button, enable_submit_button
 
-def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel):
+def check_entries_complete(entries, ecp_label, createbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol):
     all_complete = all(entry.get().strip() for entry in entries)
     password = Epassword.get().strip()
 
     if all_complete and len(password) >= 8:
-        check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
+        check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol)
     else:
         disable_submit_button(createbtn)
 
-def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel):
+def handle_password_input(Epassword, Ecpassword, ecp_label, createbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
     if not password:
+        pass_pol.place_forget()
         set_policy_labels_color_to_red(ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel)
         if len(confirm_password) >= 1:
             ecp_label.configure(text="Enter Password First!", text_color="red")
+            pass_pol.place_forget()
     else:
+        pass_pol.place(relx=0.1, rely=0.7, anchor="w")
         validate_password_policy(password, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel)
         if all([ep8charlabel.cget("text_color") == "green",
                 epnumberlabel.cget("text_color") == "green",
                 epupperlabel.cget("text_color") == "green",
                 epspeclabel.cget("text_color") == "green",
                 eplowerlabel.cget("text_color") == "green"]):
+            pass_pol.place_forget()
             Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
-            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
+            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol)
         else:
             ecp_label.configure(text="", text_color="red")
             disable_submit_button(createbtn)
 
-def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel):
+def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
 
@@ -51,12 +55,12 @@ def handle_ecpassword_input(Epassword, Ecpassword, ecp_label, createbtn, ep8char
                 epupperlabel.cget("text_color") == "green",
                 epspeclabel.cget("text_color") == "green",
                 eplowerlabel.cget("text_color") == "green"]):
-            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel)
+            check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol)
         else:
             ecp_label.configure(text="", text_color="red")
             disable_submit_button(createbtn)
 
-def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel):
+def check_password_match(entries, Epassword, Ecpassword, ecp_label, createbtn, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol):
     password = Epassword.get().strip()
     confirm_password = Ecpassword.get().strip()
     full_name = Efullname.get()

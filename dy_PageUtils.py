@@ -57,7 +57,7 @@ def validate_length(event, entry, max):
     return True
 
 def validate_char(event):
-    if event.char.isalpha() or event.char.isdigit() or event.char in (" ", "-", "."):
+    if event.char.isalpha() or event.char in (" ", "-", "."):
         return True
     elif event.keysym in ('BackSpace', 'Left', 'Right', 'Tab'):
         return True

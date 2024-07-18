@@ -41,7 +41,7 @@ def open_register_window(main_window):
 
     CreateF = CTkFrame(register_window, fg_color="#D1DDE2", corner_radius=10, width=660, height=780)
     CreateF.grid(row=1, column=3, sticky="nsew", padx=10)
-    configure_frame(CreateF, [1, 4, 4, 4, 6, 4, 4], [1, 10, 1])
+    configure_frame(CreateF, [1, 4, 4, 4, 4, 4, 4], [1, 10, 1])
 
     LabelFrame = CTkLabel(CreateF, fg_color="transparent", text="Create Account", font=("Inter", 48, "bold"), text_color="#333333")
     LabelFrame.grid(row=1, column=1)
@@ -88,36 +88,14 @@ def open_register_window(main_window):
     # PASSWORD
     InputF3 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=4, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 4, 1, 1, 1], [1])
+    configure_frame(InputF3, [2, 5, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18, anchor="w")
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     password_visible = [False]
-    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.44)
-
-    pass1_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass1_policy.grid(row=2, column=0, sticky="nswe")
-    configure_frame(pass1_policy, [1], [2, 3])
-    ep8charlabel = CTkLabel(pass1_policy, text="* At least 8 characters.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    ep8charlabel.grid(row=0, column=0, sticky="w")
-    epnumberlabel = CTkLabel(pass1_policy, text="* At least one number.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epnumberlabel.grid(row=0, column=1, sticky="w")
-
-    pass2_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass2_policy.grid(row=3, column=0, sticky="nswe")
-    configure_frame(pass2_policy, [1], [2, 3])
-    epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epupperlabel.grid(row=0, column=0, sticky="w")
-    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character. !@#$%_&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epspeclabel.grid(row=0, column=1, sticky="w")
-
-    pass3_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass3_policy.grid(row=4, column=0, sticky="nswe")
-    configure_frame(pass3_policy, [1], [2, 1])
-    eplowerlabel = CTkLabel(pass3_policy, text="* At least one lowercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    eplowerlabel.grid(row=0, column=0, sticky="w")
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
 
     # CONFIRM PASSWORD
     InputF4 = CTkFrame(CreateF, fg_color="transparent", corner_radius=10)
@@ -141,11 +119,25 @@ def open_register_window(main_window):
                       text_color="#333333", state="disabled")
     CAbtn.grid(row=0, column=0, sticky="ne", pady=20)
 
+    pass_pol=CTkFrame(CreateF, fg_color="#F0F6F9", corner_radius=10, border_width=1, border_color="#ADCBCF", width=500, height=50)
+    configure_frame(pass_pol, [1, 1, 1], [2,3])
+    pass_pol.propagate(False)
+    ep8charlabel = CTkLabel(pass_pol, text="* At least 8 characters.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    ep8charlabel.grid(row=0, column=0, sticky="w", padx=5, pady=2)
+    epnumberlabel = CTkLabel(pass_pol, text="* At least one number.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epnumberlabel.grid(row=0, column=1, sticky="w", padx=5, pady=0)
+    epupperlabel = CTkLabel(pass_pol, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epupperlabel.grid(row=1, column=0, sticky="w", padx=5, pady=0)
+    epspeclabel = CTkLabel(pass_pol, text="* At least one special character. !@#$%_&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epspeclabel.grid(row=1, column=1, sticky="w", padx=5, pady=0)
+    eplowerlabel = CTkLabel(pass_pol, text="* At least one lowercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    eplowerlabel.grid(row=2, column=0, sticky="w", padx=5, pady=2)
+
     entries = [Efullname, Eusername, Epassword, Ecpassword]
     for entry in entries:
-        entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel))
-    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
-    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel))
+        entry.bind("<KeyRelease>", lambda event: check_entries_complete(entries, ecpExistlabel, CAbtn, Epassword, Ecpassword, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol))
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol))
+    Ecpassword.bind("<KeyRelease>", lambda event: handle_ecpassword_input(Epassword, Ecpassword, ecpExistlabel, CAbtn, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, confirm_password_visible, entries, Efullname, FnExistlabel, Eusername, UnExistlabel, pass_pol))
 
     # Define the security questions
     security_questions = [
@@ -198,9 +190,11 @@ def open_register_window(main_window):
                 comboimage = load_image("question_astrsk.png", (114, 21))
                 combolabel = CTkLabel(secombo_f, image=comboimage, text="")
                 combolabel.place(relx=0, rely=0.05, anchor="nw")
-                sec_combobox = CTkComboBox(secombo_f, values=security_questions, width=480, height=55, button_color="#ADCBCF", button_hover_color="#93ACAF",
-                                        dropdown_hover_color="#ADCBCF", border_color='#ADCBCF', border_width=1.5, corner_radius=8)
+                sec_combobox = CTkComboBox(secombo_f,values=security_questions,width=480,height=55,button_color="#ADCBCF", button_hover_color="#93ACAF",
+                                dropdown_hover_color="#ADCBCF",border_color='#ADCBCF',border_width=1.5,corner_radius=8,state='readonly')
                 sec_combobox.place(relx=0.5, rely=0.5, anchor='center')
+                # Set the default value
+                sec_combobox.set(security_questions[0])
                 def to_lowercase(event):
                     current_text = sec_answer.get()
                     sec_answer.delete(0, 'end')
