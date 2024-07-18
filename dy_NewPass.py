@@ -60,20 +60,23 @@ def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_i
             ecpExistlabel.configure(text="", text_color="red")
             disable_submit_button(submitbtn)
 
-    def handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn):
+    def handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn, pass_pol):
         password = Epassword.get().strip()
         confirm_password = Ecpassword.get().strip()
 
         if not password:
+            pass_pol.place_forget()
             set_policy_labels_color_to_red(ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel)
             ecpExistlabel.configure(text="Enter Password First!" if confirm_password else "", text_color="red")
         else:
+            pass_pol.place(relx=0.1, rely=0.7, anchor="w")
             validate_password_policy(password, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel)
             if all([ep8charlabel.cget("text_color") == "green",
                     epnumberlabel.cget("text_color") == "green",
                     epupperlabel.cget("text_color") == "green",
                     epspeclabel.cget("text_color") == "green",
                     eplowerlabel.cget("text_color") == "green"]):
+                pass_pol.place_forget()
                 Ecpassword.configure(state="normal", show='' if confirm_password_visible[0] else '*')
                 check_password_match(Epassword, Ecpassword, ecpExistlabel, submitbtn, Secqstn)
             else:
@@ -100,7 +103,7 @@ def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_i
     NewPLabel.grid(row=0, column=1, sticky="s")
     NewpassF = CTkFrame(ForgotPfr, fg_color="transparent", corner_radius=10, width=660, height=780)
     NewpassF.grid(row=1, column=1, sticky="nsew", padx=10, pady=15)
-    configure_frame(NewpassF, [1, 4, 5, 4, 1], [1, 10, 1])
+    configure_frame(NewpassF, [1, 4, 4, 4, 1], [1, 10, 1])
 
     def to_lowercase(event):
         current_text = Secqstn.get()
@@ -111,7 +114,8 @@ def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_i
     InputF2.grid(row=1, column=1, sticky="nsew", pady=2)
     configure_frame(InputF2, [2, 4, 2], [1])
     Secqstn = create_standard_entry(InputF2, secquestion)
-    Secqstnimage = create_image_label(InputF2, 'secquestion_astrsk.png', 184, 19)
+    Secqstnlabel = CTkLabel(InputF2, fg_color="transparent", text=secquestion, font=("Inter", 17, "bold"), text_color="#333333")
+    Secqstnlabel.grid(row=0, column=0, sticky="sw")
     Secqstn.bind("<KeyPress>", lambda event: validate_all(event, Secqstn, 16, 0))
     Secqstn.bind('<KeyRelease>', to_lowercase)
     SecExistlabel = create_warning_label(InputF2, "")
@@ -121,38 +125,14 @@ def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_i
 
     InputF3 = CTkFrame(NewpassF, fg_color="transparent", corner_radius=10)
     InputF3.grid(row=2, column=1, sticky="nsew", pady=2)
-    configure_frame(InputF3, [2, 4, 1, 1, 1], [1])
+    configure_frame(InputF3,  [2, 5, 2], [1])
     Epassword = create_standard_entry(InputF3, "Enter Password")
     Epasswordimage = create_image_label(InputF3, 'password_astrsk.png', 124, 18, anchor="w")
     Epassword.bind("<KeyPress>", lambda event: validate_all(event, Epassword, 16, 0))
     Epassword.bind("<Key>", validate_no_space)
     Epassword.configure(show="*")
     password_visible = [False]
-    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg, relx=0.93, rely=0.44)
-
-    pass1_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass1_policy.grid(row=2, column=0, sticky="nswe")
-    configure_frame(pass1_policy, [1], [2, 3])
-    ep8charlabel = CTkLabel(pass1_policy, text="* At least  8 characters.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    ep8charlabel.grid(row=0, column=0, sticky="w")
-    epnumberlabel = CTkLabel(pass1_policy, text="* At least one number.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epnumberlabel.grid(row=0, column=1, sticky="w")
-
-    pass2_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass2_policy.grid(row=3, column=0, sticky="nswe")
-    configure_frame(pass2_policy, [1], [2, 3])
-    epupperlabel = CTkLabel(pass2_policy, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epupperlabel.grid(row=0, column=0, sticky="w")
-    epspeclabel = CTkLabel(pass2_policy, text="* At least one special character. !@#$%_&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
-    epspeclabel.grid(row=0, column=1, sticky="w")
-
-    pass3_policy = CTkFrame(InputF3, fg_color="transparent")
-    pass3_policy.grid(row=4, column=0, sticky="nswe")
-    configure_frame(pass3_policy, [1], [2, 1])
-    eplowerlabel = CTkLabel(pass3_policy, text="* At least one lowercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
-    eplowerlabel.grid(row=0, column=0, sticky="w")
-
-    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn))
+    eyep_button = create_eye_button(InputF3, Epassword, password_visible, eyecloseimg, eyeopenimg)
 
     InputF4 = CTkFrame(NewpassF, fg_color="transparent", corner_radius=10)
     InputF4.grid(row=3, column=1, sticky="nsew", pady=2)
@@ -166,7 +146,22 @@ def forgot_password(forgot_frame, back_button, si_eye, SIbtn, secquestion, sec_i
     eyecp_button = create_eye_button(InputF4, Ecpassword, confirm_password_visible, eyecloseimg, eyeopenimg)
     ecpExistlabel = create_warning_label(InputF4, "")
 
-    Ecpassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn))
+    pass_pol=CTkFrame(NewpassF, fg_color="#F0F6F9", corner_radius=10, border_width=1, border_color="#ADCBCF", width=500, height=50)
+    configure_frame(pass_pol, [1, 1, 1], [2,3])
+    pass_pol.propagate(False)
+    ep8charlabel = CTkLabel(pass_pol, text="* At least 8 characters.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    ep8charlabel.grid(row=0, column=0, sticky="w", padx=5, pady=2)
+    epnumberlabel = CTkLabel(pass_pol, text="* At least one number.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epnumberlabel.grid(row=0, column=1, sticky="w", padx=5, pady=0)
+    epupperlabel = CTkLabel(pass_pol, text="* At least one uppercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epupperlabel.grid(row=1, column=0, sticky="w", padx=5, pady=0)
+    epspeclabel = CTkLabel(pass_pol, text="* At least one special character. !@#$%_&*(),.?", fg_color="transparent", font=("Inter", 12), text_color="red")
+    epspeclabel.grid(row=1, column=1, sticky="w", padx=5, pady=0)
+    eplowerlabel = CTkLabel(pass_pol, text="* At least one lowercase letter.", fg_color="transparent", font=("Inter", 12), text_color="red")
+    eplowerlabel.grid(row=2, column=0, sticky="w", padx=5, pady=2)
+
+    Epassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn, pass_pol))
+    Ecpassword.bind("<KeyRelease>", lambda event: handle_password_input(Epassword, Ecpassword, ep8charlabel, epnumberlabel, epupperlabel, epspeclabel, eplowerlabel, ecpExistlabel, submitbtn, Secqstn, pass_pol))
     Secqstn.bind("<KeyRelease>", lambda event: handle_security_question_input(Secqstn, Epassword, Ecpassword, ecpExistlabel, submitbtn))
 
     BtnNPF = CTkFrame(ForgotPfr, fg_color="transparent", corner_radius=10)
